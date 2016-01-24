@@ -11,4 +11,24 @@ Shooter::Shooter() {
 
 }
 
-void
+void Shooter::setManualShooterSpeed(double speed){
+	m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
+	m_rightShooterMotor.SetControlMode(CANTalon::kPercentVbus);
+
+	m_leftShooterMotor.Set(speed);
+	m_rightShooterMotor.Set(speed);
+
+
+}
+
+Shooter::~Shooter() {
+
+}
+
+void Shooter::reloadPID() {
+
+}
+
+void Shooter::resetEncoders() {
+
+}

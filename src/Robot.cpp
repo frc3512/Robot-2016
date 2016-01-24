@@ -3,13 +3,13 @@
 // Description: Implements the main robot class
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
-           
+
 #include "Robot.hpp"
 #include <cmath>
 #include <iostream>
 
 Robot::Robot() {
-    
+
     pidGraph.setSendInterval(5ms);
 
     displayTimer.Start();
@@ -22,14 +22,17 @@ void Robot::OperatorControl() {
         }
         else {
             robotDrive.drive(driveStick1.GetY(), driveStick2.GetX());
+
         }
-        
+
+        shoot.setManualShooterSpeed(shootStick.GetThrottle());
+
         // Update the elevator automatic stacking state
-        
+
 
         drive1Buttons.updateButtons();
         drive2Buttons.updateButtons();
-        evButtons.updateButtons();
+        shootButtons.updateButtons();
 
         DS_PrintOut();
 
@@ -52,7 +55,7 @@ void Robot::Disabled() {
     }
 
     robotDrive.reloadPID();
-    
+
 }
 
 void Robot::DS_PrintOut() {
@@ -71,7 +74,7 @@ void Robot::DS_PrintOut() {
 
         dsDisplay.addData("ENCODER_LEFT", robotDrive.getLeftDist());
         dsDisplay.addData("ENCODER_RIGHT", robotDrive.getRightDist());
-        
+
         dsDisplay.sendToDS();
     }
 
