@@ -24,7 +24,6 @@ void Robot::OperatorControl() {
             robotDrive.drive(driveStick1.GetY(), driveStick2.GetX());
 
         }
-
         shoot.setManualShooterSpeed(shootStick.GetThrottle());
 
         // Update the elevator automatic stacking state

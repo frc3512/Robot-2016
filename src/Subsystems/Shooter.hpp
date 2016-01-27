@@ -8,6 +8,7 @@
 #define SHOOTER_HPP
 
 #include "SubsystemBase.hpp"
+#include "KalmanFilter.hpp"
 #include <vector>
 #include <thread>
 #include <atomic>
@@ -17,6 +18,7 @@
 #include <CANTalon.h>
 
 #include "../StateMachine.hpp"
+
 
 class Shooter : public SubsystemBase {
 public:
@@ -32,7 +34,7 @@ public:
 
 
     void setRPM(float wheelSpeed);
-    void getRPM();
+    float getRPM();
 
 
     void manualChangeSetpoint(double delta);
@@ -42,12 +44,15 @@ public:
 
 private:
     bool m_manual = false;
-
+    float m_latestRPMLeft = 0;
+    float m_latestRPMRight = 0;
 
     CANTalon m_leftShooterMotor{3};
     CANTalon m_rightShooterMotor{6};
 
-
+    std::atomic <bool> m_updateProfile{true};
+    KalmanFilter m_rpmFilter{0 , 0};
+    std::thread * m_profileUpdater;
 
 
     /* Maximum velocity and time to maximum velocity constants to load from the
