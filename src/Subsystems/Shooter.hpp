@@ -26,18 +26,18 @@ public:
     Shooter();
     ~Shooter();
 
+    void shoot();
+    void setManualShooterSpeed( double speed );
 
-    void reloadPID();
-    void resetEncoders();
-
-    void setManualShooterSpeed(double speed);
-
-
-    void setRPM(float wheelSpeed);
-    float getRPM();
-
-
+    void setRPMLeft( double wheelSpeed );
+    void setRPMRight( double wheelSpeed );
+    float getRPMLeft();
+    float getRPMRight();
+    void updateLeftIntakeEncoderFilter( double Q , double R );
+    void updateRightIntakeEncoderFilter( double Q , double R );
     void manualChangeSetpoint(double delta);
+
+    void setManualShooterPosition(double position);
 
     // Periodic
     void updateState();
@@ -49,9 +49,12 @@ private:
 
     CANTalon m_leftShooterMotor{3};
     CANTalon m_rightShooterMotor{6};
+    CANTalon m_kickBallMotor{7};
+    CANTalon m_shooterPositionMotor{8};
 
     std::atomic <bool> m_updateProfile{true};
-    KalmanFilter m_rpmFilter{0 , 0};
+    KalmanFilter m_rpmFilterLeft{0 , 0};
+    KalmanFilter m_rpmFilterRight{0 , 0};
     std::thread * m_profileUpdater;
 
 

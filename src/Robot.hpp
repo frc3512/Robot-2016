@@ -40,7 +40,7 @@ private:
     Settings settings{"/home/lvuser/RobotSettings.txt"};
 
     DriveTrain robotDrive;
-    Shooter shoot;
+    Shooter shooter;
     
     Joystick driveStick1{0};
     Joystick driveStick2{1};
@@ -48,7 +48,7 @@ private:
 
     ButtonTracker drive1Buttons{0};
     ButtonTracker drive2Buttons{1};
-    ButtonTracker shootButtons{2};
+    ButtonTracker shootButton{2};
 
     Timer autoTimer;
     Timer displayTimer;
