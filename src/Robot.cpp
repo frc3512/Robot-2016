@@ -9,7 +9,6 @@
 #include <iostream>
 
 Robot::Robot() {
-
     pidGraph.setSendInterval(5ms);
 
     displayTimer.Start();
@@ -22,12 +21,21 @@ void Robot::OperatorControl() {
         }
         else {
             robotDrive.drive(driveStick1.GetY(), driveStick2.GetX());
-
         }
-        shooter.setManualShooterSpeed(shootStick.GetThrottle());
 
-        if(shootButton.pressedButton(2)) {
-        	shooter.shoot();
+        // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
+        if (shootStick.GetRawButton(2)) {
+            shooter.setManualShooterSpeed((shootStick.GetThrottle() + 1) / 2);
+        }
+        else {
+            shooter.setLeftShooterSpeed((driveStick2.GetThrottle() + 1) / 2);
+            shooter.setRightShooterSpeed((shootStick.GetThrottle() + 1) / 2);
+        }
+        std::cout<<"Drive Stick Throttle: "<< driveStick2.GetThrottle() <<" | "<<"Shoot Stick Throttle: " <<shootStick.GetThrottle()<<std::endl;
+        std::cout<<"Left RPM: "<<shooter.getRPMLeft()<<" | "<<"Right RPM: "<<shooter.getRPMRight()<<std::endl;
+
+        if (shootButton.pressedButton(2)) {
+            shooter.shoot();
         }
         // Update the elevator automatic stacking state
 
@@ -52,11 +60,10 @@ void Robot::Autonomous() {
 void Robot::Disabled() {
     while (IsDisabled()) {
         DS_PrintOut();
-        std::this_thread::sleep_for(100ms);
+        std::this_thread::sleep_for(10ms);
     }
 
     robotDrive.reloadPID();
-
 }
 
 void Robot::DS_PrintOut() {
@@ -97,3 +104,4 @@ float Robot::applyDeadband(float value, float deadband) {
 }
 
 START_ROBOT_CLASS(Robot);
+

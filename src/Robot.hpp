@@ -41,7 +41,7 @@ private:
 
     DriveTrain robotDrive;
     Shooter shooter;
-    
+
     Joystick driveStick1{0};
     Joystick driveStick2{1};
     Joystick shootStick{2};
