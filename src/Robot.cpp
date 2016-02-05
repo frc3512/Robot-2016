@@ -38,7 +38,11 @@ void Robot::OperatorControl() {
             shooter.shoot();
         }
         // Update the elevator automatic stacking state
+        if (shootStick.GetRawButton(4)){
+        	shooter.setManualShooterPosition(shootStick.GetY());
 
+        }
+        //Moves shooter up and down
         drive1Buttons.updateButtons();
         drive2Buttons.updateButtons();
         shootButton.updateButtons();
