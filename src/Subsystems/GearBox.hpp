@@ -44,26 +44,26 @@ public:
     void ResetEncoder();
 
     // Reverses gearbox drive direction
-    void setMotorReversed(bool reverse);
+    void SetMotorReversed(bool reverse);
 
     // Returns motor reversal state of gearbox
-    bool isMotorReversed() const;
+    bool IsMotorReversed() const;
 
     // Reverses gearbox drive direction
     void SetEncoderReversed(bool reverse);
 
     // Shifts gearbox to another gear if available
-    void setGear(bool gear);
+    void SetGear(bool gear);
 
     // Gets current gearbox gear if available (false if not)
-    bool getGear() const;
+    bool GetGear() const;
 
     bool OnTarget() const;
 
     void ResetPID();
 
     // Determines whether encoder returns distance or rate from PIDGet()
-    void setPIDSourceType(PIDSourceType pidSource);
+    void SetPIDSourceType(PIDSourceType pidSource);
 
 private:
     // Sets motor speed to 'output'
