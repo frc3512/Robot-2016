@@ -18,7 +18,7 @@ public:
 
     // Should return initial setpoint for start of profile
     virtual PIDState SetGoal(double t, PIDState goal,
-                                 PIDState curSource) = 0;
+                             PIDState curSource) = 0;
     virtual bool AtGoal();
 
     PIDState GetGoal() const;

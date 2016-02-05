@@ -62,9 +62,7 @@ PIDState SCurveProfile::UpdateSetpoint(double curTime) {
     return m_sp;
 }
 
-PIDState SCurveProfile::SetGoal(double t,
-                                    PIDState goal,
-                                    PIDState curSource) {
+PIDState SCurveProfile::SetGoal(double t, PIDState goal, PIDState curSource) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
     m_sp = m_goal = goal;

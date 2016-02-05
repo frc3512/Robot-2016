@@ -88,7 +88,7 @@ PIDState BezierTrapezoidProfile::GetRightSetpoint() const {
 }
 
 PIDState BezierTrapezoidProfile::SetCurveGoal(const BezierCurve& curve,
-                                                  double t) {
+                                              double t) {
     m_curve = curve;
 
     PIDState state = {m_curve.GetArcLength(0, 1), 0.0, 0.0};

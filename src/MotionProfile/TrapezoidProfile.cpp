@@ -39,9 +39,8 @@ PIDState TrapezoidProfile::UpdateSetpoint(double curTime) {
     return m_sp;
 }
 
-PIDState TrapezoidProfile::SetGoal(double t,
-                                       PIDState goal,
-                                       PIDState curSource) {
+PIDState TrapezoidProfile::SetGoal(double t, PIDState goal,
+                                   PIDState curSource) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
     m_sp = m_goal = goal;

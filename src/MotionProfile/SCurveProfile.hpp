@@ -26,7 +26,7 @@ public:
      * t initializes m_lastTime
      */
     virtual PIDState SetGoal(double t, PIDState goal,
-                                 PIDState curSource = PIDState());
+                             PIDState curSource = PIDState());
 
     void SetMaxVelocity(double v);
     double GetMaxVelocity() const;
