@@ -45,8 +45,7 @@ PIDState SCurveProfile::UpdateSetpoint(double curTime) {
     else if (curTime < m_t6) {
         // Decrease speed at max acceleration
         m_sp.acceleration = m_acceleration;
-        m_sp.velocity = m_acceleration * m_timeToMaxA + m_acceleration *
-                        (m_t2 - m_timeToMaxA + m_t5 - curTime);
+        m_sp.velocity = m_acceleration * (m_t2 + m_t5 - curTime);
     }
     else if (curTime < m_t7) {
         // Ramp up acceleration
