@@ -25,11 +25,11 @@ void Robot::OperatorControl() {
 
         // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
         if (shootStick.GetRawButton(2)) {
-            shooter.setManualShooterSpeed((shootStick.GetThrottle() + 1) / 2);
+            shooter.setManualShooterSpeed(1 -(shootStick.GetThrottle()) / 2);
         }
         else {
-            shooter.setLeftShooterSpeed((driveStick2.GetThrottle() + 1) / 2);
-            shooter.setRightShooterSpeed((shootStick.GetThrottle() + 1) / 2);
+            shooter.setLeftShooterSpeed(1 -(driveStick2.GetThrottle()) / 2);
+            shooter.setRightShooterSpeed(1 -(shootStick.GetThrottle()) / 2);
         }
         std::cout<<"Drive Stick Throttle: "<< driveStick2.GetThrottle() <<" | "<<"Shoot Stick Throttle: " <<shootStick.GetThrottle()<<std::endl;
         std::cout<<"Left RPM: "<<shooter.getRPMLeft()<<" | "<<"Right RPM: "<<shooter.getRPMRight()<<std::endl;
@@ -64,6 +64,12 @@ void Robot::Disabled() {
     }
 
     robotDrive.reloadPID();
+}
+
+void Robot::Test() {
+	while(IsEnabled() && IsTest()) {
+
+	}
 }
 
 void Robot::DS_PrintOut() {

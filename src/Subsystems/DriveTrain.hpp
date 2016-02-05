@@ -64,8 +64,8 @@ private:
     float m_quickStopAccumulator = 0.f;
     float m_negInertiaAccumulator = 0.f;
 
-    GearBox<CANTalon> m_leftGrbx{-1, 4, 1};
-    GearBox<CANTalon> m_rightGrbx{-1, 5, 8};
+    GearBox<CANTalon> m_leftGrbx{-1, 1};
+    GearBox<CANTalon> m_rightGrbx{-1, 4};
 
     /* Zeroes value if its inside deadband range, and rescales values outside
      * of it

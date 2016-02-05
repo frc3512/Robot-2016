@@ -29,6 +29,7 @@ public:
     void OperatorControl();
     void Autonomous();
     void Disabled();
+    void Test();
 
     void AutoMotionProfile();
 
