@@ -11,7 +11,7 @@ TrapezoidProfile::TrapezoidProfile(double maxV, double timeToMaxV) {
     SetTimeToMaxV(timeToMaxV);
 }
 
-ProfileState TrapezoidProfile::UpdateSetpoint(double curTime) {
+PIDState TrapezoidProfile::UpdateSetpoint(double curTime) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
     if (curTime < m_timeToMaxVelocity) {
@@ -39,9 +39,9 @@ ProfileState TrapezoidProfile::UpdateSetpoint(double curTime) {
     return m_sp;
 }
 
-ProfileState TrapezoidProfile::SetGoal(double t,
-                                       ProfileState goal,
-                                       ProfileState curSource) {
+PIDState TrapezoidProfile::SetGoal(double t,
+                                       PIDState goal,
+                                       PIDState curSource) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
     m_sp = m_goal = goal;

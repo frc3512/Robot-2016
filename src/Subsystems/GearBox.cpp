@@ -3,12 +3,9 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include <Solenoid.h>
+#include "GearBox.hpp"
 
-inline GearBox<CANTalon>::GearBox(int shifterChan,
-                                  int motor1,
-                                  int motor2,
-                                  int motor3) :
+GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) :
     GearBoxBase(shifterChan, -1, -1, motor1, motor2, motor3) {
     for (unsigned int i = 0; i < m_motors.size(); i++) {
         if (i == 0) {
@@ -17,7 +14,7 @@ inline GearBox<CANTalon>::GearBox(int shifterChan,
             m_motors[i]->ConfigEncoderCodesPerRev(1);
             m_motors[i]->SetSensorDirection(m_isEncoderReversed);
             ResetEncoder();
-            setProfile(false);
+            SetProfile(false);
             m_motors[i]->EnableControl();
         }
         else {
@@ -30,23 +27,23 @@ inline GearBox<CANTalon>::GearBox(int shifterChan,
     }
 }
 
-inline void GearBox<CANTalon>::SetSetpoint(float setpoint) {
+void GearBox::SetSetpoint(PIDState setpoint) {
     m_motors[0]->SetControlMode(CANTalon::kPosition);
 
-    m_setpoint = setpoint / m_distancePerPulse;
+    m_setpoint = setpoint.displacement / m_distancePerPulse;
     m_motors[0]->Set(m_setpoint);
 }
 
-inline float GearBox<CANTalon>::GetSetpoint() const {
-    return m_setpoint * m_distancePerPulse;
+PIDState GearBox::GetSetpoint() const {
+    return {m_setpoint* m_distancePerPulse, 0.0, 0.0};
 }
 
-inline void GearBox<CANTalon>::SetManual(float value) {
+void GearBox::SetManual(float value) {
     m_motors[0]->SetControlMode(CANTalon::kPercentVbus);
     m_motors[0]->Set(value);
 }
 
-inline float GearBox<CANTalon>::Get(Grbx::PIDMode mode) const {
+float GearBox::Get(Grbx::PIDMode mode) const {
     if (mode == Grbx::Position) {
         return m_motors[0]->GetPosition() * m_distancePerPulse;
     }
@@ -60,60 +57,59 @@ inline float GearBox<CANTalon>::Get(Grbx::PIDMode mode) const {
     return 0.f;
 }
 
-inline void GearBox<CANTalon>::SetPID(float p, float i, float d) {
+void GearBox::SetPID(float p, float i, float d) {
     m_motors[0]->SetPID(p, i, d);
 }
 
-inline void GearBox<CANTalon>::SetF(float f) {
+void GearBox::SetF(float f) {
     m_motors[0]->SetF(f);
 }
 
-inline void GearBox<CANTalon>::SetDistancePerPulse(double distancePerPulse) {
+void GearBox::SetDistancePerPulse(double distancePerPulse) {
     m_distancePerPulse = distancePerPulse;
 }
 
-inline void GearBox<CANTalon>::ResetEncoder() {
+void GearBox::ResetEncoder() {
     m_motors[0]->SetPosition(0);
 }
 
-inline void GearBox<CANTalon>::SetEncoderReversed(bool reverse) {
+void GearBox::SetEncoderReversed(bool reverse) {
     m_isEncoderReversed = reverse;
     m_motors[0]->SetSensorDirection(m_isEncoderReversed);
 }
 
-inline bool GearBox<CANTalon>::OnTarget() const {
+bool GearBox::OnTarget() const {
     return abs(m_motors[0]->GetClosedLoopError()) < 15;
 }
 
-inline void GearBox<CANTalon>::ResetPID() {
+void GearBox::ResetPID() {
     m_motors[0]->ClearIaccum();
 }
 
-inline void GearBox<CANTalon>::setControlMode(CANTalon::ControlMode ctrlMode) {
+void GearBox::SetControlMode(CANTalon::ControlMode ctrlMode) {
     m_motors[0]->SetControlMode(ctrlMode);
 }
 
-inline void GearBox<CANTalon>::setSoftPositionLimits(double forwardLimit,
-                                                     double backwardLimit) {
+void GearBox::SetSoftPositionLimits(double forwardLimit, double backwardLimit) {
     m_motors[0]->ConfigSoftPositionLimits(forwardLimit, backwardLimit);
 }
 
-inline bool GearBox<CANTalon>::isFwdLimitSwitchClosed() const {
+bool GearBox::IsFwdLimitSwitchClosed() const {
     return m_motors[0]->IsFwdLimitSwitchClosed();
 }
 
-inline bool GearBox<CANTalon>::isRevLimitSwitchClosed() const {
+bool GearBox::IsRevLimitSwitchClosed() const {
     return m_motors[0]->IsRevLimitSwitchClosed();
 }
 
-inline void GearBox<CANTalon>::setIZone(unsigned int value) {
+void GearBox::SetIZone(unsigned int value) {
     m_motors[0]->SetIzone(value);
 }
 
-inline void GearBox<CANTalon>::setCloseLoopRampRate(double value) {
+void GearBox::SetCloseLoopRampRate(double value) {
     m_motors[0]->SetCloseLoopRampRate(value);
 }
 
-inline void GearBox<CANTalon>::setProfile(bool secondProfile) {
+void GearBox::SetProfile(bool secondProfile) {
     m_motors[0]->SelectProfileSlot(secondProfile);
 }

@@ -6,7 +6,6 @@
 #include "ProfileBase.hpp"
 
 ProfileBase::ProfileBase() {
-    SetMode(SetpointMode::displacement);
     ResetProfile();
 }
 
@@ -14,26 +13,18 @@ bool ProfileBase::AtGoal() {
     return m_lastTime >= m_timeTotal;
 }
 
-ProfileState ProfileBase::GetGoal() const {
+PIDState ProfileBase::GetGoal() const {
     return m_goal;
 }
 
-ProfileState ProfileBase::GetSetpoint() const {
+PIDState ProfileBase::GetSetpoint() const {
     return m_sp;
 }
 
 void ProfileBase::ResetProfile() {
-    m_goal = ProfileState();
-    m_sp = ProfileState();
+    m_goal = PIDState();
+    m_sp = PIDState();
 
     m_lastTime = 0.0;
     m_timeTotal = 0.0;
-}
-
-void ProfileBase::SetMode(SetpointMode mode) {
-    m_mode = mode;
-}
-
-SetpointMode ProfileBase::GetMode() const {
-    return m_mode;
 }

@@ -30,6 +30,7 @@ public:
     void Disabled();
     void Test();
 
+    void AutoNoop();
     void AutoMotionProfile();
 
     void DS_PrintOut();

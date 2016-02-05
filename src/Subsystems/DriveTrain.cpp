@@ -89,7 +89,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
 
     // QuickTurn!
     if (isQuickTurn) {
-        if (fabs(linearPower) < 0.2) {
+        if (std::fabs(linearPower) < 0.2) {
             double alpha = 0.1;
             m_quickStopAccumulator = (1 - alpha) * m_quickStopAccumulator +
                                      alpha * Limit(turn, 1.f) * 5;
@@ -180,11 +180,11 @@ void DriveTrain::ResetEncoders() {
     m_rightGrbx.ResetEncoder();
 }
 
-void DriveTrain::SetLeftSetpoint(double setpt) {
+void DriveTrain::SetLeftSetpoint(PIDState setpt) {
     m_leftGrbx.SetSetpoint(setpt);
 }
 
-void DriveTrain::SetRightSetpoint(double setpt) {
+void DriveTrain::SetRightSetpoint(PIDState setpt) {
     m_rightGrbx.SetSetpoint(setpt);
 }
 
@@ -212,15 +212,15 @@ double DriveTrain::GetRightRate() const {
     return m_rightGrbx.Get(Grbx::Speed);
 }
 
-double DriveTrain::GetLeftSetpoint() const {
+PIDState DriveTrain::GetLeftSetpoint() const {
     return m_leftGrbx.GetSetpoint();
 }
 
-double DriveTrain::GetRightSetpoint() const {
+PIDState DriveTrain::GetRightSetpoint() const {
     return m_rightGrbx.GetSetpoint();
 }
 
 void DriveTrain::SetControlMode(CANTalon::ControlMode ctrlMode) {
-    m_leftGrbx.setControlMode(ctrlMode);
-    m_rightGrbx.setControlMode(ctrlMode);
+    m_leftGrbx.SetControlMode(ctrlMode);
+    m_rightGrbx.SetControlMode(ctrlMode);
 }

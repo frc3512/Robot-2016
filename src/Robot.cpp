@@ -9,6 +9,9 @@
 #include <iostream>
 
 Robot::Robot() {
+    dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
+    dsDisplay.AddAutoMethod("Profile Auton", &Robot::AutoMotionProfile, this);
+
     pidGraph.SetSendInterval(5ms);
 
     displayTimer.Start();
@@ -83,9 +86,11 @@ void Robot::Test() {
 void Robot::DS_PrintOut() {
     if (pidGraph.HasIntervalPassed()) {
         pidGraph.GraphData(robotDrive.GetLeftDist(), "Left PV (DR)");
-        pidGraph.GraphData(robotDrive.GetLeftSetpoint(), "Left SP (DR)");
+        pidGraph.GraphData(
+            robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetRightDist(), "Right PV (DR)");
-        pidGraph.GraphData(robotDrive.GetRightSetpoint(), "Right SP (DR)");
+        pidGraph.GraphData(
+            robotDrive.GetRightSetpoint().displacement, "Right SP (DR)");
 
         pidGraph.ResetInterval();
     }

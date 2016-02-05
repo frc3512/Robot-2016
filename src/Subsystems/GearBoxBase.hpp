@@ -6,10 +6,11 @@
 #ifndef GEARBOX_BASE_HPP
 #define GEARBOX_BASE_HPP
 
+#include <CANTalon.h>
+#include <Solenoid.h>
+#include "../MotionProfile/ProfileBase.hpp"
 #include <vector>
 #include <memory>
-
-class Solenoid;
 
 /* Notes:
  * The template type of this template class is only used for creating the right
@@ -29,7 +30,6 @@ enum PIDMode {
 };
 }
 
-template <class T>
 class GearBoxBase {
 public:
     GearBoxBase(int shifterChan, int encA, int encB,
@@ -37,9 +37,9 @@ public:
     virtual ~GearBoxBase() = default;
 
     // Enables PID controller automatically and sets its setpoint
-    virtual void SetSetpoint(float setpoint) = 0;
+    virtual void SetSetpoint(PIDState setpoint) = 0;
 
-    virtual float GetSetpoint() const = 0;
+    virtual PIDState GetSetpoint() const = 0;
 
     // Disables PID controller and sets the motor speeds manually
     virtual void SetManual(float value) = 0;
@@ -94,9 +94,7 @@ protected:
 
     std::unique_ptr<Solenoid> m_shifter;
 
-    std::vector<std::unique_ptr<T>> m_motors;
+    std::vector<std::unique_ptr<CANTalon>> m_motors;
 };
-
-#include "GearBoxBase.inl"
 
 #endif // GEARBOX_BASE_HPP

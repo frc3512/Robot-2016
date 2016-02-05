@@ -3,15 +3,14 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include <Solenoid.h>
+#include "GearBoxBase.hpp"
 
-template <class T>
-GearBoxBase<T>::GearBoxBase(int shifterChan,
-                            int encA,
-                            int encB,
-                            int motor1,
-                            int motor2,
-                            int motor3) {
+GearBoxBase::GearBoxBase(int shifterChan,
+                         int encA,
+                         int encB,
+                         int motor1,
+                         int motor2,
+                         int motor3) {
     (void) encA;
     (void) encB;
 
@@ -23,41 +22,36 @@ GearBoxBase<T>::GearBoxBase(int shifterChan,
     }
 
     // Create motor controllers of specified template type
-    m_motors.emplace_back(std::make_unique<T>(motor1));
+    m_motors.emplace_back(std::make_unique<CANTalon>(motor1));
     if (motor2 != -1) {
-        m_motors.emplace_back(std::make_unique<T>(motor2));
+        m_motors.emplace_back(std::make_unique<CANTalon>(motor2));
     }
     if (motor3 != -1) {
-        m_motors.emplace_back(std::make_unique<T>(motor3));
+        m_motors.emplace_back(std::make_unique<CANTalon>(motor3));
     }
 }
 
-template <class T>
-void GearBoxBase<T>::SetMotorReversed(bool reverse) {
+void GearBoxBase::SetMotorReversed(bool reverse) {
     for (auto& motor : m_motors) {
         motor->SetInverted(reverse);
     }
 }
 
-template <class T>
-bool GearBoxBase<T>::IsMotorReversed() const {
-    return m_motors[0]->IsInverted();
+bool GearBoxBase::IsMotorReversed() const {
+    return m_motors[0]->GetInverted();
 }
 
-template <class T>
-bool GearBoxBase<T>::IsEncoderReversed() const {
+bool GearBoxBase::IsEncoderReversed() const {
     return m_isEncoderReversed;
 }
 
-template <class T>
-void GearBoxBase<T>::SetGear(bool gear) {
+void GearBoxBase::SetGear(bool gear) {
     if (m_shifter != nullptr) {
         m_shifter->Set(gear);
     }
 }
 
-template <class T>
-bool GearBoxBase<T>::GetGear() const {
+bool GearBoxBase::GetGear() const {
     if (m_shifter != nullptr) {
         return m_shifter->Get();
     }

@@ -12,7 +12,7 @@ SCurveProfile::SCurveProfile(double maxV, double maxA, double timeToMaxA) {
     SetTimeToMaxA(timeToMaxA);
 }
 
-ProfileState SCurveProfile::UpdateSetpoint(double curTime) {
+PIDState SCurveProfile::UpdateSetpoint(double curTime) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
     if (curTime < m_timeToMaxA) {
@@ -62,9 +62,9 @@ ProfileState SCurveProfile::UpdateSetpoint(double curTime) {
     return m_sp;
 }
 
-ProfileState SCurveProfile::SetGoal(double t,
-                                    ProfileState goal,
-                                    ProfileState curSource) {
+PIDState SCurveProfile::SetGoal(double t,
+                                    PIDState goal,
+                                    PIDState curSource) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
     m_sp = m_goal = goal;

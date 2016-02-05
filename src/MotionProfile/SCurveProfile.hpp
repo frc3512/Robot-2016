@@ -19,14 +19,14 @@ public:
     SCurveProfile(double maxV, double maxA, double timeToMaxA);
 
     // curTime is current time
-    virtual ProfileState UpdateSetpoint(double curTime);
+    virtual PIDState UpdateSetpoint(double curTime);
 
     /* goal is a distance to which to travel
      * curSource is the current position
      * t initializes m_lastTime
      */
-    virtual ProfileState SetGoal(double t, ProfileState goal,
-                                 ProfileState curSource = ProfileState());
+    virtual PIDState SetGoal(double t, PIDState goal,
+                                 PIDState curSource = PIDState());
 
     void SetMaxVelocity(double v);
     double GetMaxVelocity() const;

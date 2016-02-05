@@ -32,8 +32,8 @@ public:
     void ResetEncoders();
 
     // Set wheel setpoints (see GearBox::setSetpoint(float))
-    void SetLeftSetpoint(double setpt);
-    void SetRightSetpoint(double setpt);
+    void SetLeftSetpoint(PIDState setpt);
+    void SetRightSetpoint(PIDState setpt);
 
     // Directly set wheel speeds [0..1] (see GearBox::setManual(float))
     void SetLeftManual(float value);
@@ -48,8 +48,8 @@ public:
     double GetRightRate() const;
 
     // Returns encoder PID loop setpoints
-    double GetLeftSetpoint() const;
-    double GetRightSetpoint() const;
+    PIDState GetLeftSetpoint() const;
+    PIDState GetRightSetpoint() const;
 
     void SetControlMode(CANTalon::ControlMode ctrlMode);
 
@@ -64,8 +64,8 @@ private:
     float m_quickStopAccumulator = 0.f;
     float m_negInertiaAccumulator = 0.f;
 
-    GearBox<CANTalon> m_leftGrbx{-1, 1};
-    GearBox<CANTalon> m_rightGrbx{-1, 4};
+    GearBox m_leftGrbx{-1, 1};
+    GearBox m_rightGrbx{-1, 4};
 };
 
 #endif // DRIVE_TRAIN_HPP
