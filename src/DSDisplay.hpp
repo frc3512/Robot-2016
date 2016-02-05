@@ -123,4 +123,3 @@ private:
 #include "DSDisplay.inl"
 
 #endif // DS_DISPLAY_HPP
-

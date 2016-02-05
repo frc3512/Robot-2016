@@ -10,4 +10,3 @@ void DSDisplay::addAutoMethod(const std::string& methodName,
                               T* object) {
     m_autonModes.addMethod(methodName, std::bind(function, object));
 }
-

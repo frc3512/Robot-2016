@@ -189,4 +189,3 @@ Socket::Status UdpSocket::receive(Packet& packet,
     return status;
 }
 } // namespace sf
-

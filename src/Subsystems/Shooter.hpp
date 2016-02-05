@@ -18,11 +18,9 @@
 
 #include "../StateMachine.hpp"
 
-
 class Shooter : public SubsystemBase {
 public:
     Shooter();
-    ~Shooter();
 
     void reloadPID();
     void resetEncoders();
@@ -68,4 +66,3 @@ private:
 };
 
 #endif // ELEVATOR_HPP
-

@@ -200,4 +200,3 @@ private:
 
 
 #endif // SFML_UDPSOCKET_HPP
-

@@ -44,4 +44,3 @@ private:
 };
 
 #endif // BUTTON_TRACKER_HPP
-

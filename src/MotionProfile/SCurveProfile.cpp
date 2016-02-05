@@ -131,4 +131,3 @@ void SCurveProfile::setTimeToMaxA(double timeToMaxA) {
     m_timeToMaxA = timeToMaxA;
     m_jerk = m_acceleration / m_timeToMaxA;
 }
-

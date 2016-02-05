@@ -136,4 +136,3 @@ private:
 
 
 #endif // SFML_SOCKET_HPP
-

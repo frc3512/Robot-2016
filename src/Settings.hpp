@@ -51,4 +51,3 @@ private:
 };
 
 #endif // SETTINGS_HPP
-

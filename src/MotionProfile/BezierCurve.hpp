@@ -44,4 +44,3 @@ private:
 };
 
 #endif // BEZIER_CURVE_HPP
-

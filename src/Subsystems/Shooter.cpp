@@ -18,10 +18,9 @@ void Shooter::shoot() {
 }
 
 void Shooter::setManualShooterPosition(double position) {
-	m_shooterPositionMotor.SetControlMode(CANTalon::kPercentVbus);
+    m_shooterPositionMotor.SetControlMode(CANTalon::kPercentVbus);
 
-	m_shooterPositionMotor.Set(position);
-
+    m_shooterPositionMotor.Set(position);
 }
 void Shooter::setManualShooterSpeed(double speed) {
     m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
@@ -73,7 +72,3 @@ void Shooter::reloadPID() {
 
 void Shooter::resetEncoders() {
 }
-
-Shooter::~Shooter() {
-}
-

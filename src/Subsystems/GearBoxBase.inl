@@ -66,4 +66,3 @@ bool GearBoxBase<T>::getGear() const {
         return false;
     }
 }
-

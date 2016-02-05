@@ -14,4 +14,3 @@ void SocketConnection::queueWrite(T& buf) {
     selectflags |= SocketConnection::Write;
     write(m_ipcfd_w, "r", 1);
 }
-

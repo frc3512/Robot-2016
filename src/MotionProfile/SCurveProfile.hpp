@@ -55,4 +55,3 @@ protected:
 };
 
 #endif // SCURVE_PROFILE_HPP
-

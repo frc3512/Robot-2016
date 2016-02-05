@@ -25,24 +25,26 @@ void Robot::OperatorControl() {
 
         // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
         if (shootStick.GetRawButton(2)) {
-            shooter.setManualShooterSpeed(1 -(shootStick.GetThrottle()) / 2);
+            shooter.setManualShooterSpeed(1 - (shootStick.GetThrottle()) / 2);
         }
         else {
-            shooter.setLeftShooterSpeed(1 -(driveStick2.GetThrottle()) / 2);
-            shooter.setRightShooterSpeed(1 -(shootStick.GetThrottle()) / 2);
+            shooter.setLeftShooterSpeed(1 - (driveStick2.GetThrottle()) / 2);
+            shooter.setRightShooterSpeed(1 - (shootStick.GetThrottle()) / 2);
         }
-        std::cout<<"Drive Stick Throttle: "<< driveStick2.GetThrottle() <<" | "<<"Shoot Stick Throttle: " <<shootStick.GetThrottle()<<std::endl;
-        std::cout<<"Left RPM: "<<shooter.getRPMLeft()<<" | "<<"Right RPM: "<<shooter.getRPMRight()<<std::endl;
+        std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle() <<
+            " | " << "Shoot Stick Throttle: " << shootStick.GetThrottle() <<
+            std::endl;
+        std::cout << "Left RPM: " << shooter.getRPMLeft() << " | " <<
+            "Right RPM: " << shooter.getRPMRight() << std::endl;
 
         if (shootButton.pressedButton(2)) {
             shooter.shoot();
         }
         // Update the elevator automatic stacking state
-        if (shootStick.GetRawButton(4)){
-        	shooter.setManualShooterPosition(shootStick.GetY());
-
+        if (shootStick.GetRawButton(4)) {
+            shooter.setManualShooterPosition(shootStick.GetY());
         }
-        //Moves shooter up and down
+        // Moves shooter up and down
         drive1Buttons.updateButtons();
         drive2Buttons.updateButtons();
         shootButton.updateButtons();
@@ -71,9 +73,8 @@ void Robot::Disabled() {
 }
 
 void Robot::Test() {
-	while(IsEnabled() && IsTest()) {
-
-	}
+    while (IsEnabled() && IsTest()) {
+    }
 }
 
 void Robot::DS_PrintOut() {
@@ -114,4 +115,3 @@ float Robot::applyDeadband(float value, float deadband) {
 }
 
 START_ROBOT_CLASS(Robot);
-

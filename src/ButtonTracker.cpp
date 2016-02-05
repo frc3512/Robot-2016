@@ -33,4 +33,3 @@ bool ButtonTracker::releasedButton(uint32_t button) {
 bool ButtonTracker::getButtonState(short& buttonStates, uint32_t& button) {
     return ((1 << (button - 1)) & buttonStates) != 0;
 }
-

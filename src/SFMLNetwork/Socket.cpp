@@ -137,4 +137,3 @@ Socket::Status Socket::getErrorStatus() {
     }
 }
 } // namespace sf
-

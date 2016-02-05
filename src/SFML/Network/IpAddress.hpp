@@ -149,4 +149,3 @@ std::ostream& operator<<(std::ostream& stream, const IpAddress& address);
 
 
 #endif // SFML_IPADDRESS_HPP
-

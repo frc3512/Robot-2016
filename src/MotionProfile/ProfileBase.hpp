@@ -47,4 +47,3 @@ protected:
 };
 
 #endif // PROFILE_BASE_HPP
-

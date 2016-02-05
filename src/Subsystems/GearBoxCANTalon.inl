@@ -118,4 +118,3 @@ inline void GearBox<CANTalon>::setCloseLoopRampRate(double value) {
 inline void GearBox<CANTalon>::setProfile(bool secondProfile) {
     m_motors[0]->SelectProfileSlot(secondProfile);
 }
-

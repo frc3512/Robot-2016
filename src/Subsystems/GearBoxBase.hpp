@@ -101,4 +101,3 @@ protected:
 #include "GearBoxBase.inl"
 
 #endif // GEARBOX_BASE_HPP
-

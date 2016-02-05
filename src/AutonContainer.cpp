@@ -36,4 +36,3 @@ void AutonContainer::execAutonomous(size_t pos) {
     // Runs the routine
     (auton.function)();
 }
-

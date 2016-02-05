@@ -56,4 +56,3 @@ protected:
 };
 
 #endif // TRAPEZOID_PROFILE_HPP
-

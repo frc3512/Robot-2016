@@ -145,4 +145,3 @@ void GearBox<T>::PIDWrite(float output) {
         motor->Set(output + GearBoxBase<T>::m_feedforward);
     }
 }
-

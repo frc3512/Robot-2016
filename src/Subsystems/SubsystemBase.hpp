@@ -21,4 +21,3 @@ protected:
 };
 
 #endif // SUBSYSTEM_BASE_HPP
-

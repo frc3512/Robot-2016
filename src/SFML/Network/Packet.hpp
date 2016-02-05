@@ -224,4 +224,3 @@ private:
 
 
 #endif // SFML_PACKET_HPP
-

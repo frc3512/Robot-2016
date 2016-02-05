@@ -264,4 +264,3 @@ void DSDisplay::addData(std::string ID, double data) {
     m_packet << ID;
     m_packet << std::to_string(data);
 }
-

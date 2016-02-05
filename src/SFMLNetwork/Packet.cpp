@@ -457,4 +457,3 @@ void Packet::onReceive(const void* data, std::size_t size) {
     append(data, size);
 }
 } // namespace sf
-

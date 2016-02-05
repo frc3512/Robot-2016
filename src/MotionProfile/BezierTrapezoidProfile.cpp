@@ -122,4 +122,3 @@ double BezierTrapezoidProfile::getLeftVelocity(double t, double v) const {
 double BezierTrapezoidProfile::getRightVelocity(double t, double v) const {
     return (1.0 + m_curve.getCurvature(t / m_timeTotal) * m_width / 2.0) * v;
 }
-

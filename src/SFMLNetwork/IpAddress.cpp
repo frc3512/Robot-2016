@@ -166,4 +166,3 @@ std::ostream& operator<<(std::ostream& stream, const IpAddress& address) {
     return stream << address.toString();
 }
 } // namespace sf
-

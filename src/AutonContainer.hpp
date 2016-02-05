@@ -40,4 +40,3 @@ private:
 };
 
 #endif // AUTON_CONTAINER_HPP
-

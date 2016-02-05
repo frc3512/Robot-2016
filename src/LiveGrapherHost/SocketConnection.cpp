@@ -136,4 +136,3 @@ void SocketConnection::writePackets() {
     // Stop selecting on write
     selectflags &= ~SocketConnection::Write;
 }
-

@@ -240,4 +240,3 @@ float DriveTrain::applyDeadband(float value) {
         return 0.f;
     }
 }
-

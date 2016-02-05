@@ -116,4 +116,3 @@ private:
 #include "GraphHost.inl"
 
 #endif // GRAPHHOST_HPP
-

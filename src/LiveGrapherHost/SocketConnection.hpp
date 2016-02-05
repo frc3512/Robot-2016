@@ -58,4 +58,3 @@ private:
 #include "SocketConnection.inl"
 
 #endif // SOCKET_CONNECTION_HPP
-

@@ -128,4 +128,3 @@ double TrapezoidProfile::getMaxVelocity() const {
 void TrapezoidProfile::setTimeToMaxV(double timeToMaxV) {
     m_acceleration = m_velocity / timeToMaxV;
 }
-

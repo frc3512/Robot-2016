@@ -69,4 +69,3 @@ private:
 };
 
 #endif // BEZIER_TRAPEZOID_PROFILE_HPP
-

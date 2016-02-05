@@ -80,4 +80,3 @@ double BezierCurve::getDerivative2Y(double t) const {
     return 6.0 * (1 - t) * (m_pts[2].y - 2.0 * m_pts[1].y + m_pts[0].y) +
            6.0 * t * (m_pts[3].y - 2.0 * m_pts[2].y + m_pts[1].y);
 }
-

@@ -132,4 +132,3 @@ public:
 #include "GearBoxCANTalon.inl"
 
 #endif // GEARBOX_HPP
-

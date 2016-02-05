@@ -37,4 +37,3 @@ private:
 };
 
 #endif // STATE_HPP
-

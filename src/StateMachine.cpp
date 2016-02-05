@@ -56,4 +56,3 @@ void StateMachine::run() {
         }
     }
 }
-

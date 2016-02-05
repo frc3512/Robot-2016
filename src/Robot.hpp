@@ -13,7 +13,7 @@ using namespace std::chrono_literals;
 #include <SampleRobot.h>
 #include <Joystick.h>
 #include <Solenoid.h>
-#include <Timer.h>\
+#include <Timer.h>
 
 #include "Subsystems/Shooter.hpp"
 #include "Subsystems/DriveTrain.hpp"
@@ -62,4 +62,3 @@ private:
 };
 
 #endif // ROBOT_HPP
-
