@@ -55,7 +55,7 @@ private:
     CANTalon m_rightShooterMotor{6};
     CANTalon m_kickBallMotor{0};
     CANTalon m_shooterPositionMotor{0};
-
+    CANTalon m_shootElevationMotor{7};
 
     /* Maximum velocity and time to maximum velocity constants to load from the
      * config file

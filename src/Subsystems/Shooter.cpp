@@ -18,16 +18,10 @@ void Shooter::shoot() {
 }
 
 void Shooter::setManualShooterPosition(double position) {
-    double cur_position = 0;
-    while (true) {
-        if (cur_position < position) {
-            m_shooterPositionMotor.Enable();
-            position+=100;
-        }
-        else {
-            break;
-        }
-    }
+	m_shooterPositionMotor.SetControlMode(CANTalon::kPercentVbus);
+
+	m_shooterPositionMotor.Set(position);
+
 }
 void Shooter::setManualShooterSpeed(double speed) {
     m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
