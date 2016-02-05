@@ -10,6 +10,7 @@
 #include "SubsystemBase.hpp"
 #include "../MotionProfile/BezierTrapezoidProfile.hpp"
 #include "GearBox.hpp"
+#include "Utility.hpp"
 
 #include <CANTalon.h>
 
@@ -66,17 +67,6 @@ private:
 
     GearBox<CANTalon> m_leftGrbx{-1, 1};
     GearBox<CANTalon> m_rightGrbx{-1, 4};
-
-    /* Zeroes value if its inside deadband range, and rescales values outside
-     * of it
-     */
-    float applyDeadband(float value);
-
-    // Limits 'value' to within +- 'limit' (limit should be positive)
-    template <class T>
-    T limit(T value, T limit);
 };
-
-#include "DriveTrain.inl"
 
 #endif // DRIVE_TRAIN_HPP

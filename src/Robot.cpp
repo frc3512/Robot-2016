@@ -5,6 +5,7 @@
 // =============================================================================
 
 #include "Robot.hpp"
+#include "Utility.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -25,11 +26,11 @@ void Robot::OperatorControl() {
 
         // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
         if (shootStick.GetRawButton(2)) {
-            shooter.setManualShooterSpeed(1 - (shootStick.GetThrottle()) / 2);
+            shooter.setManualShooterSpeed(joystickRescale(shootStick.GetThrottle()));
         }
         else {
-            shooter.setLeftShooterSpeed(1 - (driveStick2.GetThrottle()) / 2);
-            shooter.setRightShooterSpeed(1 - (shootStick.GetThrottle()) / 2);
+            shooter.setLeftShooterSpeed(joystickRescale(driveStick2.GetThrottle()));
+            shooter.setRightShooterSpeed(joystickRescale(shootStick.GetThrottle()));
         }
         std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle() <<
             " | " << "Shoot Stick Throttle: " << shootStick.GetThrottle() <<
@@ -98,20 +99,6 @@ void Robot::DS_PrintOut() {
     }
 
     dsDisplay.receiveFromDS();
-}
-
-float Robot::applyDeadband(float value, float deadband) {
-    if (fabs(value) > deadband) {
-        if (value > 0) {
-            return (value - deadband) / (1 - deadband);
-        }
-        else {
-            return (value + deadband) / (1 - deadband);
-        }
-    }
-    else {
-        return 0.f;
-    }
 }
 
 START_ROBOT_CLASS(Robot);

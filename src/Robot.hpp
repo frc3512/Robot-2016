@@ -35,8 +35,6 @@ public:
 
     void DS_PrintOut();
 
-    static float applyDeadband(float value, float deadband);
-
 private:
     Settings settings{"/home/lvuser/RobotSettings.txt"};
 

@@ -87,7 +87,7 @@ void Settings::saveToFile(const std::string& fileName) {
     std::ofstream outFile(fileName, std::ios_base::out | std::ios_base::trunc);
 
     if (outFile.is_open()) {
-        for (auto index : m_values) {
+        for (auto& index : m_values) {
             outFile << index.first << " = " << index.second << "\n";
         }
 

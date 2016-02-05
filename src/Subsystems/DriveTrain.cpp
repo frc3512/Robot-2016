@@ -9,7 +9,6 @@
 #include <cmath>
 #include <CANTalon.h>
 
-
 const float DriveTrain::maxWheelSpeed = 80.0;
 
 DriveTrain::DriveTrain() : BezierTrapezoidProfile(maxWheelSpeed, 2) {
@@ -43,8 +42,8 @@ void DriveTrain::drive(float throttle, float turn, bool isQuickTurn) {
     /* Apply joystick deadband
      * (Negate turn since joystick X-axis is reversed)
      */
-    throttle = applyDeadband(throttle);
-    turn = applyDeadband(turn);
+    throttle = applyDeadband(throttle, m_deadband);
+    turn = applyDeadband(turn, m_deadband);
 
     double negInertia = turn - m_oldTurn;
     m_oldTurn = turn;
@@ -54,8 +53,8 @@ void DriveTrain::drive(float throttle, float turn, bool isQuickTurn) {
     /* Apply a sine function that's scaled to make turning sensitivity feel better.
      * turnNonLinearity should never be zero, but can be close
      */
-    turn = sin(M_PI / 2.0 * turnNonLinearity * turn) /
-           sin(M_PI / 2.0 * turnNonLinearity);
+    turn = std::sin(M_PI / 2.0 * turnNonLinearity * turn) /
+           std::sin(M_PI / 2.0 * turnNonLinearity);
 
     double angularPower = 0.f;
     double linearPower = throttle;
@@ -225,18 +224,4 @@ double DriveTrain::getRightSetpoint() const {
 void DriveTrain::setControlMode(CANTalon::ControlMode ctrlMode) {
     m_leftGrbx.setControlMode(ctrlMode);
     m_rightGrbx.setControlMode(ctrlMode);
-}
-
-float DriveTrain::applyDeadband(float value) {
-    if (fabs(value) > m_deadband) {
-        if (value > 0) {
-            return (value - m_deadband) / (1 - m_deadband);
-        }
-        else {
-            return (value + m_deadband) / (1 - m_deadband);
-        }
-    }
-    else {
-        return 0.f;
-    }
 }
