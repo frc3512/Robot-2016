@@ -20,6 +20,6 @@ float applyDeadband(float value, float deadband) {
     }
 }
 
-float rescale(float value) {
+float joystickRescale(float value) {
     return (1.f - value) / 2.f;
 }

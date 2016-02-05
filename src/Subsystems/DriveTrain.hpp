@@ -9,7 +9,7 @@
 #include "SubsystemBase.hpp"
 #include "../MotionProfile/BezierTrapezoidProfile.hpp"
 #include "GearBox.hpp"
-#include "Utility.hpp"
+#include "../Utility.hpp"
 
 #include <CANTalon.h>
 
