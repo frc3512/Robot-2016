@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: SCurveProfile.hpp
 // Description: Provides trapezoidal acceleration control
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

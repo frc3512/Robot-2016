@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: DriveTrain.cpp
 // Description: Provides an interface for this year's drive train
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

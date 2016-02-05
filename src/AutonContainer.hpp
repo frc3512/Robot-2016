@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: AutonContainer.hpp
 // Description: Stores Autonomous modes as function pointers for easy retrieval
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

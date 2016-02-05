@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: SubsystemBase.hpp
 // Description: Base class for all robot subsystems
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

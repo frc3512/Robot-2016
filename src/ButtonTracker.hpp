@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: ButtonTracker.hpp
 // Description: Helps user determine if joystick button was just pressed or just
 //             released
 // Author: FRC Team 3512, Spartatroniks

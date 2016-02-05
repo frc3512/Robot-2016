@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: Utility.cpp
 // Description: Provides generic utility functions
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

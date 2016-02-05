@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: GraphHost.hpp
 // Description: The host for the LiveGrapher real-time graphing application
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

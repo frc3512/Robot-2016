@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: TrapezoidProfile.cpp
 // Description: Provides trapezoidal velocity control
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

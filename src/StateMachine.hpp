@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: StateMachine.hpp
 // Description: Provides an easier way to create state machines
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

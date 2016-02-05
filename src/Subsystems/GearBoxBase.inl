@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: GearBoxBase.inl
 // Description: Represents a gear box with up to 3 motors and an encoder
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: BezierTrapezoidProfile.cpp
 // Description: Provides trapezoidal velocity control and follows a given Bézier
 //             curve
 // Author: FRC Team 3512, Spartatroniks

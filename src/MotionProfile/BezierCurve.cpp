@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: BezierCurve.cpp
 // Description: Provides a way to more easily generate and manage Bézier curves
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

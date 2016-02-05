@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: DSDisplay.inl
 // Description: Receives IP address from remote host then sends HUD data there
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

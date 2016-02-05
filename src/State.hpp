@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: State.hpp
 // Description: Defines State in StateMachine class
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

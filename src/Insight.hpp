@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: Insight.hpp
 // Description: Receives Insight's processed target data
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================

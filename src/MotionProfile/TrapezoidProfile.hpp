@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: TrapezoidProfile.hpp
 // Description: Provides trapezoidal velocity control
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
