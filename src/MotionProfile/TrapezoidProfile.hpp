@@ -33,13 +33,14 @@ public:
      *
      * curTime is current time
      */
-    virtual double UpdateSetpoint(double curTime);
+    virtual ProfileState UpdateSetpoint(double curTime);
 
     /* goal is a distance to which to travel
      * curSource is the current position
      * t initializes m_lastTime
      */
-    virtual double SetGoal(double t, double goal, double curSource = 0.0);
+    virtual ProfileState SetGoal(double t, ProfileState goal,
+                                 ProfileState curSource = ProfileState());
 
     void SetMaxVelocity(double v);
     double GetMaxVelocity() const;

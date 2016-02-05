@@ -8,24 +8,38 @@
 
 #include <mutex>
 
-typedef enum {
-    distance,
+enum SetpointMode {
+    displacement,
     velocity
-} SetpointMode;
+};
+
+struct ProfileState {
+    ProfileState() = default;
+    ProfileState(double displacement, double velocity, double acceleration) {
+        this->displacement = displacement;
+        this->velocity = velocity;
+        this->acceleration = acceleration;
+    }
+
+    double displacement = 0.0;
+    double velocity = 0.0;
+    double acceleration = 0.0;
+};
 
 class ProfileBase {
 public:
     ProfileBase();
     virtual ~ProfileBase() = default;
 
-    virtual double UpdateSetpoint(double curTime) = 0;
+    virtual ProfileState UpdateSetpoint(double curTime) = 0;
 
     // Should return initial setpoint for start of profile
-    virtual double SetGoal(double t, double goal, double curSource) = 0;
+    virtual ProfileState SetGoal(double t, ProfileState goal,
+                                 ProfileState curSource) = 0;
     virtual bool AtGoal();
 
-    double GetGoal() const;
-    double GetSetpoint() const;
+    ProfileState GetGoal() const;
+    ProfileState GetSetpoint() const;
 
     virtual void ResetProfile();
 
@@ -37,8 +51,8 @@ protected:
     // Use this to make updateSetpoint() and setGoal() thread-safe
     std::recursive_mutex m_varMutex;
 
-    double m_goal;
-    double m_setpoint;
+    ProfileState m_goal;
+    ProfileState m_sp; // SetPoint
     double m_lastTime;
     double m_timeTotal;
 

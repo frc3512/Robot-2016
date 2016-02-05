@@ -28,15 +28,15 @@ public:
      *
      * returns updated uncompensated setpoint (see double getMidSetpoint())
      */
-    double UpdateSetpoint(double curTime);
+    ProfileState UpdateSetpoint(double curTime);
 
     /* Returns uncompensated setpoint for use in control of systems other than
      * the drive train
      */
-    double GetMidSetpoint() const;
+    ProfileState GetMidSetpoint() const;
 
-    double GetLeftSetpoint() const;
-    double GetRightSetpoint() const;
+    ProfileState GetLeftSetpoint() const;
+    ProfileState GetRightSetpoint() const;
 
     /* goal is a Bézier curve for robot to follow
      * curSource is the current position
@@ -44,7 +44,7 @@ public:
      *
      * returns starting setpoint
      */
-    double SetCurveGoal(const BezierCurve& curve, double t);
+    ProfileState SetCurveGoal(const BezierCurve& curve, double t);
 
     void ResetProfile();
 
@@ -54,11 +54,11 @@ public:
 private:
     // The robot follows this by turning in the motion profile
     BezierCurve m_curve;
-    double m_width;
+    double m_width = 0.0;
 
     // Collection of setpoints
-    double m_leftSetpoint;
-    double m_rightSetpoint;
+    ProfileState m_leftSetpoint;
+    ProfileState m_rightSetpoint;
 
     /* t is time elapsed since start of motion
      * v is current setpoint velocity of middle of robot

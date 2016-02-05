@@ -3,10 +3,6 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-/* Implementation of trapezoid motion profile translated to C++; base Java code
- * courtesy of FRC Team 254
- */
-
 /* Constant acceleration until target (max) velocity is reached, sets
  * acceleration to zero for a calculated time, then decelerates at a constant
  * acceleration with a slope equal to the negative slope of the initial
@@ -23,13 +19,14 @@ public:
     SCurveProfile(double maxV, double maxA, double timeToMaxA);
 
     // curTime is current time
-    virtual double UpdateSetpoint(double curTime);
+    virtual ProfileState UpdateSetpoint(double curTime);
 
     /* goal is a distance to which to travel
      * curSource is the current position
      * t initializes m_lastTime
      */
-    virtual double SetGoal(double t, double goal, double curSource = 0.0);
+    virtual ProfileState SetGoal(double t, ProfileState goal,
+                                 ProfileState curSource = ProfileState());
 
     void SetMaxVelocity(double v);
     double GetMaxVelocity() const;
