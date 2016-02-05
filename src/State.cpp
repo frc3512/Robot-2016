@@ -8,6 +8,6 @@
 State::State(std::string name) : m_name{std::move(name)} {
 }
 
-const std::string& State::name() const {
+const std::string& State::Name() const {
     return m_name;
 }

@@ -32,7 +32,7 @@ GearBox<T>::GearBox(int shifterChan,
 }
 
 template <class T>
-void GearBox<T>::setSetpoint(float setpoint) {
+void GearBox<T>::SetSetpoint(float setpoint) {
     if (m_pid != nullptr) {
         if (!m_pid->IsEnabled()) {
             m_pid->Enable();
@@ -43,7 +43,7 @@ void GearBox<T>::setSetpoint(float setpoint) {
 }
 
 template <class T>
-float GearBox<T>::getSetpoint() const {
+float GearBox<T>::GetSetpoint() const {
     if (m_pid != nullptr) {
         return m_pid->GetSetpoint();
     }
@@ -53,7 +53,7 @@ float GearBox<T>::getSetpoint() const {
 }
 
 template <class T>
-void GearBox<T>::setManual(float value) {
+void GearBox<T>::SetManual(float value) {
     if (m_pid != nullptr) {
         if (m_pid->IsEnabled()) {
             m_pid->Disable();
@@ -64,7 +64,7 @@ void GearBox<T>::setManual(float value) {
 }
 
 template <class T>
-float GearBox<T>::get(Grbx::PIDMode mode) const {
+float GearBox<T>::Get(Grbx::PIDMode mode) const {
     if (mode == Grbx::Raw) {
         return GearBoxBase<T>::m_motors[0].Get();
     }
@@ -81,21 +81,21 @@ float GearBox<T>::get(Grbx::PIDMode mode) const {
 }
 
 template <class T>
-void GearBox<T>::setPID(float p, float i, float d) {
+void GearBox<T>::SetPID(float p, float i, float d) {
     if (m_pid != nullptr) {
         m_pid->SetPID(p, i, d);
     }
 }
 
 template <class T>
-void GearBox<T>::setF(float f) {
+void GearBox<T>::SetF(float f) {
     if (m_pid != nullptr) {
         GearBoxBase<T>::m_feedforward = f;
     }
 }
 
 template <class T>
-void GearBox<T>::setDistancePerPulse(double distancePerPulse) {
+void GearBox<T>::SetDistancePerPulse(double distancePerPulse) {
     if (m_pid != nullptr) {
         GearBoxBase<T>::m_distancePerPulse = distancePerPulse;
         m_encoder->SetDistancePerPulse(distancePerPulse);
@@ -103,20 +103,20 @@ void GearBox<T>::setDistancePerPulse(double distancePerPulse) {
 }
 
 template <class T>
-void GearBox<T>::resetEncoder() {
+void GearBox<T>::ResetEncoder() {
     if (m_pid != nullptr) {
         m_encoder->Reset();
     }
 }
 
 template <class T>
-void GearBox<T>::setEncoderReversed(bool reverse) {
+void GearBox<T>::SetEncoderReversed(bool reverse) {
     GearBoxBase<T>::m_isEncoderReversed = reverse;
     m_encoder->SetReverseDirection(reverse);
 }
 
 template <class T>
-bool GearBox<T>::onTarget() const {
+bool GearBox<T>::OnTarget() const {
     if (m_pid != nullptr) {
         return m_pid->OnTarget();
     }
@@ -126,7 +126,7 @@ bool GearBox<T>::onTarget() const {
 }
 
 template <class T>
-void GearBox<T>::resetPID() {
+void GearBox<T>::ResetPID() {
     m_pid->Reset();
     m_pid->Enable();
 }

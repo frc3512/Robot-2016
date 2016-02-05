@@ -21,27 +21,27 @@ public:
             int motor1, int motor2 = -1, int motor3 = -1);
 
     // Enables PID controller automatically and sets its setpoint
-    void setSetpoint(float setpoint);
+    void SetSetpoint(float setpoint);
 
-    float getSetpoint() const;
+    float GetSetpoint() const;
 
     // Disables PID controller and sets the motor speeds manually
-    void setManual(float value);
+    void SetManual(float value);
 
     // Returns current speed/position/voltage setting of motor controller(s)
-    float get(Grbx::PIDMode mode = Grbx::Raw) const;
+    float Get(Grbx::PIDMode mode = Grbx::Raw) const;
 
     // Set P, I, and D terms for PID controller
-    void setPID(float p, float i, float d);
+    void SetPID(float p, float i, float d);
 
     // Set feed-forward term on PID controller
-    void setF(float f);
+    void SetF(float f);
 
     // Calls Encoder::SetDistancePerPulse internally
-    void setDistancePerPulse(double distancePerPulse);
+    void SetDistancePerPulse(double distancePerPulse);
 
     // Resets encoder distance to 0
-    void resetEncoder();
+    void ResetEncoder();
 
     // Reverses gearbox drive direction
     void setMotorReversed(bool reverse);
@@ -50,7 +50,7 @@ public:
     bool isMotorReversed() const;
 
     // Reverses gearbox drive direction
-    void setEncoderReversed(bool reverse);
+    void SetEncoderReversed(bool reverse);
 
     // Shifts gearbox to another gear if available
     void setGear(bool gear);
@@ -58,9 +58,9 @@ public:
     // Gets current gearbox gear if available (false if not)
     bool getGear() const;
 
-    bool onTarget() const;
+    bool OnTarget() const;
 
-    void resetPID();
+    void ResetPID();
 
     // Determines whether encoder returns distance or rate from PIDGet()
     void setPIDSourceType(PIDSourceType pidSource);
@@ -84,33 +84,33 @@ public:
             int motor3 = -1);
 
     // Enables PID controller automatically and sets its setpoint
-    void setSetpoint(float setpoint);
+    void SetSetpoint(float setpoint);
 
-    float getSetpoint() const;
+    float GetSetpoint() const;
 
     // Disables PID controller and sets the motor speeds manually
-    void setManual(float value);
+    void SetManual(float value);
 
     // Returns current speed/position/voltage setting of motor controller(s)
-    float get(Grbx::PIDMode mode = Grbx::Raw) const;
+    float Get(Grbx::PIDMode mode = Grbx::Raw) const;
 
     // Set P, I, and D terms for PID controller
-    void setPID(float p, float i, float d);
+    void SetPID(float p, float i, float d);
 
     // Set feed-forward term on PID controller
-    void setF(float f);
+    void SetF(float f);
 
-    void setDistancePerPulse(double distancePerPulse);
+    void SetDistancePerPulse(double distancePerPulse);
 
     // Resets encoder distance to 0
-    void resetEncoder();
+    void ResetEncoder();
 
     // Reverses gearbox drive direction
-    void setEncoderReversed(bool reverse);
+    void SetEncoderReversed(bool reverse);
 
-    bool onTarget() const;
+    bool OnTarget() const;
 
-    void resetPID();
+    void ResetPID();
 
     // Determines whether encoder returns distance or rate from PIDGet()
     void setControlMode(CANTalon::ControlMode ctrlMode =

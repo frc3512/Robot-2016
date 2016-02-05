@@ -7,11 +7,11 @@
 #define UTILITY_HPP
 
 // Zeroes value if it's inside deadband range, and rescales values outside of it
-float applyDeadband(float value, float deadband);
+float ApplyDeadband(float value, float deadband);
 
 // Limits 'value' to within +- 'limit' (limit should be positive)
 template <class T>
-T limit(T value, T limit) {
+T Limit(T value, T limit) {
     if (value > limit) {
         return limit;
     }
@@ -26,6 +26,6 @@ T limit(T value, T limit) {
 /* Rescales joystick value from [1..-1] to [0..1] (this includes flipping the
  * range)
  */
-float joystickRescale(float value);
+float JoystickRescale(float value);
 
 #endif // UTILITY_HPP

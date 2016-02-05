@@ -7,11 +7,11 @@
 #include <cmath>
 
 TrapezoidProfile::TrapezoidProfile(double maxV, double timeToMaxV) {
-    setMaxVelocity(maxV);
-    setTimeToMaxV(timeToMaxV);
+    SetMaxVelocity(maxV);
+    SetTimeToMaxV(timeToMaxV);
 }
 
-double TrapezoidProfile::updateSetpoint(double curTime) {
+double TrapezoidProfile::UpdateSetpoint(double curTime) {
     std::lock_guard<decltype(m_varMutex)> lock(m_varMutex);
 
     double tmpSP = 0.0;
@@ -43,7 +43,7 @@ double TrapezoidProfile::updateSetpoint(double curTime) {
     return m_setpoint;
 }
 
-double TrapezoidProfile::setGoal(double t, double goal, double curSource) {
+double TrapezoidProfile::SetGoal(double t, double goal, double curSource) {
     std::lock_guard<decltype(m_varMutex)> lock(m_varMutex);
 
     m_goal = goal;
@@ -116,14 +116,14 @@ double TrapezoidProfile::setGoal(double t, double goal, double curSource) {
     }
 }
 
-void TrapezoidProfile::setMaxVelocity(double v) {
+void TrapezoidProfile::SetMaxVelocity(double v) {
     m_velocity = v;
 }
 
-double TrapezoidProfile::getMaxVelocity() const {
+double TrapezoidProfile::GetMaxVelocity() const {
     return m_velocity;
 }
 
-void TrapezoidProfile::setTimeToMaxV(double timeToMaxV) {
+void TrapezoidProfile::SetTimeToMaxV(double timeToMaxV) {
     m_acceleration = m_velocity / timeToMaxV;
 }

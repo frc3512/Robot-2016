@@ -13,7 +13,7 @@ class State {
 public:
     explicit State(std::string name);
 
-    const std::string& name() const;
+    const std::string& Name() const;
 
     // initFunc() is run when the state is first transitioned to.
     std::function<void()> initFunc = [] {};

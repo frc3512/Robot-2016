@@ -7,12 +7,12 @@
 #include <cmath>
 
 SCurveProfile::SCurveProfile(double maxV, double maxA, double timeToMaxA) {
-    setMaxVelocity(maxV);
-    setMaxAcceleration(maxA);
-    setTimeToMaxA(timeToMaxA);
+    SetMaxVelocity(maxV);
+    SetMaxAcceleration(maxA);
+    SetTimeToMaxA(timeToMaxA);
 }
 
-double SCurveProfile::updateSetpoint(double curTime) {
+double SCurveProfile::UpdateSetpoint(double curTime) {
     std::lock_guard<decltype(m_varMutex)> lock(m_varMutex);
 
     double tmpSP = 0.0;
@@ -58,7 +58,7 @@ double SCurveProfile::updateSetpoint(double curTime) {
     return m_setpoint;
 }
 
-double SCurveProfile::setGoal(double t, double goal, double curSource) {
+double SCurveProfile::SetGoal(double t, double goal, double curSource) {
     std::lock_guard<decltype(m_varMutex)> lock(m_varMutex);
 
     m_goal = goal;
@@ -113,20 +113,20 @@ double SCurveProfile::setGoal(double t, double goal, double curSource) {
     }
 }
 
-void SCurveProfile::setMaxVelocity(double v) {
+void SCurveProfile::SetMaxVelocity(double v) {
     m_maxVelocity = v;
 }
 
-double SCurveProfile::getMaxVelocity() const {
+double SCurveProfile::GetMaxVelocity() const {
     return m_maxVelocity;
 }
 
-void SCurveProfile::setMaxAcceleration(double a) {
+void SCurveProfile::SetMaxAcceleration(double a) {
     m_acceleration = a;
     m_jerk = m_acceleration / m_timeToMaxA;
 }
 
-void SCurveProfile::setTimeToMaxA(double timeToMaxA) {
+void SCurveProfile::SetTimeToMaxA(double timeToMaxA) {
     m_timeToMaxA = timeToMaxA;
     m_jerk = m_acceleration / m_timeToMaxA;
 }

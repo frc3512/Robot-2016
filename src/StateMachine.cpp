@@ -6,17 +6,17 @@
 #include "StateMachine.hpp"
 #include <iostream>
 
-void StateMachine::addState(State* state) {
+void StateMachine::AddState(State* state) {
     m_states.push_back(std::unique_ptr<State>(state));
 }
 
-void StateMachine::addState(std::unique_ptr<State> state) {
+void StateMachine::AddState(std::unique_ptr<State> state) {
     m_states.push_back(std::move(state));
 }
 
-bool StateMachine::setState(const std::string& newState) {
+bool StateMachine::SetState(const std::string& newState) {
     for (auto& i : m_states) {
-        if (i->name() == newState) {
+        if (i->Name() == newState) {
             if (m_currentState != nullptr) {
                 m_currentState->endFunc();
             }
@@ -30,16 +30,16 @@ bool StateMachine::setState(const std::string& newState) {
     return false;
 }
 
-const std::string StateMachine::getState() const {
+const std::string StateMachine::GetState() const {
     if (m_currentState != nullptr) {
-        return m_currentState->name();
+        return m_currentState->Name();
     }
     else {
         return "";
     }
 }
 
-void StateMachine::run() {
+void StateMachine::Run() {
     if (m_currentState == nullptr) {
         return;
     }
@@ -49,7 +49,7 @@ void StateMachine::run() {
     std::string nextState = m_currentState->advanceFunc();
 
     if (nextState.size() != 0) {
-        if (!setState(nextState)) {
+        if (!SetState(nextState)) {
             // Failed to find state matching the returned name
             std::cout << "[" << nextState << "] is not a known state\n";
         }

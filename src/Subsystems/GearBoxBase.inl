@@ -33,31 +33,31 @@ GearBoxBase<T>::GearBoxBase(int shifterChan,
 }
 
 template <class T>
-void GearBoxBase<T>::setMotorReversed(bool reverse) {
+void GearBoxBase<T>::SetMotorReversed(bool reverse) {
     for (auto& motor : m_motors) {
         motor->SetInverted(reverse);
     }
 }
 
 template <class T>
-bool GearBoxBase<T>::isMotorReversed() const {
+bool GearBoxBase<T>::IsMotorReversed() const {
     return m_motors[0]->IsInverted();
 }
 
 template <class T>
-bool GearBoxBase<T>::isEncoderReversed() const {
+bool GearBoxBase<T>::IsEncoderReversed() const {
     return m_isEncoderReversed;
 }
 
 template <class T>
-void GearBoxBase<T>::setGear(bool gear) {
+void GearBoxBase<T>::SetGear(bool gear) {
     if (m_shifter != nullptr) {
         m_shifter->Set(gear);
     }
 }
 
 template <class T>
-bool GearBoxBase<T>::getGear() const {
+bool GearBoxBase<T>::GetGear() const {
     if (m_shifter != nullptr) {
         return m_shifter->Get();
     }

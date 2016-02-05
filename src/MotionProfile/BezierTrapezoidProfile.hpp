@@ -28,15 +28,15 @@ public:
      *
      * returns updated uncompensated setpoint (see double getMidSetpoint())
      */
-    double updateSetpoint(double curTime);
+    double UpdateSetpoint(double curTime);
 
     /* Returns uncompensated setpoint for use in control of systems other than
      * the drive train
      */
-    double getMidSetpoint() const;
+    double GetMidSetpoint() const;
 
-    double getLeftSetpoint() const;
-    double getRightSetpoint() const;
+    double GetLeftSetpoint() const;
+    double GetRightSetpoint() const;
 
     /* goal is a Bézier curve for robot to follow
      * curSource is the current position
@@ -44,12 +44,12 @@ public:
      *
      * returns starting setpoint
      */
-    double setCurveGoal(const BezierCurve& curve, double t);
+    double SetCurveGoal(const BezierCurve& curve, double t);
 
-    void resetProfile();
+    void ResetProfile();
 
     // Sets distance between two sides of drive train
-    void setWidth(double width);
+    void SetWidth(double width);
 
 private:
     // The robot follows this by turning in the motion profile
@@ -63,8 +63,8 @@ private:
     /* t is time elapsed since start of motion
      * v is current setpoint velocity of middle of robot
      */
-    double getLeftVelocity(double t, double v) const;
-    double getRightVelocity(double t, double v) const;
+    double GetLeftVelocity(double t, double v) const;
+    double GetRightVelocity(double t, double v) const;
 };
 
 #endif // BEZIER_TRAPEZOID_PROFILE_HPP

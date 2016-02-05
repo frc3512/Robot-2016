@@ -20,38 +20,38 @@ public:
     /* Drives robot with given speed and turn values [-1..1].
      * This is a convenience function for use in Operator Control.
      */
-    void drive(float throttle, float turn, bool isQuickTurn = false);
+    void Drive(float throttle, float turn, bool isQuickTurn = false);
 
     // Sets joystick deadband
-    void setDeadband(float band);
+    void SetDeadband(float band);
 
     // Reload PID constants
-    void reloadPID();
+    void ReloadPID();
 
     // Set encoder distances to 0
-    void resetEncoders();
+    void ResetEncoders();
 
     // Set wheel setpoints (see GearBox::setSetpoint(float))
-    void setLeftSetpoint(double setpt);
-    void setRightSetpoint(double setpt);
+    void SetLeftSetpoint(double setpt);
+    void SetRightSetpoint(double setpt);
 
     // Directly set wheel speeds [0..1] (see GearBox::setManual(float))
-    void setLeftManual(float value);
-    void setRightManual(float value);
+    void SetLeftManual(float value);
+    void SetRightManual(float value);
 
     // Returns encoder distances
-    double getLeftDist() const;
-    double getRightDist() const;
+    double GetLeftDist() const;
+    double GetRightDist() const;
 
     // Returns encoder rates
-    double getLeftRate() const;
-    double getRightRate() const;
+    double GetLeftRate() const;
+    double GetRightRate() const;
 
     // Returns encoder PID loop setpoints
-    double getLeftSetpoint() const;
-    double getRightSetpoint() const;
+    double GetLeftSetpoint() const;
+    double GetRightSetpoint() const;
 
-    void setControlMode(CANTalon::ControlMode ctrlMode);
+    void SetControlMode(CANTalon::ControlMode ctrlMode);
 
     const static float maxWheelSpeed;
 

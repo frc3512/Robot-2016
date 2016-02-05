@@ -23,18 +23,18 @@ public:
     SCurveProfile(double maxV, double maxA, double timeToMaxA);
 
     // curTime is current time
-    virtual double updateSetpoint(double curTime);
+    virtual double UpdateSetpoint(double curTime);
 
     /* goal is a distance to which to travel
      * curSource is the current position
      * t initializes m_lastTime
      */
-    virtual double setGoal(double t, double goal, double curSource = 0.0);
+    virtual double SetGoal(double t, double goal, double curSource = 0.0);
 
-    void setMaxVelocity(double v);
-    double getMaxVelocity() const;
-    void setMaxAcceleration(double a);
-    void setTimeToMaxA(double timeToMaxA);
+    void SetMaxVelocity(double v);
+    double GetMaxVelocity() const;
+    void SetMaxAcceleration(double a);
+    void SetTimeToMaxA(double timeToMaxA);
 
 protected:
     double m_acceleration;

@@ -9,16 +9,16 @@
 
 BezierTrapezoidProfile::BezierTrapezoidProfile(double maxV, double timeToMaxV) :
     TrapezoidProfile(maxV, timeToMaxV) {
-    setMaxVelocity(maxV);
-    setTimeToMaxV(timeToMaxV);
-    setMode(SetpointMode::distance);
+    SetMaxVelocity(maxV);
+    SetTimeToMaxV(timeToMaxV);
+    SetMode(SetpointMode::distance);
 
     m_width = 0.0;
     m_leftSetpoint = 0.0;
     m_rightSetpoint = 0.0;
 }
 
-double BezierTrapezoidProfile::updateSetpoint(double curTime) {
+double BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
     double period = curTime - m_lastTime;
 
     m_varMutex.lock();
@@ -28,9 +28,9 @@ double BezierTrapezoidProfile::updateSetpoint(double curTime) {
             // Accelerate up
             m_setpoint += (m_acceleration * curTime) * period * m_sign;
             m_leftSetpoint +=
-                getLeftVelocity(curTime,
+                GetLeftVelocity(curTime,
                                 m_acceleration * curTime) * period * m_sign;
-            m_rightSetpoint += getRightVelocity(curTime,
+            m_rightSetpoint += GetRightVelocity(curTime,
                                                 m_acceleration * curTime) *
                                period * m_sign;
         }
@@ -38,10 +38,10 @@ double BezierTrapezoidProfile::updateSetpoint(double curTime) {
             // Maintain max velocity
             m_setpoint += (m_profileMaxVelocity * period * m_sign);
             m_leftSetpoint +=
-                getLeftVelocity(curTime,
+                GetLeftVelocity(curTime,
                                 m_profileMaxVelocity) * period * m_sign;
             m_rightSetpoint +=
-                getRightVelocity(curTime,
+                GetRightVelocity(curTime,
                                  m_profileMaxVelocity) * period * m_sign;
         }
         else if (curTime < m_timeTotal) {
@@ -50,8 +50,8 @@ double BezierTrapezoidProfile::updateSetpoint(double curTime) {
             double v = m_profileMaxVelocity - m_acceleration * decelTime;
 
             m_setpoint += v * period * m_sign;
-            m_leftSetpoint += getLeftVelocity(curTime, v) * period * m_sign;
-            m_rightSetpoint += getRightVelocity(curTime, v) * period * m_sign;
+            m_leftSetpoint += GetLeftVelocity(curTime, v) * period * m_sign;
+            m_rightSetpoint += GetRightVelocity(curTime, v) * period * m_sign;
         }
     }
     else if (m_mode == SetpointMode::velocity) {
@@ -59,17 +59,17 @@ double BezierTrapezoidProfile::updateSetpoint(double curTime) {
             // Accelerate up
             m_setpoint = (m_acceleration * curTime) * m_sign;
             m_leftSetpoint =
-                getLeftVelocity(curTime, m_acceleration * curTime) * m_sign;
+                GetLeftVelocity(curTime, m_acceleration * curTime) * m_sign;
             m_rightSetpoint =
-                getRightVelocity(curTime, m_acceleration * curTime) * m_sign;
+                GetRightVelocity(curTime, m_acceleration * curTime) * m_sign;
         }
         else if (curTime < m_timeFromMaxVelocity) {
             // Maintain max velocity
             m_setpoint = m_profileMaxVelocity * m_sign;
             m_leftSetpoint =
-                getLeftVelocity(curTime, m_profileMaxVelocity) * m_sign;
+                GetLeftVelocity(curTime, m_profileMaxVelocity) * m_sign;
             m_rightSetpoint =
-                getRightVelocity(curTime, m_profileMaxVelocity) * m_sign;
+                GetRightVelocity(curTime, m_profileMaxVelocity) * m_sign;
         }
         else if (curTime < m_timeTotal) {
             // Accelerate down
@@ -77,8 +77,8 @@ double BezierTrapezoidProfile::updateSetpoint(double curTime) {
             double v = m_profileMaxVelocity + (-m_acceleration * decelTime);
 
             m_setpoint = v * m_sign;
-            m_leftSetpoint = getLeftVelocity(curTime, v) * m_sign;
-            m_rightSetpoint = getRightVelocity(curTime, v) * m_sign;
+            m_leftSetpoint = GetLeftVelocity(curTime, v) * m_sign;
+            m_rightSetpoint = GetRightVelocity(curTime, v) * m_sign;
         }
     }
 
@@ -88,36 +88,36 @@ double BezierTrapezoidProfile::updateSetpoint(double curTime) {
     return m_setpoint;
 }
 
-double BezierTrapezoidProfile::getLeftSetpoint() const {
+double BezierTrapezoidProfile::GetLeftSetpoint() const {
     return m_leftSetpoint;
 }
 
-double BezierTrapezoidProfile::getRightSetpoint() const {
+double BezierTrapezoidProfile::GetRightSetpoint() const {
     return m_rightSetpoint;
 }
 
-double BezierTrapezoidProfile::setCurveGoal(const BezierCurve& curve,
+double BezierTrapezoidProfile::SetCurveGoal(const BezierCurve& curve,
                                             double t) {
     m_curve = curve;
 
-    return TrapezoidProfile::setGoal(t, m_curve.getArcLength(0, 1));
+    return TrapezoidProfile::SetGoal(t, m_curve.GetArcLength(0, 1));
 }
 
-void BezierTrapezoidProfile::resetProfile() {
-    TrapezoidProfile::resetProfile();
+void BezierTrapezoidProfile::ResetProfile() {
+    TrapezoidProfile::ResetProfile();
 
     m_leftSetpoint = 0.0;
     m_rightSetpoint = 0.0;
 }
 
-void BezierTrapezoidProfile::setWidth(double width) {
+void BezierTrapezoidProfile::SetWidth(double width) {
     m_width = width;
 }
 
-double BezierTrapezoidProfile::getLeftVelocity(double t, double v) const {
-    return (1.0 - m_curve.getCurvature(t / m_timeTotal) * m_width / 2.0) * v;
+double BezierTrapezoidProfile::GetLeftVelocity(double t, double v) const {
+    return (1.0 - m_curve.GetCurvature(t / m_timeTotal) * m_width / 2.0) * v;
 }
 
-double BezierTrapezoidProfile::getRightVelocity(double t, double v) const {
-    return (1.0 + m_curve.getCurvature(t / m_timeTotal) * m_width / 2.0) * v;
+double BezierTrapezoidProfile::GetRightVelocity(double t, double v) const {
+    return (1.0 + m_curve.GetCurvature(t / m_timeTotal) * m_width / 2.0) * v;
 }

@@ -37,49 +37,49 @@ public:
     virtual ~GearBoxBase() = default;
 
     // Enables PID controller automatically and sets its setpoint
-    virtual void setSetpoint(float setpoint) = 0;
+    virtual void SetSetpoint(float setpoint) = 0;
 
-    virtual float getSetpoint() const = 0;
+    virtual float GetSetpoint() const = 0;
 
     // Disables PID controller and sets the motor speeds manually
-    virtual void setManual(float value) = 0;
+    virtual void SetManual(float value) = 0;
 
     // Returns current speed/position/voltage setting of motor controller(s)
-    virtual float get(Grbx::PIDMode mode = Grbx::Raw) const = 0;
+    virtual float Get(Grbx::PIDMode mode = Grbx::Raw) const = 0;
 
     // Set P, I, and D terms for PID controller
-    virtual void setPID(float p, float i, float d) = 0;
+    virtual void SetPID(float p, float i, float d) = 0;
 
     // Set feed-forward term on PID controller
-    virtual void setF(float f) = 0;
+    virtual void SetF(float f) = 0;
 
     // Calls Encoder::SetDistancePerPulse internally
-    virtual void setDistancePerPulse(double distancePerPulse) = 0;
+    virtual void SetDistancePerPulse(double distancePerPulse) = 0;
 
     // Resets encoder distance to 0
-    virtual void resetEncoder() = 0;
+    virtual void ResetEncoder() = 0;
 
     // Reverses gearbox drive direction
-    void setMotorReversed(bool reverse);
+    void SetMotorReversed(bool reverse);
 
     // Returns motor reversal state of gearbox
-    bool isMotorReversed() const;
+    bool IsMotorReversed() const;
 
     // Reverses gearbox drive direction
-    virtual void setEncoderReversed(bool reverse) = 0;
+    virtual void SetEncoderReversed(bool reverse) = 0;
 
     // Returns motor reversal state of gearbox
-    bool isEncoderReversed() const;
+    bool IsEncoderReversed() const;
 
     // Shifts gearbox to another gear if available
-    void setGear(bool gear);
+    void SetGear(bool gear);
 
     // Gets current gearbox gear if available (false if not)
-    bool getGear() const;
+    bool GetGear() const;
 
-    virtual bool onTarget() const = 0;
+    virtual bool OnTarget() const = 0;
 
-    virtual void resetPID() = 0;
+    virtual void ResetPID() = 0;
 
 protected:
     bool m_isEncoderReversed = false;

@@ -20,18 +20,18 @@ struct AutonMethod {
 class AutonContainer {
 public:
     // Add and remove autonomous functions
-    void addMethod(const std::string& methodName,
+    void AddMethod(const std::string& methodName,
                    std::function<void()> func);
-    void deleteAllMethods();
+    void DeleteAllMethods();
 
     // Returns number of routines currently held
-    size_t size();
+    size_t Size() const;
 
     // Returns name of specific autonomous function
-    const std::string& name(size_t pos);
+    const std::string& Name(size_t pos);
 
     // Run specific autonomous function
-    void execAutonomous(size_t pos);
+    void ExecAutonomous(size_t pos);
 
 private:
     // Contains function pointers to the autonomous functions

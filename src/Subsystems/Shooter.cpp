@@ -9,19 +9,19 @@
 Shooter::Shooter() {
 }
 
-void Shooter::shoot() {
+void Shooter::Shoot() {
     // Shoot only if motors spinning
     if (m_latestRPMLeft != 0 && m_latestRPMRight != 0) {
         m_kickBallMotor.Enable();
     }
 }
 
-void Shooter::setManualShooterPosition(double position) {
+void Shooter::SetManualShooterPosition(double position) {
     m_shooterPositionMotor.SetControlMode(CANTalon::kPercentVbus);
 
     m_shooterPositionMotor.Set(position);
 }
-void Shooter::setManualShooterSpeed(double speed) {
+void Shooter::SetManualShooterSpeed(double speed) {
     m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
     m_rightShooterMotor.SetControlMode(CANTalon::kPercentVbus);
 
@@ -30,16 +30,16 @@ void Shooter::setManualShooterSpeed(double speed) {
 }
 
 // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
-void Shooter::setLeftShooterSpeed(double speed) {
+void Shooter::SetLeftShooterSpeed(double speed) {
     m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
     m_leftShooterMotor.Set(-speed);
 }
-void Shooter::setRightShooterSpeed(double speed) {
+void Shooter::SetRightShooterSpeed(double speed) {
     m_rightShooterMotor.SetControlMode(CANTalon::kPercentVbus);
     m_rightShooterMotor.Set(speed);
 }
 
-float Shooter::getRPMLeft() {
+float Shooter::GetRPMLeft() {
     float leftRPM;
 
     leftRPM = (m_leftShooterMotor.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f) /
@@ -48,7 +48,7 @@ float Shooter::getRPMLeft() {
     return leftRPM;
 }
 
-float Shooter::getRPMRight() {
+float Shooter::GetRPMRight() {
     float rightRPM;
 
     rightRPM =
@@ -58,16 +58,16 @@ float Shooter::getRPMRight() {
     return rightRPM;
 }
 
-void Shooter::setRPMLeft(double speed) {
+void Shooter::SetRPMLeft(double speed) {
     m_leftShooterMotor.Set(speed);
 }
 
-void Shooter::setRPMRight(double speed) {
+void Shooter::SetRPMRight(double speed) {
     m_rightShooterMotor.Set(speed);
 }
 
-void Shooter::reloadPID() {
+void Shooter::ReloadPID() {
 }
 
-void Shooter::resetEncoders() {
+void Shooter::ResetEncoders() {
 }

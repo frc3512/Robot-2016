@@ -9,7 +9,7 @@
 #include <iostream>
 
 Robot::Robot() {
-    pidGraph.setSendInterval(5ms);
+    pidGraph.SetSendInterval(5ms);
 
     displayTimer.Start();
 }
@@ -17,37 +17,40 @@ Robot::Robot() {
 void Robot::OperatorControl() {
     while (IsEnabled() && IsOperatorControl()) {
         if (driveStick2.GetRawButton(2)) {
-            robotDrive.drive(driveStick1.GetY(), driveStick2.GetX(), true);
+            robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX(), true);
         }
         else {
-            robotDrive.drive(driveStick1.GetY(), driveStick2.GetX());
+            robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX());
         }
 
         // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
         if (shootStick.GetRawButton(2)) {
-            shooter.setManualShooterSpeed(joystickRescale(shootStick.GetThrottle()));
+            shooter.SetManualShooterSpeed(JoystickRescale(
+                                              shootStick.GetThrottle()));
         }
         else {
-            shooter.setLeftShooterSpeed(joystickRescale(driveStick2.GetThrottle()));
-            shooter.setRightShooterSpeed(joystickRescale(shootStick.GetThrottle()));
+            shooter.SetLeftShooterSpeed(JoystickRescale(
+                                            driveStick2.GetThrottle()));
+            shooter.SetRightShooterSpeed(JoystickRescale(
+                                             shootStick.GetThrottle()));
         }
         std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle() <<
             " | " << "Shoot Stick Throttle: " << shootStick.GetThrottle() <<
             std::endl;
-        std::cout << "Left RPM: " << shooter.getRPMLeft() << " | " <<
-            "Right RPM: " << shooter.getRPMRight() << std::endl;
+        std::cout << "Left RPM: " << shooter.GetRPMLeft() << " | " <<
+            "Right RPM: " << shooter.GetRPMRight() << std::endl;
 
-        if (shootButton.pressedButton(2)) {
-            shooter.shoot();
+        if (shootButton.PressedButton(2)) {
+            shooter.Shoot();
         }
         // Update the elevator automatic stacking state
         if (shootStick.GetRawButton(4)) {
-            shooter.setManualShooterPosition(shootStick.GetY());
+            shooter.SetManualShooterPosition(shootStick.GetY());
         }
         // Moves shooter up and down
-        drive1Buttons.updateButtons();
-        drive2Buttons.updateButtons();
-        shootButton.updateButtons();
+        drive1Buttons.UpdateButtons();
+        drive2Buttons.UpdateButtons();
+        shootButton.UpdateButtons();
 
         DS_PrintOut();
 
@@ -59,8 +62,8 @@ void Robot::Autonomous() {
     autoTimer.Reset();
     autoTimer.Start();
 
-    robotDrive.resetEncoders();
-    dsDisplay.execAutonomous();
+    robotDrive.ResetEncoders();
+    dsDisplay.ExecAutonomous();
 }
 
 void Robot::Disabled() {
@@ -69,7 +72,7 @@ void Robot::Disabled() {
         std::this_thread::sleep_for(10ms);
     }
 
-    robotDrive.reloadPID();
+    robotDrive.ReloadPID();
 }
 
 void Robot::Test() {
@@ -78,26 +81,26 @@ void Robot::Test() {
 }
 
 void Robot::DS_PrintOut() {
-    if (pidGraph.hasIntervalPassed()) {
-        pidGraph.graphData(robotDrive.getLeftDist(), "Left PV (DR)");
-        pidGraph.graphData(robotDrive.getLeftSetpoint(), "Left SP (DR)");
-        pidGraph.graphData(robotDrive.getRightDist(), "Right PV (DR)");
-        pidGraph.graphData(robotDrive.getRightSetpoint(), "Right SP (DR)");
+    if (pidGraph.HasIntervalPassed()) {
+        pidGraph.GraphData(robotDrive.GetLeftDist(), "Left PV (DR)");
+        pidGraph.GraphData(robotDrive.GetLeftSetpoint(), "Left SP (DR)");
+        pidGraph.GraphData(robotDrive.GetRightDist(), "Right PV (DR)");
+        pidGraph.GraphData(robotDrive.GetRightSetpoint(), "Right SP (DR)");
 
-        pidGraph.resetInterval();
+        pidGraph.ResetInterval();
     }
 
     if (displayTimer.HasPeriodPassed(0.5)) {
         // Send things to DS display
-        dsDisplay.clear();
+        dsDisplay.Clear();
 
-        dsDisplay.addData("ENCODER_LEFT", robotDrive.getLeftDist());
-        dsDisplay.addData("ENCODER_RIGHT", robotDrive.getRightDist());
+        dsDisplay.AddData("ENCODER_LEFT", robotDrive.GetLeftDist());
+        dsDisplay.AddData("ENCODER_RIGHT", robotDrive.GetRightDist());
 
-        dsDisplay.sendToDS();
+        dsDisplay.SendToDS();
     }
 
-    dsDisplay.receiveFromDS();
+    dsDisplay.ReceiveFromDS();
 }
 
 START_ROBOT_CLASS(Robot);

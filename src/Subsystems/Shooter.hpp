@@ -21,27 +21,27 @@ class Shooter : public SubsystemBase {
 public:
     Shooter();
 
-    void reloadPID();
-    void resetEncoders();
+    void ReloadPID();
+    void ResetEncoders();
 
-    void shoot();
+    void Shoot();
 
-    void setManualShooterSpeed(double speed);
+    void SetManualShooterSpeed(double speed);
 
     // For testing curving
-    void setLeftShooterSpeed(double speed);
-    void setRightShooterSpeed(double speed);
+    void SetLeftShooterSpeed(double speed);
+    void SetRightShooterSpeed(double speed);
 
-    void setRPMLeft(double wheelSpeed);
-    void setRPMRight(double wheelSpeed);
-    float getRPMLeft();
-    float getRPMRight();
-    void manualChangeSetpoint(double delta);
+    void SetRPMLeft(double wheelSpeed);
+    void SetRPMRight(double wheelSpeed);
+    float GetRPMLeft();
+    float GetRPMRight();
+    void ManualChangeSetpoint(double delta);
 
-    void setManualShooterPosition(double position);
+    void SetManualShooterPosition(double position);
 
     // Periodic
-    void updateState();
+    void UpdateState();
 
 private:
     bool m_manual = false;

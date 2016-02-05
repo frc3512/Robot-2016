@@ -6,7 +6,7 @@
 #include "Utility.hpp"
 #include <cmath>
 
-float applyDeadband(float value, float deadband) {
+float ApplyDeadband(float value, float deadband) {
     if (std::fabs(value) > deadband) {
         if (value > 0) {
             return (value - deadband) / (1 - deadband);
@@ -20,6 +20,6 @@ float applyDeadband(float value, float deadband) {
     }
 }
 
-float joystickRescale(float value) {
+float JoystickRescale(float value) {
     return (1.f - value) / 2.f;
 }

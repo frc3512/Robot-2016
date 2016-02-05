@@ -21,17 +21,17 @@ public:
     Insight& operator=(const Insight&) = delete;
     virtual ~Insight();
 
-    static Insight& getInstance(unsigned short dsPort);
+    static Insight& GetInstance(unsigned short dsPort);
 
     // Receives control commands from Driver Station and processes them
-    std::string receiveFromDS();
+    std::string ReceiveFromDS();
 
     // Returns true if new target data has been received
-    bool hasNewData() const;
+    bool HasNewData() const;
 
     // Provides access to target data
-    const std::pair<char, char>& getTarget(size_t i);
-    size_t getNumTargets() const;
+    const std::pair<char, char>& GetTarget(size_t i);
+    size_t GetNumTargets() const;
 
 private:
     Insight(unsigned short portNumber);

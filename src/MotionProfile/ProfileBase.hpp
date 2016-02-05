@@ -18,20 +18,20 @@ public:
     ProfileBase();
     virtual ~ProfileBase() = default;
 
-    virtual double updateSetpoint(double curTime) = 0;
+    virtual double UpdateSetpoint(double curTime) = 0;
 
     // Should return initial setpoint for start of profile
-    virtual double setGoal(double t, double goal, double curSource) = 0;
-    virtual bool atGoal();
+    virtual double SetGoal(double t, double goal, double curSource) = 0;
+    virtual bool AtGoal();
 
-    double getGoal() const;
-    double getSetpoint() const;
+    double GetGoal() const;
+    double GetSetpoint() const;
 
-    virtual void resetProfile();
+    virtual void ResetProfile();
 
     // Tells algorithm whether to use distance or velocity as setpoint
-    void setMode(SetpointMode mode);
-    SetpointMode getMode() const;
+    void SetMode(SetpointMode mode);
+    SetpointMode GetMode() const;
 
 protected:
     // Use this to make updateSetpoint() and setGoal() thread-safe

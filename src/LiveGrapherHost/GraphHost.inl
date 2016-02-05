@@ -4,6 +4,6 @@
 // =============================================================================
 
 template <typename Rep, typename Period>
-void GraphHost::setSendInterval(const duration<Rep, Period>& time) {
+void GraphHost::SetSendInterval(const duration<Rep, Period>& time) {
     m_sendInterval = duration_cast<milliseconds>(time).count();
 }

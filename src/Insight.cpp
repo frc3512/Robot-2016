@@ -11,12 +11,12 @@ Insight::~Insight() {
     m_socket.unbind();
 }
 
-Insight& Insight::getInstance(unsigned short dsPort) {
+Insight& Insight::GetInstance(unsigned short dsPort) {
     static Insight instance(dsPort);
     return instance;
 }
 
-std::string Insight::receiveFromDS() {
+std::string Insight::ReceiveFromDS() {
     if (m_socket.receive(m_recvBuffer, 256, m_recvAmount, m_recvIP,
                          m_recvPort) ==
         sf::Socket::Done) {
@@ -40,15 +40,15 @@ std::string Insight::receiveFromDS() {
     return "NONE";
 }
 
-bool Insight::hasNewData() const {
+bool Insight::HasNewData() const {
     return m_hasNewData;
 }
 
-const std::pair<char, char>& Insight::getTarget(size_t i) {
+const std::pair<char, char>& Insight::GetTarget(size_t i) {
     return m_targets[i];
 }
 
-size_t Insight::getNumTargets() const {
+size_t Insight::GetNumTargets() const {
     return m_targets.size();
 }
 

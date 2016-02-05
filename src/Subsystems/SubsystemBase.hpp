@@ -12,8 +12,8 @@ class SubsystemBase {
 public:
     virtual ~SubsystemBase() = default;
 
-    virtual void reloadPID() = 0;
-    virtual void resetEncoders() = 0;
+    virtual void ReloadPID() = 0;
+    virtual void ResetEncoders() = 0;
 
 protected:
     Settings m_settings{"/home/lvuser/RobotSettings.txt"};

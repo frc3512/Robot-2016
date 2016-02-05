@@ -19,14 +19,14 @@ public:
     /* Ownership of 'state' will be transferred to this class, which will handle
      * destroying it.
      */
-    void addState(State* state);
-    void addState(std::unique_ptr<State> state);
+    void AddState(State* state);
+    void AddState(std::unique_ptr<State> state);
 
     template <class T,
               class =
                   std::enable_if_t<!std::is_same<std::decay_t<T>,
                                                  State>::value>>
-    void emplaceState(T&& state) noexcept(std::is_nothrow_assignable<State&,
+    void EmplaceState(T&& state) noexcept(std::is_nothrow_assignable<State&,
                                                                      T>::value)
     {
         m_states.push_back(std::make_unique<State>(std::forward<T>(state)));
@@ -36,13 +36,13 @@ public:
      * endFunc() for the current state and initFunc() for the next state. 'true'
      * is returned if the next state was found and 'false' otherwise.
      */
-    bool setState(const std::string& nextState);
+    bool SetState(const std::string& nextState);
 
     // Returns name of current state
-    const std::string getState() const;
+    const std::string GetState() const;
 
     // Call this periodically to operate the state machine
-    void run();
+    void Run();
 
 private:
     std::vector<std::unique_ptr<State>> m_states;

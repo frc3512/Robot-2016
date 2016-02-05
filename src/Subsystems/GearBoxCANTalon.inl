@@ -16,7 +16,7 @@ inline GearBox<CANTalon>::GearBox(int shifterChan,
             m_motors[i]->SetFeedbackDevice(CANTalon::QuadEncoder);
             m_motors[i]->ConfigEncoderCodesPerRev(1);
             m_motors[i]->SetSensorDirection(m_isEncoderReversed);
-            resetEncoder();
+            ResetEncoder();
             setProfile(false);
             m_motors[i]->EnableControl();
         }
@@ -30,23 +30,23 @@ inline GearBox<CANTalon>::GearBox(int shifterChan,
     }
 }
 
-inline void GearBox<CANTalon>::setSetpoint(float setpoint) {
+inline void GearBox<CANTalon>::SetSetpoint(float setpoint) {
     m_motors[0]->SetControlMode(CANTalon::kPosition);
 
     m_setpoint = setpoint / m_distancePerPulse;
     m_motors[0]->Set(m_setpoint);
 }
 
-inline float GearBox<CANTalon>::getSetpoint() const {
+inline float GearBox<CANTalon>::GetSetpoint() const {
     return m_setpoint * m_distancePerPulse;
 }
 
-inline void GearBox<CANTalon>::setManual(float value) {
+inline void GearBox<CANTalon>::SetManual(float value) {
     m_motors[0]->SetControlMode(CANTalon::kPercentVbus);
     m_motors[0]->Set(value);
 }
 
-inline float GearBox<CANTalon>::get(Grbx::PIDMode mode) const {
+inline float GearBox<CANTalon>::Get(Grbx::PIDMode mode) const {
     if (mode == Grbx::Position) {
         return m_motors[0]->GetPosition() * m_distancePerPulse;
     }
@@ -60,32 +60,32 @@ inline float GearBox<CANTalon>::get(Grbx::PIDMode mode) const {
     return 0.f;
 }
 
-inline void GearBox<CANTalon>::setPID(float p, float i, float d) {
+inline void GearBox<CANTalon>::SetPID(float p, float i, float d) {
     m_motors[0]->SetPID(p, i, d);
 }
 
-inline void GearBox<CANTalon>::setF(float f) {
+inline void GearBox<CANTalon>::SetF(float f) {
     m_motors[0]->SetF(f);
 }
 
-inline void GearBox<CANTalon>::setDistancePerPulse(double distancePerPulse) {
+inline void GearBox<CANTalon>::SetDistancePerPulse(double distancePerPulse) {
     m_distancePerPulse = distancePerPulse;
 }
 
-inline void GearBox<CANTalon>::resetEncoder() {
+inline void GearBox<CANTalon>::ResetEncoder() {
     m_motors[0]->SetPosition(0);
 }
 
-inline void GearBox<CANTalon>::setEncoderReversed(bool reverse) {
+inline void GearBox<CANTalon>::SetEncoderReversed(bool reverse) {
     m_isEncoderReversed = reverse;
     m_motors[0]->SetSensorDirection(m_isEncoderReversed);
 }
 
-inline bool GearBox<CANTalon>::onTarget() const {
+inline bool GearBox<CANTalon>::OnTarget() const {
     return abs(m_motors[0]->GetClosedLoopError()) < 15;
 }
 
-inline void GearBox<CANTalon>::resetPID() {
+inline void GearBox<CANTalon>::ResetPID() {
     m_motors[0]->ClearIaccum();
 }
 
