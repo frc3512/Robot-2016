@@ -11,11 +11,25 @@ Shooter::Shooter() {
 
 void Shooter::Shoot() {
     // Shoot only if motors spinning
-    if (m_latestLeftRPM != 0 && m_latestRightRPM != 0) {
-        m_kickBallMotor.Enable();
+    if (IsBallLoaded()) {
+        m_rollBallMotor.Set(.75);
     }
 }
 
+void Shooter::StopIntakeMotor() {
+    m_rollBallMotor.Set(0);
+}
+
+void Shooter::Intake() {
+    if (!IsBallLoaded()) {
+        m_leftShooterMotor.Set(-.5);
+        m_rightShooterMotor.Set(-.5);
+        m_rollBallMotor.Set(-.5);
+    }
+}
+bool Shooter::IsBallLoaded() {
+    return m_intakeLimitSwitch.Get();
+}
 void Shooter::SetManualShooterPosition(double position) {
     m_shooterPositionMotor.SetControlMode(CANTalon::kPercentVbus);
 
@@ -25,25 +39,37 @@ void Shooter::SetManualShooterSpeed(double speed) {
     m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
     m_rightShooterMotor.SetControlMode(CANTalon::kPercentVbus);
 
+    m_leftShooterMotor.Set(speed);
     m_rightShooterMotor.Set(speed);
 }
 
 // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
 void Shooter::SetLeftShooterSpeed(double speed) {
-    m_leftShooterMotor.Set(-speed);
+    m_leftShooterMotor.Set(speed);
 }
 void Shooter::SetRightShooterSpeed(double speed) {
     m_rightShooterMotor.Set(speed);
 }
-
+/*
+ * Conversion Table for calculating RPM, MAY OR MAY NOT BE ACCURATE
+ ||///////////////||/////////////////||///////////////||//////////////||
+ ||    S ticks    ||    1 rev       ||    1000 ms    ||    60 sec    ||
+ ||    -------    ||    ---------    ||   -------    ||    ------    ||
+ ||    100 ms    ||    360 ticks    ||    1 sec      ||    1 min     ||
+ ||///////////////||/////////////////||///////////////||//////////////||
+ */
 float Shooter::GetLeftRPM() const {
     // TODO: document magic number math
+    std::cout << "Left Motor Raw Output: " << m_leftShooterMotor.GetSpeed() <<
+    std::endl;
     return m_leftShooterMotor.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }
 
 float Shooter::GetRightRPM() const {
     // TODO: document magic number math
+    std::cout << "Right Motor Raw Output: " << m_rightShooterMotor.GetSpeed() <<
+    std::endl;
     return m_rightShooterMotor.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }

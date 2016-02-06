@@ -43,14 +43,29 @@ void Robot::OperatorControl() {
         std::cout << "Left RPM: " << shooter.GetLeftRPM() << " | " <<
             "Right RPM: " << shooter.GetRightRPM() << std::endl;
 
-        if (shootButton.PressedButton(2)) {
+
+        if (shootButton.PressedButton(1)) {
+            std::cout << "Trigger Pressed: " << shootStick.GetTrigger() <<
+            std::endl;
+            shootTimer.Reset();
+            shootTimer.Start();
             shooter.Shoot();
         }
-        // Update the elevator automatic stacking state
+
+        if (shootTimer.HasPeriodPassed(3.0)) {
+            shootTimer.Stop();
+            shooter.StopIntakeMotor();
+        }
+
+
+        if (shootStick.GetRawButton(2)) {
+            shooter.Intake();
+        }
+
         if (shootStick.GetRawButton(4)) {
             shooter.SetManualShooterPosition(shootStick.GetY());
         }
-        // Moves shooter up and down
+
         drive1Buttons.UpdateButtons();
         drive2Buttons.UpdateButtons();
         shootButton.UpdateButtons();

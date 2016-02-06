@@ -8,6 +8,7 @@
 
 #include "SubsystemBase.hpp"
 #include "../WPILib/CANTalon.h"
+#include "DigitalInput.h"
 #include "../StateMachine.hpp"
 
 class Shooter : public SubsystemBase {
@@ -18,6 +19,9 @@ public:
     void ResetEncoders();
 
     void Shoot();
+    void Intake();
+    bool IsBallLoaded();
+    void StopIntakeMotor();
 
     void SetManualShooterSpeed(double speed);
 
@@ -44,9 +48,11 @@ private:
     // TODO: some CAN IDs conflict
     CANTalon m_leftShooterMotor{3};
     CANTalon m_rightShooterMotor{6};
-    CANTalon m_kickBallMotor{9}; // TODO: fix ID
+    CANTalon m_rollBallMotor{9}; // TODO: fix ID
     CANTalon m_shooterPositionMotor{0};
     CANTalon m_shootElevationMotor{7};
+
+    DigitalInput m_intakeLimitSwitch{1};
 
     /* Maximum velocity and time to maximum velocity constants to load from the
      * config file

@@ -51,6 +51,7 @@ private:
 
     Timer autoTimer;
     Timer displayTimer;
+    Timer shootTimer;
 
     // Used for sending data to the Driver Station
     DSDisplay& dsDisplay{DSDisplay::GetInstance(settings.GetInt("DS_Port"))};
