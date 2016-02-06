@@ -4,7 +4,7 @@
 // =============================================================================
 
 #include "SCurveProfile.hpp"
-#include "../PIDInterface.hpp"
+#include "../WPILib/PIDInterface.hpp"
 #include <cmath>
 
 SCurveProfile::SCurveProfile(std::shared_ptr<PIDInterface> pid,

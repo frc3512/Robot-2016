@@ -5,8 +5,23 @@
 
 #include "GearBox.hpp"
 
-GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) :
-    GearBoxBase(shifterChan, -1, -1, motor1, motor2, motor3) {
+GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) {
+    if (shifterChan != -1) {
+        m_shifter = std::make_unique<Solenoid>(shifterChan);
+    }
+    else {
+        m_shifter = nullptr;
+    }
+
+    // Create motor controllers of specified template type
+    m_motors.emplace_back(std::make_unique<CANTalon>(motor1));
+    if (motor2 != -1) {
+        m_motors.emplace_back(std::make_unique<CANTalon>(motor2));
+    }
+    if (motor3 != -1) {
+        m_motors.emplace_back(std::make_unique<CANTalon>(motor3));
+    }
+
     for (unsigned int i = 0; i < m_motors.size(); i++) {
         if (i == 0) {
             m_motors[i]->SetControlMode(CANTalon::kPercentVbus);
@@ -14,7 +29,7 @@ GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) :
             m_motors[i]->ConfigEncoderCodesPerRev(1);
             m_motors[i]->SetSensorDirection(m_isEncoderReversed);
             ResetEncoder();
-            SetProfile(false);
+            m_motors[i]->SelectProfileSlot(0);
             m_motors[i]->EnableControl();
         }
         else {
@@ -27,46 +42,16 @@ GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) :
     }
 }
 
-void GearBox::SetSetpoint(PIDState setpoint) {
-    m_motors[0]->SetControlMode(CANTalon::kPosition);
-
-    m_setpoint = setpoint.displacement / m_distancePerPulse;
-    m_motors[0]->Set(m_setpoint);
-}
-
-PIDState GearBox::GetSetpoint() const {
-    return {m_setpoint* m_distancePerPulse, 0.0, 0.0};
-}
-
 void GearBox::SetManual(float value) {
-    m_motors[0]->SetControlMode(CANTalon::kPercentVbus);
     m_motors[0]->Set(value);
 }
 
-float GearBox::Get(Grbx::PIDMode mode) const {
-    if (mode == Grbx::Position) {
-        return m_motors[0]->GetPosition() * m_distancePerPulse;
-    }
-    else if (mode == Grbx::Speed) {
-        return m_motors[0]->GetEncVel() * m_distancePerPulse;
-    }
-    else if (mode == Grbx::Raw) {
-        return m_motors[0]->Get();
-    }
-
-    return 0.f;
+float GearBox::GetPosition() const {
+    return m_motors[0]->GetPosition() * m_distancePerPulse;
 }
 
-void GearBox::SetPID(float p, float i, float d) {
-    m_motors[0]->SetPID(p, i, d);
-}
-
-void GearBox::SetV(float v) {
-    m_motors[0]->SetV(v);
-}
-
-void GearBox::SetA(float a) {
-    m_motors[0]->SetA(a);
+float GearBox::GetSpeed() const {
+    return m_motors[0]->GetSpeed() * m_distancePerPulse;
 }
 
 void GearBox::SetDistancePerPulse(double distancePerPulse) {
@@ -77,45 +62,42 @@ void GearBox::ResetEncoder() {
     m_motors[0]->SetPosition(0);
 }
 
-void GearBox::SetEncoderReversed(bool reverse) {
+void GearBox::SetInverted(bool reverse) {
+    for (auto& motor : m_motors) {
+        motor->SetInverted(reverse);
+    }
+}
+
+bool GearBox::GetInverted() const {
+    return m_motors[0]->GetInverted();
+}
+
+void GearBox::SetSensorDirection(bool reverse) {
     m_isEncoderReversed = reverse;
     m_motors[0]->SetSensorDirection(m_isEncoderReversed);
 }
 
-bool GearBox::OnTarget() const {
-    return abs(m_motors[0]->GetClosedLoopError()) < 15;
+bool GearBox::IsEncoderReversed() const {
+    return m_isEncoderReversed;
 }
 
-void GearBox::ResetPID() {
-    m_motors[0]->ClearIaccum();
+void GearBox::SetGear(bool gear) {
+    if (m_shifter != nullptr) {
+        m_shifter->Set(gear);
+    }
 }
 
-void GearBox::SetControlMode(CANTalon::ControlMode ctrlMode) {
-    m_motors[0]->SetControlMode(ctrlMode);
+bool GearBox::GetGear() const {
+    if (m_shifter != nullptr) {
+        return m_shifter->Get();
+    }
+    else {
+        return false;
+    }
 }
 
-void GearBox::SetSoftPositionLimits(double forwardLimit, double backwardLimit) {
-    m_motors[0]->ConfigSoftPositionLimits(forwardLimit, backwardLimit);
-}
-
-bool GearBox::IsFwdLimitSwitchClosed() const {
-    return m_motors[0]->IsFwdLimitSwitchClosed();
-}
-
-bool GearBox::IsRevLimitSwitchClosed() const {
-    return m_motors[0]->IsRevLimitSwitchClosed();
-}
-
-void GearBox::SetIZone(unsigned int value) {
-    m_motors[0]->SetIzone(value);
-}
-
-void GearBox::SetCloseLoopRampRate(double value) {
-    m_motors[0]->SetCloseLoopRampRate(value);
-}
-
-void GearBox::SetProfile(bool secondProfile) {
-    m_motors[0]->SelectProfileSlot(secondProfile);
+CANTalon* GearBox::GetMaster() const {
+    return m_motors[0].get();
 }
 
 void GearBox::PIDWrite(float output) {
@@ -123,5 +105,10 @@ void GearBox::PIDWrite(float output) {
 }
 
 double GearBox::PIDGet() {
-    return m_motors[0]->PIDGet();
+    if (GetPIDSourceType() == PIDSourceType::kRate) {
+        return m_motors[0]->GetSpeed() * m_distancePerPulse;
+    }
+    else {
+        return m_motors[0]->GetPosition() * m_distancePerPulse;
+    }
 }

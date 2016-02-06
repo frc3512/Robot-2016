@@ -40,8 +40,8 @@ void Robot::OperatorControl() {
         std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle() <<
             " | " << "Shoot Stick Throttle: " << shootStick.GetThrottle() <<
             std::endl;
-        std::cout << "Left RPM: " << shooter.GetRPMLeft() << " | " <<
-            "Right RPM: " << shooter.GetRPMRight() << std::endl;
+        std::cout << "Left RPM: " << shooter.GetLeftRPM() << " | " <<
+            "Right RPM: " << shooter.GetRightRPM() << std::endl;
 
         if (shootButton.PressedButton(2)) {
             shooter.Shoot();
@@ -85,10 +85,10 @@ void Robot::Test() {
 
 void Robot::DS_PrintOut() {
     if (pidGraph.HasIntervalPassed()) {
-        pidGraph.GraphData(robotDrive.GetLeftDist(), "Left PV (DR)");
+        pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
         pidGraph.GraphData(
             robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
-        pidGraph.GraphData(robotDrive.GetRightDist(), "Right PV (DR)");
+        pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
         pidGraph.GraphData(
             robotDrive.GetRightSetpoint().displacement, "Right SP (DR)");
 
@@ -99,8 +99,8 @@ void Robot::DS_PrintOut() {
         // Send things to DS display
         dsDisplay.Clear();
 
-        dsDisplay.AddData("ENCODER_LEFT", robotDrive.GetLeftDist());
-        dsDisplay.AddData("ENCODER_RIGHT", robotDrive.GetRightDist());
+        dsDisplay.AddData("ENCODER_LEFT", robotDrive.GetLeftDisplacement());
+        dsDisplay.AddData("ENCODER_RIGHT", robotDrive.GetRightDisplacement());
 
         dsDisplay.SendToDS();
     }

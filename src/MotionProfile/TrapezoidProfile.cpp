@@ -4,7 +4,7 @@
 // =============================================================================
 
 #include "TrapezoidProfile.hpp"
-#include "../PIDInterface.hpp"
+#include "../WPILib/PIDInterface.hpp"
 #include <cmath>
 
 TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDInterface> pid,

@@ -8,8 +8,6 @@
 void Robot::AutoMotionProfile() {
     robotDrive.SetLeftManual(0.f);
     robotDrive.SetRightManual(0.f);
-    robotDrive.SetLeftSetpoint(PIDState());
-    robotDrive.SetRightSetpoint(PIDState());
     robotDrive.ResetProfile();
 
     robotDrive.ResetEncoders();

@@ -33,17 +33,13 @@ public:
     // Set encoder distances to 0
     void ResetEncoders();
 
-    // Set wheel setpoints (see GearBox::setSetpoint(float))
-    void SetLeftSetpoint(PIDState setpt);
-    void SetRightSetpoint(PIDState setpt);
-
-    // Directly set wheel speeds [0..1] (see GearBox::setManual(float))
+    // Directly set wheel speeds [0..1] (see GearBox::SetManual(float))
     void SetLeftManual(float value);
     void SetRightManual(float value);
 
     // Returns encoder distances
-    double GetLeftDist() const;
-    double GetRightDist() const;
+    double GetLeftDisplacement() const;
+    double GetRightDisplacement() const;
 
     // Returns encoder rates
     double GetLeftRate() const;

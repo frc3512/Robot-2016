@@ -4,20 +4,20 @@
 // =============================================================================
 
 #include "DriveTrain.hpp"
-#include "../PIDController.hpp"
+#include "../WPILib/PIDController.hpp"
 
 #include <cmath>
-#include "../CANTalon.h"
+#include "../WPILib/CANTalon.h"
 
 const float DriveTrain::maxWheelSpeed = 80.0;
 
 DriveTrain::DriveTrain() {
     m_sensitivity = m_settings.GetDouble("LOW_GEAR_SENSITIVE");
 
-    m_leftGrbx.SetMotorReversed(true);
-    m_leftGrbx.SetEncoderReversed(true);
+    m_leftGrbx.SetInverted(true);
+    m_leftGrbx.SetSensorDirection(true);
 
-    m_rightGrbx.SetEncoderReversed(true);
+    m_rightGrbx.SetSensorDirection(true);
 
     m_leftGrbx.SetDistancePerPulse(72.0 / 2800.0);
     m_rightGrbx.SetDistancePerPulse(72.0 / 2800.0);
@@ -196,14 +196,6 @@ void DriveTrain::ResetEncoders() {
     m_rightGrbx.ResetEncoder();
 }
 
-void DriveTrain::SetLeftSetpoint(PIDState setpt) {
-    m_leftGrbx.SetSetpoint(setpt);
-}
-
-void DriveTrain::SetRightSetpoint(PIDState setpt) {
-    m_rightGrbx.SetSetpoint(setpt);
-}
-
 void DriveTrain::SetLeftManual(float value) {
     m_leftGrbx.SetManual(value);
 }
@@ -212,28 +204,28 @@ void DriveTrain::SetRightManual(float value) {
     m_rightGrbx.SetManual(value);
 }
 
-double DriveTrain::GetLeftDist() const {
-    return m_leftGrbx.Get(Grbx::Position);
+double DriveTrain::GetLeftDisplacement() const {
+    return m_leftGrbx.GetPosition();
 }
 
-double DriveTrain::GetRightDist() const {
-    return m_rightGrbx.Get(Grbx::Position);
+double DriveTrain::GetRightDisplacement() const {
+    return m_rightGrbx.GetPosition();
 }
 
 double DriveTrain::GetLeftRate() const {
-    return m_leftGrbx.Get(Grbx::Speed);
+    return m_leftGrbx.GetSpeed();
 }
 
 double DriveTrain::GetRightRate() const {
-    return m_rightGrbx.Get(Grbx::Speed);
+    return m_rightGrbx.GetSpeed();
 }
 
 PIDState DriveTrain::GetLeftSetpoint() const {
-    return m_leftGrbx.GetSetpoint();
+    return m_leftPID->GetSetpoint();
 }
 
 PIDState DriveTrain::GetRightSetpoint() const {
-    return m_rightGrbx.GetSetpoint();
+    return m_rightPID->GetSetpoint();
 }
 
 void DriveTrain::SetGoal(PIDState goal) {

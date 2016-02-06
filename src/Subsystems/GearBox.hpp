@@ -6,37 +6,33 @@
 #ifndef GEARBOX_HPP
 #define GEARBOX_HPP
 
-#include "GearBoxBase.hpp"
-#include "../CANTalon.h"
 #include <PIDOutput.h>
 #include <PIDSource.h>
+#include <Solenoid.h>
+#include "../WPILib/CANTalon.h"
+#include "../MotionProfile/ProfileBase.hpp"
+#include <vector>
+#include <memory>
 
-class GearBox : public GearBoxBase, public PIDOutput, public PIDSource {
+/* Notes:
+ * This class uses only CANTalons.
+ *
+ * Up to three motors can be specified per gearbox, since drive train gearboxes
+ * will use up to three and other gearboxes will use less.
+ */
+
+class GearBox : public PIDOutput, public PIDSource {
 public:
-    GearBox(int shifterChan,
-            int motor1,
-            int motor2 = -1,
-            int motor3 = -1);
-
-    // Enables PID controller automatically and sets its setpoint
-    void SetSetpoint(PIDState setpoint);
-
-    PIDState GetSetpoint() const;
+    GearBox(int shifterChan, int motor1, int motor2 = -1, int motor3 = -1);
 
     // Disables PID controller and sets the motor speeds manually
     void SetManual(float value);
 
-    // Returns current speed/position/voltage setting of motor controller(s)
-    float Get(Grbx::PIDMode mode = Grbx::Raw) const;
+    // Returns current position of master CANTalon
+    float GetPosition() const;
 
-    // Set P, I, and D terms for PID controller
-    void SetPID(float p, float i, float d);
-
-    // Set velocity feed-forward term on PID controller
-    void SetV(float v);
-
-    // Set acceleration feed-forward term on PID controller
-    void SetA(float a);
+    // Returns current speed of master CANTalon
+    float GetSpeed() const;
 
     void SetDistancePerPulse(double distancePerPulse);
 
@@ -44,32 +40,41 @@ public:
     void ResetEncoder();
 
     // Reverses gearbox drive direction
-    void SetEncoderReversed(bool reverse);
+    void SetInverted(bool reverse);
 
-    bool OnTarget() const;
+    // Returns motor reversal state of gearbox
+    bool GetInverted() const;
 
-    void ResetPID();
+    // Reverses gearbox drive direction
+    void SetSensorDirection(bool reverse);
 
-    // Determines whether encoder returns distance or rate from PIDGet()
-    void SetControlMode(CANTalon::ControlMode ctrlMode =
-                            CANTalon::kPercentVbus);
+    // Returns motor reversal state of gearbox
+    bool IsEncoderReversed() const;
 
-    // Set soft limits of PID controller
-    void SetSoftPositionLimits(double forwardLimit, double backwardLimit);
+    // Shifts gearbox to another gear if available
+    void SetGear(bool gear);
 
-    bool IsFwdLimitSwitchClosed() const;
-    bool IsRevLimitSwitchClosed() const;
+    // Gets current gearbox gear if available (false if not)
+    bool GetGear() const;
 
-    void SetIZone(unsigned int value);
-
-    void SetCloseLoopRampRate(double value);
-    void SetProfile(bool secondProfile);
+    // Returns non-owning pointer to master CANTalon
+    CANTalon* GetMaster() const;
 
     // PIDOutput interface
     void PIDWrite(float output) override;
 
     // PIDSource interface
     double PIDGet() override;
+
+private:
+    bool m_isEncoderReversed = false;
+
+    // Conversion factor for setpoints with respect to encoder readings
+    double m_distancePerPulse = 1.0;
+
+    std::unique_ptr<Solenoid> m_shifter;
+
+    std::vector<std::unique_ptr<CANTalon>> m_motors;
 };
 
 #endif // GEARBOX_HPP

@@ -6,7 +6,7 @@
 #ifndef PROFILE_BASE_HPP
 #define PROFILE_BASE_HPP
 
-#include "../PIDState.hpp"
+#include "../WPILib/PIDState.hpp"
 #include <Task.h>
 #include <Timer.h>
 #include <memory>

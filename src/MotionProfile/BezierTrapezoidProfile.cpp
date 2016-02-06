@@ -5,7 +5,7 @@
 // =============================================================================
 
 #include "BezierTrapezoidProfile.hpp"
-#include "../PIDInterface.hpp"
+#include "../WPILib/PIDInterface.hpp"
 #include <cmath>
 
 BezierTrapezoidProfile::BezierTrapezoidProfile(

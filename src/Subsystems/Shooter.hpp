@@ -7,14 +7,7 @@
 #define SHOOTER_HPP
 
 #include "SubsystemBase.hpp"
-#include <vector>
-#include <thread>
-#include <atomic>
-#include <Timer.h>
-#include <string>
-
-#include "../CANTalon.h"
-
+#include "../WPILib/CANTalon.h"
 #include "../StateMachine.hpp"
 
 class Shooter : public SubsystemBase {
@@ -32,10 +25,10 @@ public:
     void SetLeftShooterSpeed(double speed);
     void SetRightShooterSpeed(double speed);
 
-    void SetRPMLeft(double wheelSpeed);
-    void SetRPMRight(double wheelSpeed);
-    float GetRPMLeft();
-    float GetRPMRight();
+    void SetLeftRPM(double wheelSpeed);
+    void SetRightRPM(double wheelSpeed);
+    float GetLeftRPM() const;
+    float GetRightRPM() const;
     void ManualChangeSetpoint(double delta);
 
     void SetManualShooterPosition(double position);
@@ -45,12 +38,13 @@ public:
 
 private:
     bool m_manual = false;
-    float m_latestRPMLeft = 0;
-    float m_latestRPMRight = 0;
+    float m_latestLeftRPM = 0;
+    float m_latestRightRPM = 0;
 
+    // TODO: some CAN IDs conflict
     CANTalon m_leftShooterMotor{3};
     CANTalon m_rightShooterMotor{6};
-    CANTalon m_kickBallMotor{0};
+    CANTalon m_kickBallMotor{9}; // TODO: fix ID
     CANTalon m_shooterPositionMotor{0};
     CANTalon m_shootElevationMotor{7};
 

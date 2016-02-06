@@ -4,7 +4,7 @@
 // =============================================================================
 
 #include "ProfileBase.hpp"
-#include "../PIDInterface.hpp"
+#include "../WPILib/PIDInterface.hpp"
 #include <chrono>
 #include <thread>
 
@@ -36,6 +36,7 @@ PIDState ProfileBase::GetSetpoint() const {
 void ProfileBase::ResetProfile() {
     m_goal = PIDState();
     m_sp = PIDState();
+    m_pid->SetSetpoint(m_sp);
 
     m_lastTime = 0.0;
     m_timeTotal = 0.0;
