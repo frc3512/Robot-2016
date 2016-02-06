@@ -6,13 +6,18 @@
 #ifndef PROFILE_BASE_HPP
 #define PROFILE_BASE_HPP
 
-#include "PIDState.hpp"
+#include "../PIDState.hpp"
+#include <Task.h>
+#include <Timer.h>
+#include <memory>
 #include <mutex>
+
+class PIDInterface;
 
 class ProfileBase {
 public:
-    ProfileBase();
-    virtual ~ProfileBase() = default;
+    ProfileBase(std::shared_ptr<PIDInterface> pid);
+    virtual ~ProfileBase();
 
     virtual PIDState UpdateSetpoint(double curTime) = 0;
 
@@ -27,11 +32,21 @@ public:
     virtual void ResetProfile();
 
 protected:
-    // Use this to make updateSetpoint() and setGoal() thread-safe
+    void StartProfile();
+
+    // Use this to make UpdateSetpoint() and SetGoal() thread-safe
     std::recursive_mutex m_varMutex;
 
+    std::shared_ptr<PIDInterface> m_pid;
+
+    Task m_task;
+    Timer m_timer;
+
+    // Set this to interrupt currently running profile for starting a new one
+    std::atomic<bool> m_interrupt{false};
+
     PIDState m_goal;
-    PIDState m_sp; // SetPoint
+    PIDState m_sp; // Current SetPoint
     double m_lastTime;
     double m_timeTotal;
 };

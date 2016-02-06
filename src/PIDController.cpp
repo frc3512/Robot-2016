@@ -6,11 +6,11 @@
  *----------------------------------------------------------------------------
  */
 
+#include "PIDController.hpp"
 #include "Notifier.h"
 #include "PIDSource.h"
 #include "PIDOutput.h"
 #include <math.h>
-#include <PIDController.hpp>
 #include <vector>
 #include "HAL/HAL.hpp"
 
@@ -85,7 +85,6 @@ void PIDController::Initialize(float Kp,
     m_period = period;
 
     m_controlLoop->StartPeriodic(m_period);
-    m_setpointTimer.Start();
 
     static int32_t instances = 0;
     instances++;
@@ -218,16 +217,7 @@ void PIDController::Calculate() {
  * the default period in this class's constructor).
  */
 double PIDController::CalculateFeedForward() {
-    if (m_pidInput->GetPIDSourceType() == PIDSourceType::kRate) {
-        return m_V * GetSetpoint().velocity + m_A * GetSetpoint().acceleration;
-    }
-    else {
-        double temp = m_V * GetSetpoint().velocity +
-                      m_A * GetSetpoint().acceleration;
-        m_prevSetpoint = m_setpoint;
-        m_setpointTimer.Reset();
-        return temp;
-    }
+    return m_V * GetSetpoint().velocity + m_A * GetSetpoint().acceleration;
 }
 
 /**
@@ -417,16 +407,6 @@ void PIDController::SetSetpoint(PIDState setpoint) {
 PIDState PIDController::GetSetpoint() const {
     std::lock_guard<priority_recursive_mutex> sync(m_mutex);
     return m_setpoint;
-}
-
-/**
- * Returns the change in setpoint over time of the PIDController
- * @return the change in setpoint over time
- */
-double PIDController::GetDeltaSetpoint() const {
-    std::lock_guard<priority_recursive_mutex> sync(m_mutex);
-    return (m_setpoint.displacement - m_prevSetpoint.displacement) /
-           m_setpointTimer.Get();
 }
 
 /**

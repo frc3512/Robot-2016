@@ -9,9 +9,8 @@
 #pragma once
 
 #include "Base.h"
-#include "Controller.h"
 #include "LiveWindow/LiveWindow.h"
-#include "PIDInterface.h"
+#include "PIDInterface.hpp"
 #include "PIDSource.h"
 #include "Notifier.h"
 #include "HAL/cpp/priority_mutex.h"
@@ -61,7 +60,6 @@ public:
 
     virtual void SetSetpoint(PIDState setpoint) override;
     virtual PIDState GetSetpoint() const override;
-    double GetDeltaSetpoint() const;
 
     virtual float GetError() const;
     virtual float GetAvgError() const;
@@ -128,7 +126,6 @@ private:
     mutable priority_recursive_mutex m_mutex;
 
     std::unique_ptr<Notifier> m_controlLoop;
-    Timer m_setpointTimer;
 
     void Initialize(float p, float i, float d, float v, float a,
                     PIDSource* source, PIDOutput* output, float period = 0.05);

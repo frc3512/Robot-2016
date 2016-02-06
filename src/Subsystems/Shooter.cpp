@@ -4,7 +4,6 @@
 // =============================================================================
 
 #include "Shooter.hpp"
-#include <CANTalon.h>
 
 Shooter::Shooter() {
 }

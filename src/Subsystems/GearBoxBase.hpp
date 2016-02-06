@@ -6,8 +6,10 @@
 #ifndef GEARBOX_BASE_HPP
 #define GEARBOX_BASE_HPP
 
-#include <CANTalon.h>
+#include <PIDOutput.h>
+#include <PIDSource.h>
 #include <Solenoid.h>
+#include "../CANTalon.h"
 #include "../MotionProfile/ProfileBase.hpp"
 #include <vector>
 #include <memory>
@@ -50,8 +52,11 @@ public:
     // Set P, I, and D terms for PID controller
     virtual void SetPID(float p, float i, float d) = 0;
 
-    // Set feed-forward term on PID controller
-    virtual void SetF(float f) = 0;
+    // Set velocity feed-forward term on PID controller
+    virtual void SetV(float v) = 0;
+
+    // Set acceleration feed-forward term on PID controller
+    virtual void SetA(float a) = 0;
 
     // Calls Encoder::SetDistancePerPulse internally
     virtual void SetDistancePerPulse(double distancePerPulse) = 0;

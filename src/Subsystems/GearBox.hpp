@@ -7,11 +7,11 @@
 #define GEARBOX_HPP
 
 #include "GearBoxBase.hpp"
+#include "../CANTalon.h"
 #include <PIDOutput.h>
 #include <PIDSource.h>
-#include <CANTalon.h>
 
-class GearBox : public GearBoxBase {
+class GearBox : public GearBoxBase, public PIDOutput, public PIDSource {
 public:
     GearBox(int shifterChan,
             int motor1,
@@ -32,8 +32,11 @@ public:
     // Set P, I, and D terms for PID controller
     void SetPID(float p, float i, float d);
 
-    // Set feed-forward term on PID controller
-    void SetF(float f);
+    // Set velocity feed-forward term on PID controller
+    void SetV(float v);
+
+    // Set acceleration feed-forward term on PID controller
+    void SetA(float a);
 
     void SetDistancePerPulse(double distancePerPulse);
 
@@ -61,6 +64,12 @@ public:
 
     void SetCloseLoopRampRate(double value);
     void SetProfile(bool secondProfile);
+
+    // PIDOutput interface
+    void PIDWrite(float output) override;
+
+    // PIDSource interface
+    double PIDGet() override;
 };
 
 #endif // GEARBOX_HPP

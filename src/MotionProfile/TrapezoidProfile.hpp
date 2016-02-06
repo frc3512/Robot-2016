@@ -17,10 +17,14 @@
 #define TRAPEZOID_PROFILE_HPP
 
 #include "ProfileBase.hpp"
+#include <memory>
+
+class PIDInterface;
 
 class TrapezoidProfile : public ProfileBase {
 public:
-    TrapezoidProfile(double maxV, double timeToMaxV);
+    TrapezoidProfile(std::shared_ptr<PIDInterface> pid, double maxV,
+                     double timeToMaxV);
     virtual ~TrapezoidProfile() = default;
 
     /* If distance:

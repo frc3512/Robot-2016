@@ -4,9 +4,13 @@
 // =============================================================================
 
 #include "TrapezoidProfile.hpp"
+#include "../PIDInterface.hpp"
 #include <cmath>
 
-TrapezoidProfile::TrapezoidProfile(double maxV, double timeToMaxV) {
+TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDInterface> pid,
+                                   double maxV,
+                                   double timeToMaxV) :
+    ProfileBase(std::move(pid)) {
     SetMaxVelocity(maxV);
     SetTimeToMaxV(timeToMaxV);
 }
@@ -101,6 +105,9 @@ PIDState TrapezoidProfile::SetGoal(double t, PIDState goal,
 
     // Set setpoint to current distance since setpoint hasn't moved yet
     m_sp = curSource;
+
+    StartProfile();
+
     return curSource;
 }
 

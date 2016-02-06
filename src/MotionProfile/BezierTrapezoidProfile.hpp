@@ -19,10 +19,14 @@
 
 #include "TrapezoidProfile.hpp"
 #include "BezierCurve.hpp"
+#include <memory>
+
+class PIDInterface;
 
 class BezierTrapezoidProfile : public TrapezoidProfile {
 public:
-    BezierTrapezoidProfile(double maxV, double timeToMaxV);
+    BezierTrapezoidProfile(std::shared_ptr<PIDInterface> pid, double maxV,
+                           double timeToMaxV);
 
     /* curTime is current time
      *

@@ -4,9 +4,14 @@
 // =============================================================================
 
 #include "SCurveProfile.hpp"
+#include "../PIDInterface.hpp"
 #include <cmath>
 
-SCurveProfile::SCurveProfile(double maxV, double maxA, double timeToMaxA) {
+SCurveProfile::SCurveProfile(std::shared_ptr<PIDInterface> pid,
+                             double maxV,
+                             double maxA,
+                             double timeToMaxA) :
+    ProfileBase(std::move(pid)) {
     SetMaxVelocity(maxV);
     SetMaxAcceleration(maxA);
     SetTimeToMaxA(timeToMaxA);
@@ -103,6 +108,9 @@ PIDState SCurveProfile::SetGoal(double t, PIDState goal, PIDState curSource) {
 
     // Set setpoint to current distance since setpoint hasn't moved yet
     m_sp = curSource;
+
+    StartProfile();
+
     return curSource;
 }
 

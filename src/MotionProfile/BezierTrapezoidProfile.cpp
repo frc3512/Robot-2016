@@ -5,10 +5,14 @@
 // =============================================================================
 
 #include "BezierTrapezoidProfile.hpp"
+#include "../PIDInterface.hpp"
 #include <cmath>
 
-BezierTrapezoidProfile::BezierTrapezoidProfile(double maxV, double timeToMaxV) :
-    TrapezoidProfile(maxV, timeToMaxV) {
+BezierTrapezoidProfile::BezierTrapezoidProfile(
+    std::shared_ptr<PIDInterface> pid,
+    double maxV,
+    double timeToMaxV) :
+    TrapezoidProfile(std::move(pid), maxV, timeToMaxV) {
     SetMaxVelocity(maxV);
     SetTimeToMaxV(timeToMaxV);
 }
@@ -76,6 +80,9 @@ PIDState BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
     m_varMutex.unlock();
 
     m_lastTime = curTime;
+
+    StartProfile();
+
     return m_sp;
 }
 

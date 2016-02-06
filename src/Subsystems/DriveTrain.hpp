@@ -7,13 +7,15 @@
 #define DRIVE_TRAIN_HPP
 
 #include "SubsystemBase.hpp"
-#include "../MotionProfile/BezierTrapezoidProfile.hpp"
 #include "GearBox.hpp"
+#include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../Utility.hpp"
+#include <memory>
 
-#include <CANTalon.h>
+class GearBox;
+class PIDController;
 
-class DriveTrain : public SubsystemBase, public BezierTrapezoidProfile {
+class DriveTrain : public SubsystemBase {
 public:
     DriveTrain();
 
@@ -51,7 +53,9 @@ public:
     PIDState GetLeftSetpoint() const;
     PIDState GetRightSetpoint() const;
 
-    void SetControlMode(CANTalon::ControlMode ctrlMode);
+    void SetGoal(PIDState goal);
+    bool AtGoal() const;
+    void ResetProfile();
 
     const static float maxWheelSpeed;
 
@@ -66,6 +70,10 @@ private:
 
     GearBox m_leftGrbx{-1, 1};
     GearBox m_rightGrbx{-1, 4};
+    std::shared_ptr<PIDController> m_leftPID;
+    std::unique_ptr<TrapezoidProfile> m_leftProfile;
+    std::shared_ptr<PIDController> m_rightPID;
+    std::unique_ptr<TrapezoidProfile> m_rightProfile;
 };
 
 #endif // DRIVE_TRAIN_HPP

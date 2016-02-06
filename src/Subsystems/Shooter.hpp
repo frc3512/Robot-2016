@@ -13,7 +13,7 @@
 #include <Timer.h>
 #include <string>
 
-#include <CANTalon.h>
+#include "../CANTalon.h"
 
 #include "../StateMachine.hpp"
 

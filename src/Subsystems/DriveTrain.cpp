@@ -4,13 +4,14 @@
 // =============================================================================
 
 #include "DriveTrain.hpp"
+#include "../PIDController.hpp"
 
 #include <cmath>
-#include <CANTalon.h>
+#include "../CANTalon.h"
 
 const float DriveTrain::maxWheelSpeed = 80.0;
 
-DriveTrain::DriveTrain() : BezierTrapezoidProfile(maxWheelSpeed, 2) {
+DriveTrain::DriveTrain() {
     m_sensitivity = m_settings.GetDouble("LOW_GEAR_SENSITIVE");
 
     m_leftGrbx.SetMotorReversed(true);
@@ -24,9 +25,18 @@ DriveTrain::DriveTrain() : BezierTrapezoidProfile(maxWheelSpeed, 2) {
     m_leftGrbx.SetManual(0.0);
     m_rightGrbx.SetManual(0.0);
 
-    SetWidth(27.0);
-
     ReloadPID();
+
+    m_leftPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+                                                &m_leftGrbx, &m_leftGrbx);
+    m_leftProfile = std::make_unique<TrapezoidProfile>(m_leftPID, maxWheelSpeed,
+                                                       2.0);
+
+    m_rightPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+                                                 &m_rightGrbx, &m_rightGrbx);
+    m_rightProfile = std::make_unique<TrapezoidProfile>(m_rightPID,
+                                                        maxWheelSpeed,
+                                                        2.0);
 }
 
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
@@ -163,16 +173,22 @@ void DriveTrain::ReloadPID() {
     float p = 0.f;
     float i = 0.f;
     float d = 0.f;
+    float v = 0.f;
+    float a = 0.f;
 
     p = m_settings.GetDouble("PID_DRIVE_LEFT_P");
     i = m_settings.GetDouble("PID_DRIVE_LEFT_I");
     d = m_settings.GetDouble("PID_DRIVE_LEFT_D");
-    m_leftGrbx.SetPID(p, i, d);
+    v = m_settings.GetDouble("PID_DRIVE_LEFT_V");
+    a = m_settings.GetDouble("PID_DRIVE_LEFT_A");
+    m_leftPID->SetPID(p, i, d, v, a);
 
     p = m_settings.GetDouble("PID_DRIVE_RIGHT_P");
     i = m_settings.GetDouble("PID_DRIVE_RIGHT_I");
     d = m_settings.GetDouble("PID_DRIVE_RIGHT_D");
-    m_rightGrbx.SetPID(p, i, d);
+    v = m_settings.GetDouble("PID_DRIVE_RIGHT_V");
+    a = m_settings.GetDouble("PID_DRIVE_RIGHT_A");
+    m_rightPID->SetPID(p, i, d, v, a);
 }
 
 void DriveTrain::ResetEncoders() {
@@ -220,7 +236,16 @@ PIDState DriveTrain::GetRightSetpoint() const {
     return m_rightGrbx.GetSetpoint();
 }
 
-void DriveTrain::SetControlMode(CANTalon::ControlMode ctrlMode) {
-    m_leftGrbx.SetControlMode(ctrlMode);
-    m_rightGrbx.SetControlMode(ctrlMode);
+void DriveTrain::SetGoal(PIDState goal) {
+    m_leftProfile->SetGoal(0.0, goal);
+    m_rightProfile->SetGoal(0.0, goal);
+}
+
+bool DriveTrain::AtGoal() const {
+    return m_leftProfile->AtGoal() && m_rightProfile->AtGoal();
+}
+
+void DriveTrain::ResetProfile() {
+    m_leftProfile->ResetProfile();
+    m_rightProfile->ResetProfile();
 }

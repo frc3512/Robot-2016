@@ -61,8 +61,12 @@ void GearBox::SetPID(float p, float i, float d) {
     m_motors[0]->SetPID(p, i, d);
 }
 
-void GearBox::SetF(float f) {
-    m_motors[0]->SetF(f);
+void GearBox::SetV(float v) {
+    m_motors[0]->SetV(v);
+}
+
+void GearBox::SetA(float a) {
+    m_motors[0]->SetA(a);
 }
 
 void GearBox::SetDistancePerPulse(double distancePerPulse) {
@@ -112,4 +116,12 @@ void GearBox::SetCloseLoopRampRate(double value) {
 
 void GearBox::SetProfile(bool secondProfile) {
     m_motors[0]->SelectProfileSlot(secondProfile);
+}
+
+void GearBox::PIDWrite(float output) {
+    m_motors[0]->PIDWrite(output);
+}
+
+double GearBox::PIDGet() {
+    return m_motors[0]->PIDGet();
 }

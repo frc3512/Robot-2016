@@ -13,10 +13,14 @@
 #define SCURVE_PROFILE_HPP
 
 #include "ProfileBase.hpp"
+#include <memory>
+
+class PIDInterface;
 
 class SCurveProfile : public ProfileBase {
 public:
-    SCurveProfile(double maxV, double maxA, double timeToMaxA);
+    SCurveProfile(std::shared_ptr<PIDInterface> pid, double maxV, double maxA,
+                  double timeToMaxA);
 
     // curTime is current time
     virtual PIDState UpdateSetpoint(double curTime);
