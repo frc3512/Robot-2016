@@ -25,8 +25,6 @@ DriveTrain::DriveTrain() {
     m_leftGrbx.SetManual(0.0);
     m_rightGrbx.SetManual(0.0);
 
-    ReloadPID();
-
     m_leftPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
                                                 &m_leftGrbx, &m_leftGrbx);
     m_leftProfile = std::make_unique<TrapezoidProfile>(m_leftPID, maxWheelSpeed,
@@ -37,6 +35,8 @@ DriveTrain::DriveTrain() {
     m_rightProfile = std::make_unique<TrapezoidProfile>(m_rightPID,
                                                         maxWheelSpeed,
                                                         2.0);
+
+    ReloadPID();
 }
 
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
