@@ -64,8 +64,8 @@ private:
     float m_quickStopAccumulator = 0.f;
     float m_negInertiaAccumulator = 0.f;
 
-    GearBox m_leftGrbx{-1, 1};
-    GearBox m_rightGrbx{-1, 4};
+    GearBox m_leftGrbx{-1, 9};
+    GearBox m_rightGrbx{-1, 8};
     std::shared_ptr<PIDController> m_leftPID;
     std::unique_ptr<TrapezoidProfile> m_leftProfile;
     std::shared_ptr<PIDController> m_rightPID;

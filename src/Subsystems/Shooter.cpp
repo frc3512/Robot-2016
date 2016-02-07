@@ -5,7 +5,9 @@
 
 #include "Shooter.hpp"
 
-Shooter::Shooter() {
+Shooter::Shooter(){
+	//m_shooterHeightPID = PIDController( 0.f, 0.f, 0.f, 0.f, 0.f, &m_shooterHeightMotor, &m_shooterHeightMotor);
+	//m_shootHeightProfile = TrapezoidProfile(m_shooterHeightPID, 0.0, 0.0);
     m_leftShooterMotor.SetInverted(true);
 }
 
@@ -28,12 +30,12 @@ void Shooter::Intake() {
     }
 }
 bool Shooter::IsBallLoaded() {
-    return m_intakeLimitSwitch.Get();
+    return m_intakeLimit.Get();
 }
-void Shooter::SetManualShooterPosition(double position) {
-    m_shooterPositionMotor.SetControlMode(CANTalon::kPercentVbus);
+void Shooter::SetManualShooterHeight(double position) {
+    m_shooterHeightMotor.SetControlMode(CANTalon::kPercentVbus);
 
-    m_shooterPositionMotor.Set(position);
+    m_shooterHeightMotor.Set(position);
 }
 void Shooter::SetManualShooterSpeed(double speed) {
     m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
@@ -81,7 +83,9 @@ void Shooter::SetLeftRPM(double speed) {
 void Shooter::SetRightRPM(double speed) {
     m_rightShooterMotor.Set(speed);
 }
+Shooter::~Shooter() {
 
+}
 void Shooter::ReloadPID() {
 }
 
