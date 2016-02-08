@@ -54,3 +54,4 @@ const std::string StateMachine::GetState() const {
         return "";
     }
 }
+
