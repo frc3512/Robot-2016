@@ -71,9 +71,9 @@ void Robot::OperatorControl() {
             shooter.Intake();
         }
 
-        if (shootStick.GetRawButton(4)) {
+        //if (shootStick.GetRawButton(4)) {
             shooter.SetManualShooterHeight(shootStick.GetY());
-        }
+        //}
 
         drive1Buttons.UpdateButtons();
         drive2Buttons.UpdateButtons();

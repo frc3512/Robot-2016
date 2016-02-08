@@ -59,9 +59,9 @@ private:
 
     // TODO: some CAN IDs conflict
     GearBox m_leftShootGrbx{-1, 10};
-    GearBox m_rightShootGrbx{-1, 5};
+    GearBox m_rightShootGrbx{-1, 6};
     GearBox m_shooterHeightGrbx{-1, 7};
-    CANTalon m_rollBallMotor{6}; // TODO: fix ID
+    GearBox m_rollBallGrbx{-1, 5}; // TODO: fix ID
 
     DigitalInput m_intakeLimit{1};
     DigitalInput m_bottomLimit{2};

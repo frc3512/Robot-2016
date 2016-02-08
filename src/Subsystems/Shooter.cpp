@@ -15,19 +15,19 @@ Shooter::Shooter() {
 void Shooter::Shoot() {
     // Shoot only if motors spinning
     if (IsBallLoaded()) {
-        m_rollBallMotor.Set(.75);
+        m_rollBallGrbx.Set(.75);
     }
 }
 
 void Shooter::StopIntakeMotor() {
-    m_rollBallMotor.Set(0);
+    m_rollBallGrbx.Set(0);
 }
 
 void Shooter::Intake() {
-    if (!IsBallLoaded()) {
+    if (IsBallLoaded()) {
         m_leftShootGrbx.Set(-.5);
         m_rightShootGrbx.Set(-.5);
-        m_rollBallMotor.Set(-.5);
+        m_rollBallGrbx.Set(-.5);
     }
 }
 
