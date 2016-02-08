@@ -73,7 +73,7 @@ private:
     PIDController m_shooterHeightPID{ 0.f, 0.f, 0.f, &m_shooterHeightGrbx,
                                       &m_shooterHeightGrbx};
 
-    //TrapezoidProfile m_shootHeightProfile{m_shooterHeightPID, 0.0, 0.0};
+    // TrapezoidProfile m_shootHeightProfile{m_shooterHeightPID, 0.0, 0.0};
 
 
     // std::shared_ptr<PIDController> m_shooterHeightPID{m_shooterHeightPID, 0.0, 0.0};

@@ -32,7 +32,7 @@ void Robot::OperatorControl() {
         }
         if (shooter.GetManualOverride()) {
             shooter.SetManualShooterSpeed(JoystickRescale(
-                                           shootStick.GetThrottle()));
+                                              shootStick.GetThrottle()));
         }
         else {
             shooter.SetPIDShooterSpeed(JoystickRescale(

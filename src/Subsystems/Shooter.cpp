@@ -30,18 +30,23 @@ void Shooter::Intake() {
         m_rollBallMotor.Set(-.5);
     }
 }
+
 bool Shooter::IsBallLoaded() const {
     return m_intakeLimit.Get();
 }
+
 bool Shooter::ToggleManualOverride() {
     m_manual = !m_manual;
 }
+
 bool Shooter::GetManualOverride() const {
     return m_manual;
 }
+
 void Shooter::SetManualShooterHeight(double position) {
     m_shooterHeightGrbx.Set(position);
 }
+
 void Shooter::SetPIDShooterSpeed(double speed) {
     m_leftShootPID.Enable();
     m_rightShootPID.Enable();
@@ -55,26 +60,27 @@ void Shooter::SetManualShooterSpeed(double speed) {
     m_rightShootGrbx.Set(speed);
 }
 
-// FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
+// TODO: FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
 void Shooter::SetLeftShooterSpeed(double speed) {
     m_leftShootGrbx.Set(speed);
 }
+
 void Shooter::SetRightShooterSpeed(double speed) {
     m_rightShootGrbx.Set(speed);
 }
-/*
- * Conversion Table for calculating RPM, MAY OR MAY NOT BE ACCURATE
- ||///////////////||/////////////////||///////////////||//////////////||
- ||    S ticks    ||    1 rev       ||    1000 ms    ||    60 sec    ||
- ||    -------    ||    ---------    ||   -------    ||    ------    ||
- ||    100 ms    ||    360 ticks    ||    1 sec      ||    1 min     ||
- ||///////////////||/////////////////||///////////////||//////////////||
+
+/* Conversion table for calculating RPM
+ * ||///////////////||/////////////////||///////////////||//////////////||
+ * ||    S ticks    ||    1 rev        ||    1000 ms    ||    60 sec    ||
+ * ||    -------    ||    ---------    ||    -------    ||    ------    ||
+ * ||    100 ms     ||    360 ticks    ||    1 sec      ||    1 min     ||
+ * ||///////////////||/////////////////||///////////////||//////////////||
  */
 float Shooter::GetLeftRPM() const {
     // TODO: document magic number math
     std::cout << "Left Motor Raw Output: " << m_leftShootGrbx.GetSpeed() <<
         std::endl;
-    return m_leftShootGrbx.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
+    return m_leftShootGrbx.GetSpeed() * 5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }
 
@@ -82,7 +88,7 @@ float Shooter::GetRightRPM() const {
     // TODO: document magic number math
     std::cout << "Right Motor Raw Output: " << m_rightShootGrbx.GetSpeed() <<
         std::endl;
-    return m_rightShootGrbx.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
+    return m_rightShootGrbx.GetSpeed() * 5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }
 
