@@ -5,10 +5,11 @@
 
 #include "Shooter.hpp"
 
-Shooter::Shooter(){
-	//m_shooterHeightPID = PIDController( 0.f, 0.f, 0.f, 0.f, 0.f, &m_shooterHeightMotor, &m_shooterHeightMotor);
-	//m_shootHeightProfile = TrapezoidProfile(m_shooterHeightPID, 0.0, 0.0);
-    m_leftShooterMotor.SetInverted(true);
+Shooter::Shooter() {
+    // m_shooterHeightPID = PIDController( 0.f, 0.f, 0.f, 0.f, 0.f, &m_shooterHeightMotor, &m_shooterHeightMotor);
+    m_leftShootGrbx.SetInverted(true);
+    m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
+    m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 }
 
 void Shooter::Shoot() {
@@ -24,33 +25,42 @@ void Shooter::StopIntakeMotor() {
 
 void Shooter::Intake() {
     if (!IsBallLoaded()) {
-        m_leftShooterMotor.Set(-.5);
-        m_rightShooterMotor.Set(-.5);
+        m_leftShootGrbx.Set(-.5);
+        m_rightShootGrbx.Set(-.5);
         m_rollBallMotor.Set(-.5);
     }
 }
-bool Shooter::IsBallLoaded() {
+bool Shooter::IsBallLoaded() const {
     return m_intakeLimit.Get();
 }
-void Shooter::SetManualShooterHeight(double position) {
-    m_shooterHeightMotor.SetControlMode(CANTalon::kPercentVbus);
-
-    m_shooterHeightMotor.Set(position);
+bool Shooter::ToggleManualOverride() {
+    m_manual = !m_manual;
 }
-void Shooter::SetManualShooterSpeed(double speed) {
-    m_leftShooterMotor.SetControlMode(CANTalon::kPercentVbus);
-    m_rightShooterMotor.SetControlMode(CANTalon::kPercentVbus);
+bool Shooter::GetManualOverride() const {
+    return m_manual;
+}
+void Shooter::SetManualShooterHeight(double position) {
+    m_shooterHeightGrbx.Set(position);
+}
+void Shooter::SetPIDShooterSpeed(double speed) {
+    m_leftShootPID.Enable();
+    m_rightShootPID.Enable();
+}
 
-    m_leftShooterMotor.Set(speed);
-    m_rightShooterMotor.Set(speed);
+void Shooter::SetManualShooterSpeed(double speed) {
+    m_leftShootPID.Disable();
+    m_rightShootPID.Disable();
+
+    m_leftShootGrbx.Set(speed);
+    m_rightShootGrbx.Set(speed);
 }
 
 // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
 void Shooter::SetLeftShooterSpeed(double speed) {
-    m_leftShooterMotor.Set(speed);
+    m_leftShootGrbx.Set(speed);
 }
 void Shooter::SetRightShooterSpeed(double speed) {
-    m_rightShooterMotor.Set(speed);
+    m_rightShootGrbx.Set(speed);
 }
 /*
  * Conversion Table for calculating RPM, MAY OR MAY NOT BE ACCURATE
@@ -62,30 +72,20 @@ void Shooter::SetRightShooterSpeed(double speed) {
  */
 float Shooter::GetLeftRPM() const {
     // TODO: document magic number math
-    std::cout << "Left Motor Raw Output: " << m_leftShooterMotor.GetSpeed() <<
-    std::endl;
-    return m_leftShooterMotor.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
+    std::cout << "Left Motor Raw Output: " << m_leftShootGrbx.GetSpeed() <<
+        std::endl;
+    return m_leftShootGrbx.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }
 
 float Shooter::GetRightRPM() const {
     // TODO: document magic number math
-    std::cout << "Right Motor Raw Output: " << m_rightShooterMotor.GetSpeed() <<
-    std::endl;
-    return m_rightShooterMotor.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
+    std::cout << "Right Motor Raw Output: " << m_rightShootGrbx.GetSpeed() <<
+        std::endl;
+    return m_rightShootGrbx.GetSpeed() *  5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }
 
-void Shooter::SetLeftRPM(double speed) {
-    m_leftShooterMotor.Set(speed);
-}
-
-void Shooter::SetRightRPM(double speed) {
-    m_rightShooterMotor.Set(speed);
-}
-Shooter::~Shooter() {
-
-}
 void Shooter::ReloadPID() {
 }
 

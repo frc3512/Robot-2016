@@ -42,7 +42,7 @@ GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) {
     }
 }
 
-void GearBox::SetManual(float value) {
+void GearBox:: Set(float value) {
     m_motors[0]->Set(value);
 }
 

@@ -26,18 +26,26 @@ void Robot::OperatorControl() {
             robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX());
         }
 
-        // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
-        //if (shootStick.GetRawButton(2)) {
-            shooter.SetManualShooterSpeed(JoystickRescale(
-                                              shootStick.GetThrottle()));
-        //}
-        /*else {
-            shooter.SetLeftShooterSpeed(JoystickRescale(
-                                            driveStick2.GetThrottle()));
-            shooter.SetRightShooterSpeed(JoystickRescale(
-                                             shootStick.GetThrottle()));
+
+        if (shootButton.PressedButton(3)) {
+            shooter.ToggleManualOverride();
         }
-        */
+        if (shooter.GetManualOverride()) {
+            shooter.SetManualShooterSpeed(JoystickRescale(
+                                           shootStick.GetThrottle()));
+        }
+        else {
+            shooter.SetPIDShooterSpeed(JoystickRescale(
+                                           shootStick.GetThrottle()));
+        }
+        // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
+        /*else {
+         *   shooter.SetLeftShooterSpeed(JoystickRescale(
+         *                                   driveStick2.GetThrottle()));
+         *   shooter.SetRightShooterSpeed(JoystickRescale(
+         *                                    shootStick.GetThrottle()));
+         *  }
+         */
         std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle() <<
             " | " << "Shoot Stick Throttle: " << shootStick.GetThrottle() <<
             std::endl;
@@ -47,7 +55,7 @@ void Robot::OperatorControl() {
 
         if (shootButton.PressedButton(1)) {
             std::cout << "Trigger Pressed: " << shootStick.GetTrigger() <<
-            std::endl;
+                std::endl;
             shootTimer.Reset();
             shootTimer.Start();
             shooter.Shoot();

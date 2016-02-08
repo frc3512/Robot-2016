@@ -26,7 +26,7 @@ public:
     GearBox(int shifterChan, int motor1, int motor2 = -1, int motor3 = -1);
 
     // Disables PID controller and sets the motor speeds manually
-    void SetManual(float value);
+    void Set(float value);
 
     // Returns current position of master CANTalon
     float GetPosition() const;

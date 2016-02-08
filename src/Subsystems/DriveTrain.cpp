@@ -22,8 +22,8 @@ DriveTrain::DriveTrain() {
     m_leftGrbx.SetDistancePerPulse(72.0 / 2800.0);
     m_rightGrbx.SetDistancePerPulse(72.0 / 2800.0);
 
-    m_leftGrbx.SetManual(0.0);
-    m_rightGrbx.SetManual(0.0);
+    m_leftGrbx.Set(0.0);
+    m_rightGrbx.Set(0.0);
 
     m_leftPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
                                                 &m_leftGrbx, &m_leftGrbx);
@@ -159,8 +159,8 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
 
         rightPwm = -1.0;
     }
-    m_leftGrbx.SetManual(leftPwm);
-    m_rightGrbx.SetManual(rightPwm);
+    m_leftGrbx.Set(leftPwm);
+    m_rightGrbx.Set(rightPwm);
 }
 
 void DriveTrain::SetDeadband(float band) {
@@ -197,11 +197,11 @@ void DriveTrain::ResetEncoders() {
 }
 
 void DriveTrain::SetLeftManual(float value) {
-    m_leftGrbx.SetManual(value);
+    m_leftGrbx.Set(value);
 }
 
 void DriveTrain::SetRightManual(float value) {
-    m_rightGrbx.SetManual(value);
+    m_rightGrbx.Set(value);
 }
 
 double DriveTrain::GetLeftDisplacement() const {
