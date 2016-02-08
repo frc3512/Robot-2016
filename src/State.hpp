@@ -1,4 +1,5 @@
 // =============================================================================
+// File Name: State.hpp
 // Description: Defines State in StateMachine class
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
@@ -15,20 +16,20 @@ public:
 
     const std::string& Name() const;
 
-    // initFunc() is run when the state is first transitioned to.
-    std::function<void()> initFunc = [] {};
+    // entry() is run when the state is first transitioned to.
+    std::function<void()> Entry = [] {};
 
-    /* advanceFunc() advances the state of the state machine to the state which
-     * has the name returned. If "" is returned, the current state will be
+    /* transition() transitions the state of the state machine to the state
+     * which has the name returned. If "" is returned, the current state will be
      * maintained.
      */
-    std::function<std::string()> advanceFunc = [] { return ""; };
+    std::function<std::string()> Transition = [] { return ""; };
 
-    // periodicFunc() is run while the state machine is in that state.
-    std::function<void()> periodicFunc = [] {};
+    // run() is run while the state machine is in that state.
+    std::function<void()> Run = [] {};
 
-    // endFunc() is run when the state is being transitioned away from.
-    std::function<void()> endFunc = [] {};
+    // exit() is run when the state is being transitioned away from.
+    std::function<void()> Exit = [] {};
 
 private:
     // Contains the name of the state
