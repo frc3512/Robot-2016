@@ -32,18 +32,18 @@ void Robot::OperatorControl() {
         }
         if (shooter.GetManualOverride()) {
             shooter.SetManualShooterSpeed(JoystickRescale(
-                                              shootStick.GetThrottle()));
+                                              shootStick.GetThrottle(), 1.f));
         }
         else {
             shooter.SetPIDShooterSpeed(JoystickRescale(
-                                           shootStick.GetThrottle()));
+                                           shootStick.GetThrottle(), 1.f));
         }
         // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
         /*else {
          *   shooter.SetLeftShooterSpeed(JoystickRescale(
-         *                                   driveStick2.GetThrottle()));
+         *                                   driveStick2.GetThrottle(), 1.f));
          *   shooter.SetRightShooterSpeed(JoystickRescale(
-         *                                    shootStick.GetThrottle()));
+         *                                    shootStick.GetThrottle(), 1.f));
          *  }
          */
         std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle() <<
@@ -72,7 +72,7 @@ void Robot::OperatorControl() {
         }
 
         // if (shootStick.GetRawButton(4)) {
-        shooter.SetManualShooterHeight(shootStick.GetY());
+        shooter.SetManualShooterHeight(shootStick.GetY() * 0.1);
         // }
 
         drive1Buttons.UpdateButtons();

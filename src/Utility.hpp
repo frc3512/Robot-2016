@@ -23,9 +23,9 @@ T Limit(T value, T limit) {
     }
 }
 
-/* Rescales joystick value from [1..-1] to [0..1] (this includes flipping the
- * range)
+/* Rescales joystick value from [1..-1] to [0..rangeMax] (this includes flipping
+ * the range)
  */
-float JoystickRescale(float value);
+float JoystickRescale(float value, float rangeMax);
 
 #endif // UTILITY_HPP
