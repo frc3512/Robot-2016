@@ -64,6 +64,10 @@ bool Shooter::ToggleManualOverride() {
     m_manual = !m_manual;
 }
 
+void Shooter::UpdateState() {
+	m_intakeSM.Run();
+}
+
 bool Shooter::GetManualOverride() const {
     return m_manual;
 }
