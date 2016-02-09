@@ -66,19 +66,11 @@ private:
     DigitalInput m_intakeLimit{1};
     DigitalInput m_bottomLimit{2};
 
-    PIDController m_leftShootPID{0.f, 0.f, 0.f, &m_leftShootGrbx,
-                                 &m_leftShootGrbx};
-    PIDController m_rightShootPID{0.f, 0.f, 0.f, &m_rightShootGrbx,
-                                  &m_rightShootGrbx};
-    PIDController m_shooterHeightPID{ 0.f, 0.f, 0.f, &m_shooterHeightGrbx,
-                                      &m_shooterHeightGrbx};
-
+    std::shared_ptr<PIDController> m_leftShootPID;
+    std::shared_ptr<PIDController> m_rightShootPID;
+    std::shared_ptr<PIDController> m_shooterHeightPID;
+    std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
     StateMachine m_intakeSM{"START_INTAKE"};
-
-
-    // TrapezoidProfile m_shootHeightProfile{m_shooterHeightPID, 0.0, 0.0};
-
-
     // std::shared_ptr<PIDController> m_shooterHeightPID{m_shooterHeightPID, 0.0, 0.0};
 
     // Timer m_profileTimer;

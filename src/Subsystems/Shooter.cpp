@@ -6,8 +6,15 @@
 #include "Shooter.hpp"
 
 Shooter::Shooter() {
-    // m_shooterHeightPID = PIDController( 0.f, 0.f, 0.f, 0.f, 0.f, &m_shooterHeightMotor, &m_shooterHeightMotor);
-    m_leftShootGrbx.SetInverted(true);
+	m_leftShootPID = std::make_shared<PIDController> (0.f, 0.f, 0.f, 0.f, 0.f, &m_leftShootGrbx,
+	                                 &m_leftShootGrbx);
+	m_rightShootPID = std::make_shared<PIDController> (0.f, 0.f, 0.f, 0.f, 0.f, &m_rightShootGrbx,
+		                                 &m_rightShootGrbx);
+	m_shooterHeightPID = std::make_shared<PIDController> (0.f, 0.f, 0.f, 0.f, 0.f, &m_shooterHeightGrbx,
+		                                 &m_shooterHeightGrbx);
+	m_shootHeightProfile = std::make_shared<TrapezoidProfile>(m_shooterHeightPID, 0.0, 0.0);
+
+	m_leftShootGrbx.SetInverted(true);
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
@@ -77,13 +84,13 @@ void Shooter::SetManualShooterHeight(double position) {
 }
 
 void Shooter::SetPIDShooterSpeed(double speed) {
-    m_leftShootPID.Enable();
-    m_rightShootPID.Enable();
+    m_leftShootPID->Enable();
+    m_rightShootPID->Enable();
 }
 
 void Shooter::SetManualShooterSpeed(double speed) {
-    m_leftShootPID.Disable();
-    m_rightShootPID.Disable();
+    m_leftShootPID->Disable();
+    m_rightShootPID->Disable();
 
     m_leftShootGrbx.Set(speed);
     m_rightShootGrbx.Set(speed);
