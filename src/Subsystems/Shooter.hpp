@@ -33,7 +33,7 @@ public:
     bool IsBallLoaded() const;
     void StopIntakeMotor();
 
-    bool ToggleManualOverride();
+    void ToggleManualOverride();
     bool GetManualOverride() const;
 
     void SetPIDShooterSpeed(double speed);

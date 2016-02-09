@@ -84,7 +84,7 @@ bool Shooter::IsBallLoaded() const {
     return m_intakeLimit.Get();
 }
 
-bool Shooter::ToggleManualOverride() {
+void Shooter::ToggleManualOverride() {
     m_manual = !m_manual;
 }
 
