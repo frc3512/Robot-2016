@@ -6,24 +6,42 @@
 #include "Shooter.hpp"
 
 Shooter::Shooter() {
-	m_leftShootPID = std::make_shared<PIDController> (0.f, 0.f, 0.f, 0.f, 0.f, &m_leftShootGrbx,
-	                                 &m_leftShootGrbx);
-	m_rightShootPID = std::make_shared<PIDController> (0.f, 0.f, 0.f, 0.f, 0.f, &m_rightShootGrbx,
-		                                 &m_rightShootGrbx);
-	m_shooterHeightPID = std::make_shared<PIDController> (0.f, 0.f, 0.f, 0.f, 0.f, &m_shooterHeightGrbx,
-		                                 &m_shooterHeightGrbx);
-	m_shootHeightProfile = std::make_shared<TrapezoidProfile>(m_shooterHeightPID, 0.0, 0.0);
+    m_leftShootPID = std::make_shared<PIDController>(0.f,
+                                                     0.f,
+                                                     0.f,
+                                                     0.f,
+                                                     0.f,
+                                                     &m_leftShootGrbx,
+                                                     &m_leftShootGrbx);
+    m_rightShootPID = std::make_shared<PIDController>(0.f,
+                                                      0.f,
+                                                      0.f,
+                                                      0.f,
+                                                      0.f,
+                                                      &m_rightShootGrbx,
+                                                      &m_rightShootGrbx);
+    m_shooterHeightPID = std::make_shared<PIDController>(0.f,
+                                                         0.f,
+                                                         0.f,
+                                                         0.f,
+                                                         0.f,
+                                                         &m_shooterHeightGrbx,
+                                                         &m_shooterHeightGrbx);
+    m_shootHeightProfile = std::make_shared<TrapezoidProfile>(
+        m_shooterHeightPID,
+        0.0,
+        0.0);
 
-	m_leftShootGrbx.SetInverted(true);
+    m_leftShootGrbx.SetInverted(true);
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
     auto state = std::make_unique<State>("IDLE");
     state->Entry = [this] {
-    m_leftShootGrbx.Set(0);
-    m_rightShootGrbx.Set(0);
-    m_rollBallGrbx.Set(0);
-     };
+        m_leftShootGrbx.Set(0);
+        m_rightShootGrbx.Set(0);
+        m_rollBallGrbx.Set(0);
+    };
 
     m_intakeSM.AddState(std::move(state));
     m_intakeSM.SetState("IDLE");
@@ -44,7 +62,6 @@ Shooter::Shooter() {
     };
 
     m_intakeSM.AddState(std::move(state));
-
 }
 
 void Shooter::Shoot() {
@@ -58,9 +75,9 @@ void Shooter::StopIntakeMotor() {
     m_rollBallGrbx.Set(0);
 }
 void Shooter::StartIntake() {
-	if (m_intakeSM.GetState() == "IDLE") {
-		m_intakeSM.SetState("START_INTAKE");
-	}
+    if (m_intakeSM.GetState() == "IDLE") {
+        m_intakeSM.SetState("START_INTAKE");
+    }
 }
 
 bool Shooter::IsBallLoaded() const {
@@ -72,7 +89,7 @@ bool Shooter::ToggleManualOverride() {
 }
 
 void Shooter::UpdateState() {
-	m_intakeSM.Run();
+    m_intakeSM.Run();
 }
 
 bool Shooter::GetManualOverride() const {

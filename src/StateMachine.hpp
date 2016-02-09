@@ -50,4 +50,3 @@ private:
 };
 
 #endif // STATE_MACHINE_HPP
-
