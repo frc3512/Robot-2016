@@ -1,11 +1,13 @@
 // =============================================================================
-// Description: Helps user determine if joystick button was just pressed or just
-//             released
+// Description: Helps user determine if joystick button was just pressed, just
+//              released, or held
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
 #ifndef BUTTON_TRACKER_HPP
 #define BUTTON_TRACKER_HPP
+
+#include <cstdint>
 
 /* This class allows you to check if a button was pressed or released without
  * having to wait in one spot of code until that happens.
@@ -15,10 +17,10 @@
  * in every iteration of a loop.
  *
  * USAGE
- * 1) Call updateButtons() at beginning of loop to get new button statuses from
+ * 1) Call UpdateButtons() at beginning of loop to get new button statuses from
  *    the Driver Station
- * 2) Call pressedButton(uint32_t) or releasedButton(uint32_t) to poll for whether
- *    the button was pressed or released since last loop iteration
+ * 2) Call PressedButton(), ReleasedButton(), or HeldButton() to poll for
+ *    whether the button was pressed or released since last loop iteration
  *
  * None of these functions block.
  */
@@ -27,10 +29,17 @@ class ButtonTracker {
 public:
     explicit ButtonTracker(uint32_t port);
 
-    void UpdateButtons(); // gets new button statuses for joystick from Driver Station
+    // Gets new button statuses for joystick from Driver Station
+    void Update();
 
-    bool PressedButton(uint32_t button); // returns true if button wasn't pressed but is now
-    bool ReleasedButton(uint32_t button); // returns true if button was pressed but isn't now
+    // Returns 'true' if button wasn't pressed but is now
+    bool PressedButton(uint32_t button);
+
+    // Returns 'true' if button was pressed but isn't now
+    bool ReleasedButton(uint32_t button);
+
+    // Return 'true' if button was pressed and is now
+    bool HeldButton(uint32_t button);
 
 protected:
     uint32_t m_port;

@@ -8,7 +8,8 @@
 
 #include "SubsystemBase.hpp"
 #include "GearBox.hpp"
-#include "../StateMachine.hpp"
+#include "../MotionProfile/TrapezoidProfile.hpp"
+#include "../SM/StateMachine.hpp"
 #include "../WPILib/CANTalon.h"
 #include <DigitalInput.h>
 #include <Timer.h>
