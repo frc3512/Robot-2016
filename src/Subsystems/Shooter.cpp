@@ -10,6 +10,34 @@ Shooter::Shooter() {
     m_leftShootGrbx.SetInverted(true);
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
+
+    auto state = std::make_unique<State>("IDLE");
+    state->Entry = [this] {
+    m_leftShootGrbx.Set(0);
+    m_rightShootGrbx.Set(0);
+    m_rollBallGrbx.Set(0);
+     };
+
+    m_intakeSM.AddState(std::move(state));
+    m_intakeSM.SetState("IDLE");
+
+    state = std::make_unique<State>("START_INTAKE");
+    state->Entry = [this] {
+        m_leftShootGrbx.Set(-.5);
+        m_rightShootGrbx.Set(-.5);
+        m_rollBallGrbx.Set(-.5);
+    };
+    state->Transition = [this] {
+        if (IsBallLoaded()) {
+            return "IDLE";
+        }
+        else {
+            return "";
+        }
+    };
+
+    m_intakeSM.AddState(std::move(state));
+
 }
 
 void Shooter::Shoot() {
@@ -22,13 +50,10 @@ void Shooter::Shoot() {
 void Shooter::StopIntakeMotor() {
     m_rollBallGrbx.Set(0);
 }
-
-void Shooter::Intake() {
-    if (IsBallLoaded()) {
-        m_leftShootGrbx.Set(-.5);
-        m_rightShootGrbx.Set(-.5);
-        m_rollBallGrbx.Set(-.5);
-    }
+void Shooter::StartIntake() {
+	if (m_intakeSM.GetState() == "IDLE") {
+		m_intakeSM.SetState("START_INTAKE");
+	}
 }
 
 bool Shooter::IsBallLoaded() const {

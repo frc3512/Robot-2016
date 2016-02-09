@@ -67,8 +67,8 @@ void Robot::OperatorControl() {
         }
 
 
-        if (shootStick.GetRawButton(2)) {
-            shooter.Intake();
+        if (shootButton.PressedButton(2)) {
+            shooter.StartIntake();
         }
 
         // if (shootStick.GetRawButton(4)) {
@@ -78,6 +78,8 @@ void Robot::OperatorControl() {
         drive1Buttons.UpdateButtons();
         drive2Buttons.UpdateButtons();
         shootButton.UpdateButtons();
+
+        shooter.UpdateState();
 
         DS_PrintOut();
 

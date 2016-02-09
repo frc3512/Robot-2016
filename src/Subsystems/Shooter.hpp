@@ -29,7 +29,7 @@ public:
     void ResetEncoders();
 
     void Shoot();
-    void Intake();
+    void StartIntake();
     bool IsBallLoaded() const;
     void StopIntakeMotor();
 
@@ -72,6 +72,9 @@ private:
                                   &m_rightShootGrbx};
     PIDController m_shooterHeightPID{ 0.f, 0.f, 0.f, &m_shooterHeightGrbx,
                                       &m_shooterHeightGrbx};
+
+    StateMachine m_intakeSM{"START_INTAKE"};
+
 
     // TrapezoidProfile m_shootHeightProfile{m_shooterHeightPID, 0.0, 0.0};
 
