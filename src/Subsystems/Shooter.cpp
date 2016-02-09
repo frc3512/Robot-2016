@@ -23,54 +23,80 @@ Shooter::Shooter() {
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
-    auto state = std::make_unique<State>("IDLE");
+    m_joystickEvent.RegisterButtonEvent("PressedIntakeButton",
+                                        k_shootStickPort, 1, true);
+    m_joystickEvent.RegisterButtonEvent("PressedShooterButton",
+                                        k_shootStickPort, 2, true);
+    m_dioEvent.RegisterInputEvent("BallLoaded", k_intakeLimitPin, true, false,
+                                  m_shootSM);
+
+    // Idle
+    auto state = std::make_unique<State>("Idle");
     state->Entry = [this] {
         m_leftShootGrbx.Set(0);
         m_rightShootGrbx.Set(0);
         m_rollBallGrbx.Set(0);
     };
-    state->Transition = [this] {
-        return "";
-    };
+    state->CheckTransition = [] (const std::string& event) {
+                                 if (event == "PressedShooterButton") {
+                                     return "StartIntake";
+                                 }
+                                 else {
+                                     return "";
+                                 }
+                             };
     m_intakeSM.AddState(std::move(state));
-    m_intakeSM.SetState("IDLE");
 
-    state = std::make_unique<State>("START_INTAKE");
-    state->Entry = [this] {
-        m_leftShootGrbx.Set(-.5);
-        m_rightShootGrbx.Set(-.5);
+    // Start intake
+    state = std::make_unique<State>("StartIntake");
+    state->Run = [this] {
         m_rollBallGrbx.Set(-.5);
     };
-    state->Transition = [this] {
-        if (IsBallLoaded()) {
-            return "IDLE";
-        }
-        else {
-            return "";
-        }
-    };
-
+    state->CheckTransition = [] (const std::string& event) {
+                                 if (event == "BallLoaded") {
+                                     return "Idle";
+                                 }
+                                 else {
+                                     return "";
+                                 }
+                             };
     m_intakeSM.AddState(std::move(state));
-}
 
-void Shooter::Shoot() {
-    // Shoot only if motors spinning
-    if (IsBallLoaded()) {
+    // Idle
+    state = std::make_unique<State>("Idle");
+    state->CheckTransition = [] (const std::string& event) {
+                                 if (event == "PressedIntakeButton") {
+                                     return "StartIntake";
+                                 }
+                                 else {
+                                     return "";
+                                 }
+                             };
+    m_shootSM.AddState(std::move(state));
+
+    // Start intake and shooter
+    state = std::make_unique<State>("StartIntakeAndShooter");
+    state->Entry = [this] {
+        m_timerEvent.Reset();
+    };
+    state->Run = [this] {
+        m_leftShootGrbx.Set(-.5);
+        m_rightShootGrbx.Set(-.5);
         m_rollBallGrbx.Set(.75);
-    }
-}
-
-void Shooter::StopIntakeMotor() {
-    m_rollBallGrbx.Set(0);
-}
-void Shooter::StartIntake() {
-    if (m_intakeSM.GetState() == "IDLE") {
-        m_intakeSM.SetState("START_INTAKE");
-    }
-}
-
-bool Shooter::IsBallLoaded() const {
-    return m_intakeLimit.Get();
+    };
+    state->CheckTransition = [] (const std::string& event) {
+                                 if (event == "ShootTimer") {
+                                     return "Idle";
+                                 }
+                                 else {
+                                     return "";
+                                 }
+                             };
+    state->Exit = [this] {
+        // Stop intake motor
+        m_rollBallGrbx.Set(0);
+    };
+    m_shootSM.AddState(std::move(state));
 }
 
 void Shooter::ToggleManualOverride() {
@@ -79,6 +105,12 @@ void Shooter::ToggleManualOverride() {
 
 void Shooter::UpdateState() {
     m_intakeSM.Run();
+    m_joystickEvent.Poll(m_intakeSM);
+    m_timerEvent.Poll(m_intakeSM);
+
+    m_shootSM.Run();
+    m_joystickEvent.Poll(m_shootSM);
+    m_timerEvent.Poll(m_intakeSM);
 }
 
 bool Shooter::GetManualOverride() const {
@@ -117,7 +149,8 @@ void Shooter::SetManualShooterSpeed(double speed) {
  */
 float Shooter::GetLeftRPM() const {
     // TODO: document magic number math
-    std::cout << "Left Motor Raw Output: " << m_leftShootGrbx.GetSpeed() <<
+    std::cout << "Left Motor Raw Output: " <<
+        m_leftShootGrbx.GetSpeed() <<
         std::endl;
     return m_leftShootGrbx.GetSpeed() * 5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
@@ -125,7 +158,8 @@ float Shooter::GetLeftRPM() const {
 
 float Shooter::GetRightRPM() const {
     // TODO: document magic number math
-    std::cout << "Right Motor Raw Output: " << m_rightShootGrbx.GetSpeed() <<
+    std::cout << "Right Motor Raw Output: " <<
+        m_rightShootGrbx.GetSpeed() <<
         std::endl;
     return m_rightShootGrbx.GetSpeed() * 5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);

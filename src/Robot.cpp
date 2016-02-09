@@ -5,6 +5,7 @@
 
 #include "Robot.hpp"
 #include "Utility.hpp"
+
 #include <cmath>
 #include <iostream>
 
@@ -23,7 +24,7 @@ void Robot::OperatorControl() {
         robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX(),
                          driveStick2.GetRawButton(2));
 
-        if (shootButton.PressedButton(3)) {
+        if (shootButtons.PressedButton(3)) {
             shooter.ToggleManualOverride();
         }
 
@@ -38,31 +39,13 @@ void Robot::OperatorControl() {
          *  }
          */
 
-        if (shootButton.PressedButton(1)) {
-            shootTimer.Reset();
-            shootTimer.Start();
-            shooter.Shoot();
-        }
-
-        if (shootTimer.HasPeriodPassed(3.0)) {
-            shootTimer.Stop();
-            shooter.StopIntakeMotor();
-        }
-
-
-        if (shootButton.PressedButton(2)) {
-            shooter.StartIntake();
-        }
-
         arm.SetManualArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
         shooter.SetManualShooterHeight(shootStick.GetY() * 0.5);
 
 
-        drive1Buttons.UpdateButtons();
-        drive2Buttons.UpdateButtons();
-        shootButton.UpdateButtons();
+        shootButtons.Update();
 
         shooter.UpdateState();
 
