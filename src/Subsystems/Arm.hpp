@@ -1,22 +1,20 @@
-/*
- * Arm.hpp
- *
- *  Created on: Feb 9, 2016
- *      Author: nad
- */
+// =============================================================================
+// Description: Provides an interface for the robot's arm
+// Author: FRC Team 3512, Spartatroniks
+// =============================================================================
 
-#ifndef SRC_SUBSYSTEMS_ARM_HPP_
-#define SRC_SUBSYSTEMS_ARM_HPP_
+#ifndef ARM_HPP
+#define ARM_HPP
 
 #include "SubsystemBase.hpp"
+#include "GearBox.hpp"
 #include "../StateMachine.hpp"
-#include "../WPILib/PIDController.hpp"
-#include "Timer.h"
 #include "../WPILib/CANTalon.h"
-#include "DigitalInput.h"
+#include <DigitalInput.h>
+#include <Timer.h>
 
-#include <thread>
-#include <atomic>
+class PIDController;
+class TrapezoidProfile;
 
 class Arm : public SubsystemBase {
 public:
@@ -32,15 +30,20 @@ public:
     void UpdateState();
 
 private:
-    CANTalon m_leftArmActuator{8};  // TODO: Change ID
-    CANTalon m_rightArmActuator{9};  // TODO: Change ID
-    CANTalon m_carriagePositionMotor{10};  // TODO Change ID
+    GearBox m_leftArmActuator{-1, 8};  // TODO: Change ID
+    std::shared_ptr<PIDController> m_leftArmPID;
+    std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
+
+    GearBox m_rightArmActuator{-1, 9};  // TODO: Change ID
+    std::shared_ptr<PIDController> m_rightArmPID;
+    std::shared_ptr<TrapezoidProfile> m_rightArmProfile;
+
+    GearBox m_carriagePositionMotor{-1, 10};  // TODO Change ID
+    std::shared_ptr<PIDController> m_carriagePositionPID;
+    std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
 
     DigitalInput m_bottomLeftLimitSwitch{1};
     DigitalInput m_bottomRightLimitSwitch{2};
 };
 
-
-
-
-#endif /* SRC_SUBSYSTEMS_ARM_HPP_ */
+#endif // ARM_HPP

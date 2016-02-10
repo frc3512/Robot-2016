@@ -6,31 +6,18 @@
 #include "Shooter.hpp"
 
 Shooter::Shooter() {
-    m_leftShootPID = std::make_shared<PIDController>(0.f,
-                                                     0.f,
-                                                     0.f,
-                                                     0.f,
-                                                     0.f,
-                                                     &m_leftShootGrbx,
-                                                     &m_leftShootGrbx);
-    m_rightShootPID = std::make_shared<PIDController>(0.f,
-                                                      0.f,
-                                                      0.f,
-                                                      0.f,
-                                                      0.f,
-                                                      &m_rightShootGrbx,
-                                                      &m_rightShootGrbx);
-    m_shooterHeightPID = std::make_shared<PIDController>(0.f,
-                                                         0.f,
-                                                         0.f,
-                                                         0.f,
-                                                         0.f,
-                                                         &m_shooterHeightGrbx,
-                                                         &m_shooterHeightGrbx);
+    m_leftShootPID =
+        std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+                                        &m_leftShootGrbx, &m_leftShootGrbx);
+    m_rightShootPID =
+        std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+                                        &m_rightShootGrbx, &m_rightShootGrbx);
+    m_shooterHeightPID =
+        std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+                                        &m_shooterHeightGrbx,
+                                        &m_shooterHeightGrbx);
     m_shootHeightProfile = std::make_shared<TrapezoidProfile>(
-        m_shooterHeightPID,
-        0.0,
-        0.0);
+        m_shooterHeightPID, 0.0, 0.0);
 
     m_leftShootGrbx.SetInverted(true);
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);

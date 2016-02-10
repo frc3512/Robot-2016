@@ -17,9 +17,6 @@
 #include "PIDSource.h"
 #include "PIDOutput.h"
 
-#include <thread>
-#include <atomic>
-
 class Shooter : public SubsystemBase {
 public:
     Shooter();
@@ -59,32 +56,21 @@ private:
 
     // TODO: some CAN IDs conflict
     GearBox m_leftShootGrbx{-1, 10};
+    std::shared_ptr<PIDController> m_leftShootPID;
+
     GearBox m_rightShootGrbx{-1, 6};
+    std::shared_ptr<PIDController> m_rightShootPID;
+
     GearBox m_shooterHeightGrbx{-1, 7};
+    std::shared_ptr<PIDController> m_shooterHeightPID;
+    std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
+
     GearBox m_rollBallGrbx{-1, 5}; // TODO: fix ID
 
     DigitalInput m_intakeLimit{1};
     DigitalInput m_bottomLimit{2};
 
-    std::shared_ptr<PIDController> m_leftShootPID;
-    std::shared_ptr<PIDController> m_rightShootPID;
-    std::shared_ptr<PIDController> m_shooterHeightPID;
-    std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
     StateMachine m_intakeSM{"START_INTAKE"};
-    // std::shared_ptr<PIDController> m_shooterHeightPID{m_shooterHeightPID, 0.0, 0.0};
-
-    // Timer m_profileTimer;
-    // std::atomic<bool> m_updateProfile{true};
-    // std::unique_ptr <TrapezoidProfile> m_shootHeightProfile{ 0.f, 0.f, 0.f, 0.f, 0.f, &m_shooterHeightMotor, &m_shooterHeightMotor};
-
-    /* Maximum velocity and time to maximum velocity constants to load from the
-     * config file
-     *
-     *  double m_maxv_a;
-     *  double m_ttmaxv_a;
-     *  double m_maxv_b;
-     *  double m_ttmaxv_b;
-     */
 };
 
 #endif // ELEVATOR_HPP
