@@ -16,6 +16,7 @@ using namespace std::chrono_literals;
 
 #include "Subsystems/Shooter.hpp"
 #include "Subsystems/DriveTrain.hpp"
+#include "Subsystems/Arm.hpp"
 #include "ButtonTracker.hpp"
 #include "Settings.hpp"
 
@@ -40,14 +41,17 @@ private:
 
     DriveTrain robotDrive;
     Shooter shooter;
+    Arm arm;
 
     Joystick driveStick1{0};
     Joystick driveStick2{1};
     Joystick shootStick{2};
+    Joystick armStick{3};
 
     ButtonTracker drive1Buttons{0};
     ButtonTracker drive2Buttons{1};
     ButtonTracker shootButton{2};
+    ButtonTracker armButton{3};
 
     Timer autoTimer;
     Timer displayTimer;

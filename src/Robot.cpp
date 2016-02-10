@@ -71,6 +71,11 @@ void Robot::OperatorControl() {
             shooter.StartIntake();
         }
 
+
+        arm.SetManualArmHeight(armStick.GetY());
+
+        arm.SetManualCarriagePosition(armStick.GetPOV());
+
         // if (shootStick.GetRawButton(4)) {
         shooter.SetManualShooterHeight(shootStick.GetY() * 0.1);
         // }
