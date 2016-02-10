@@ -19,17 +19,14 @@ Robot::Robot() {
 
 void Robot::OperatorControl() {
     while (IsEnabled() && IsOperatorControl()) {
-        if (driveStick2.GetRawButton(2)) {
-            robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX(), true);
-        }
-        else {
-            robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX());
-        }
-
+        // Enables QuickTurn if button is pressed
+        robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX(),
+                         driveStick2.GetRawButton(2));
 
         if (shootButton.PressedButton(3)) {
             shooter.ToggleManualOverride();
         }
+
         if (shooter.GetManualOverride()) {
             shooter.SetManualShooterSpeed(JoystickRescale(
                                               shootStick.GetThrottle(), 1.f));
@@ -38,7 +35,8 @@ void Robot::OperatorControl() {
             shooter.SetPIDShooterSpeed(JoystickRescale(
                                            shootStick.GetThrottle(), 1.f));
         }
-        // FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
+
+        // FIXME: FOR CURVING THE BOULDERS ONLY. REMOVE BEFORE FINAL RELEASE!
         /*else {
          *   shooter.SetLeftShooterSpeed(JoystickRescale(
          *                                   driveStick2.GetThrottle(), 1.f));
@@ -46,16 +44,14 @@ void Robot::OperatorControl() {
          *                                    shootStick.GetThrottle(), 1.f));
          *  }
          */
-        std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle() <<
-            " | " << "Shoot Stick Throttle: " << shootStick.GetThrottle() <<
-            std::endl;
-        std::cout << "Left RPM: " << shooter.GetLeftRPM() << " | " <<
-            "Right RPM: " << shooter.GetRightRPM() << std::endl;
+        std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle()
+                  << " | Shoot Stick Throttle: " << shootStick.GetThrottle()
+                  << std::endl;
+        std::cout << "Left RPM: " << shooter.GetLeftRPM() << " | Right RPM: "
+                  << shooter.GetRightRPM() << std::endl;
 
 
         if (shootButton.PressedButton(1)) {
-            std::cout << "Trigger Pressed: " << shootStick.GetTrigger() <<
-                std::endl;
             shootTimer.Reset();
             shootTimer.Start();
             shooter.Shoot();
@@ -71,9 +67,7 @@ void Robot::OperatorControl() {
             shooter.StartIntake();
         }
 
-
         arm.SetManualArmHeight(armStick.GetY());
-
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
         // if (shootStick.GetRawButton(4)) {
