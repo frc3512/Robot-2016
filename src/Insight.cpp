@@ -36,7 +36,9 @@ std::string Insight::ReceiveFromDS() {
             return "ctrl\r\n";
         }
     }
-    else {m_hasNewData = false; }
+    else {
+        m_hasNewData = false;
+    }
     return "NONE";
 }
 
