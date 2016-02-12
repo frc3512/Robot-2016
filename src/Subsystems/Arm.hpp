@@ -44,6 +44,9 @@ private:
 
     DigitalInput m_bottomLeftLimitSwitch{1};
     DigitalInput m_bottomRightLimitSwitch{2};
+
+    std::shared_ptr<TrapezoidProfile> m_rightArmHeightProfile;
+    std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;
 };
 
 #endif // ARM_HPP

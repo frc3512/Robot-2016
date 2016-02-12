@@ -23,7 +23,8 @@
 /**
  * CTRE Talon SRX Speed Controller with CAN Control
  */
-class CANTalon: public MotorSafety, public CANSpeedController, public ErrorBase,
+class CANTalon : public MotorSafety, public CANSpeedController,
+public ErrorBase,
 public LiveWindowSendable, public ITableListener, public PIDSource,
 public PIDInterface{
 public:

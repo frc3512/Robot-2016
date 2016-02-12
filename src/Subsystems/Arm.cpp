@@ -13,7 +13,23 @@ Arm::Arm() {
                                                    &m_leftArmActuator);
     m_leftArmProfile = std::make_shared<TrapezoidProfile>(m_leftArmPID,
                                                           0.0, 0.0);
+
+    m_rightArmPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+                                                    &m_rightArmActuator,
+                                                    &m_rightArmActuator);
+    m_rightArmProfile = std::make_shared<TrapezoidProfile>(m_rightArmPID,
+                                                           0.0, 0.0);
+
+
+    m_leftArmHeightProfile = std::make_shared<TrapezoidProfile>(
+        m_leftArmPID, 0.0, 0.0);
+
+
+    m_rightArmHeightProfile = std::make_shared<TrapezoidProfile>(
+        m_rightArmPID, 0.0, 0.0);
 }
+
+
 
 void Arm::SetManualArmHeight(double height) {
     m_leftArmActuator.Set(height);
