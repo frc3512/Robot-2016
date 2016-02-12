@@ -90,8 +90,16 @@ void Shooter::SetManualShooterHeight(double position) {
 void Shooter::SetPIDShooterSpeed(double speed) {
     m_leftShootPID->Enable();
     m_rightShootPID->Enable();
-}
 
+
+}
+/*
+void Shooter::SetShooterHeight(double height) {
+    if (m_manual == false) {
+    	 m_shootHeightProfile->SetGoal(height);
+    }
+}
+*/
 void Shooter::SetManualShooterSpeed(double speed) {
     m_leftShootPID->Disable();
     m_rightShootPID->Disable();

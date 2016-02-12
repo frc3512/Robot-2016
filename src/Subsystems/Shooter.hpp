@@ -36,6 +36,8 @@ public:
     void SetPIDShooterSpeed(double speed);
     void SetManualShooterSpeed(double speed);
 
+    //void SetShooterHeight(double height);
+
     // For testing curving
     void SetLeftShooterSpeed(double speed);
     void SetRightShooterSpeed(double speed);
