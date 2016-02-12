@@ -26,7 +26,7 @@ Arm::Arm() {
 
 
     m_rightArmHeightProfile = std::make_shared<TrapezoidProfile>(
-        m_rightArmPID, 0.0, 0.0)
+        m_rightArmPID, 0.0, 0.0);
 }
 
 
