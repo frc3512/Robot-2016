@@ -29,7 +29,9 @@ Shooter::Shooter() {
         m_rightShootGrbx.Set(0);
         m_rollBallGrbx.Set(0);
     };
-
+    state->Transition = [this] {
+        return "";
+    };
     m_intakeSM.AddState(std::move(state));
     m_intakeSM.SetState("IDLE");
 
@@ -103,15 +105,6 @@ void Shooter::SetManualShooterSpeed(double speed) {
     m_rightShootPID->Disable();
 
     m_leftShootGrbx.Set(speed);
-    m_rightShootGrbx.Set(speed);
-}
-
-// TODO: FOR CURVING THE BOULDERS ONLY, REMOVE BEFORE FINAL RELEASE!
-void Shooter::SetLeftShooterSpeed(double speed) {
-    m_leftShootGrbx.Set(speed);
-}
-
-void Shooter::SetRightShooterSpeed(double speed) {
     m_rightShootGrbx.Set(speed);
 }
 

@@ -29,27 +29,14 @@ void Robot::OperatorControl() {
 
         if (shooter.GetManualOverride()) {
             shooter.SetManualShooterSpeed(JoystickRescale(
-                                              shootStick.GetThrottle(), 1.f));
+                                              shootStick.GetThrottle(), 2.f));
         }
-        else {
-            shooter.SetPIDShooterSpeed(JoystickRescale(
-                                           shootStick.GetThrottle(), 1.f));
-        }
-
-        // FIXME: FOR CURVING THE BOULDERS ONLY. REMOVE BEFORE FINAL RELEASE!
-        /*else {
-         *   shooter.SetLeftShooterSpeed(JoystickRescale(
-         *                                   driveStick2.GetThrottle(), 1.f));
-         *   shooter.SetRightShooterSpeed(JoystickRescale(
-         *                                    shootStick.GetThrottle(), 1.f));
+        /*
+         *  else {
+         *   shooter.SetPIDShooterSpeed(JoystickRescale(
+         *                                  shootStick.GetThrottle(), 1.f));
          *  }
          */
-        std::cout << "Drive Stick Throttle: " << driveStick2.GetThrottle()
-                  << " | Shoot Stick Throttle: " << shootStick.GetThrottle()
-                  << std::endl;
-        std::cout << "Left RPM: " << shooter.GetLeftRPM() << " | Right RPM: "
-                  << shooter.GetRightRPM() << std::endl;
-
 
         if (shootButton.PressedButton(1)) {
             shootTimer.Reset();
@@ -70,9 +57,8 @@ void Robot::OperatorControl() {
         arm.SetManualArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
-        // if (shootStick.GetRawButton(4)) {
-        shooter.SetManualShooterHeight(shootStick.GetY() * 0.1);
-        // }
+        shooter.SetManualShooterHeight(shootStick.GetY() * 0.5);
+
 
         drive1Buttons.UpdateButtons();
         drive2Buttons.UpdateButtons();
@@ -105,6 +91,7 @@ void Robot::Disabled() {
 
 void Robot::Test() {
     while (IsEnabled() && IsTest()) {
+        std::cout << "PRACTICE MODE" << std::endl;
     }
 }
 

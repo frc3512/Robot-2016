@@ -30,15 +30,15 @@ public:
     void UpdateState();
 
 private:
-    GearBox m_leftArmActuator{-1, 8};  // TODO: Change ID
+    GearBox m_leftArmActuator{-1, 27};  // TODO: Change ID
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
-    GearBox m_rightArmActuator{-1, 9};  // TODO: Change ID
+    GearBox m_rightArmActuator{-1, 26};  // TODO: Change ID
     std::shared_ptr<PIDController> m_rightArmPID;
     std::shared_ptr<TrapezoidProfile> m_rightArmProfile;
 
-    GearBox m_carriagePositionMotor{-1, 10};  // TODO Change ID
+    GearBox m_carriagePositionMotor{-1, 25};  // TODO Change ID
     std::shared_ptr<PIDController> m_carriagePositionPID;
     std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
 

@@ -38,9 +38,6 @@ public:
 
     // void SetShooterHeight(double height);
 
-    // For testing curving
-    void SetLeftShooterSpeed(double speed);
-    void SetRightShooterSpeed(double speed);
 
     float GetLeftRPM() const;
     float GetRightRPM() const;
@@ -57,7 +54,7 @@ private:
     float m_latestRightRPM = 0;
 
     // TODO: some CAN IDs conflict
-    GearBox m_leftShootGrbx{-1, 10};
+    GearBox m_leftShootGrbx{-1, 14};
     std::shared_ptr<PIDController> m_leftShootPID;
 
     GearBox m_rightShootGrbx{-1, 6};
