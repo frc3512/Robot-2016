@@ -12,6 +12,7 @@
 #include "../WPILib/CANTalon.h"
 #include <DigitalInput.h>
 #include <Timer.h>
+#include "../roboRIOID.hpp"
 
 class PIDController;
 class TrapezoidProfile;
@@ -30,20 +31,20 @@ public:
     void UpdateState();
 
 private:
-    GearBox m_leftArmActuator{-1, 27};  // TODO: Change ID
+    GearBox m_leftArmActuator{-1, k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
-    GearBox m_rightArmActuator{-1, 26};  // TODO: Change ID
+    GearBox m_rightArmActuator{-1, k_rightArmLiftID};
     std::shared_ptr<PIDController> m_rightArmPID;
     std::shared_ptr<TrapezoidProfile> m_rightArmProfile;
 
-    GearBox m_carriagePositionMotor{-1, 25};  // TODO Change ID
+    GearBox m_carriagePositionMotor{-1, k_carriagePositionID};
     std::shared_ptr<PIDController> m_carriagePositionPID;
     std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
 
-    DigitalInput m_bottomLeftLimitSwitch{1};
-    DigitalInput m_bottomRightLimitSwitch{2};
+    DigitalInput m_bottomLeftLimitSwitch{k_bottomLeftLimitSwitchPin};
+    DigitalInput m_bottomRightLimitSwitch{k_bottomRightLimitSwitchPin};
 
     std::shared_ptr<TrapezoidProfile> m_rightArmHeightProfile;
     std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;

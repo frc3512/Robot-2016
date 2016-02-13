@@ -19,6 +19,7 @@ using namespace std::chrono_literals;
 #include "Subsystems/Arm.hpp"
 #include "ButtonTracker.hpp"
 #include "Settings.hpp"
+#include "roboRIOID.hpp"
 
 #include "DSDisplay.hpp"
 #include "LiveGrapherHost/GraphHost.hpp"
@@ -43,15 +44,15 @@ private:
     Shooter shooter;
     Arm arm;
 
-    Joystick driveStick1{0};
-    Joystick driveStick2{1};
-    Joystick shootStick{2};
-    Joystick armStick{3};
+    Joystick driveStick1{k_driveStick1Port};
+    Joystick driveStick2{k_driveStick2Port};
+    Joystick shootStick{k_shootStickPort};
+    Joystick armStick{k_armStickPort};
 
-    ButtonTracker drive1Buttons{0};
-    ButtonTracker drive2Buttons{1};
-    ButtonTracker shootButton{2};
-    ButtonTracker armButton{3};
+    ButtonTracker drive1Buttons{k_driveStick1Port};
+    ButtonTracker drive2Buttons{k_driveStick2Port};
+    ButtonTracker shootButton{k_shootStickPort};
+    ButtonTracker armButton{k_armStickPort};
 
     Timer autoTimer;
     Timer displayTimer;

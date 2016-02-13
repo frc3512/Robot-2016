@@ -16,6 +16,7 @@
 #include "Timer.h"
 #include "PIDSource.h"
 #include "PIDOutput.h"
+#include "../roboRIOID.hpp"
 
 class Shooter : public SubsystemBase {
 public:
@@ -54,20 +55,20 @@ private:
     float m_latestRightRPM = 0;
 
     // TODO: some CAN IDs conflict
-    GearBox m_leftShootGrbx{-1, 14};
+    GearBox m_leftShootGrbx{-1, k_leftShooterID};
     std::shared_ptr<PIDController> m_leftShootPID;
 
-    GearBox m_rightShootGrbx{-1, 6};
+    GearBox m_rightShootGrbx{-1, k_rightShooterID};
     std::shared_ptr<PIDController> m_rightShootPID;
 
-    GearBox m_shooterHeightGrbx{-1, 7};
+    GearBox m_shooterHeightGrbx{-1, k_shooterHeightID};
     std::shared_ptr<PIDController> m_shooterHeightPID;
     std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
 
-    GearBox m_rollBallGrbx{-1, 5}; // TODO: fix ID
+    GearBox m_rollBallGrbx{-1, k_rollBallID};
 
-    DigitalInput m_intakeLimit{1};
-    DigitalInput m_bottomLimit{2};
+    DigitalInput m_intakeLimit{k_intakeLimitPin};
+    DigitalInput m_bottomLimit{k_bottomLimitPin};
 
     StateMachine m_intakeSM{"START_INTAKE"};
 };
