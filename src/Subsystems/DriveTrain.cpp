@@ -14,7 +14,8 @@ const float DriveTrain::maxWheelSpeed = 80.0;
 DriveTrain::DriveTrain() {
     m_sensitivity = m_settings.GetDouble("LOW_GEAR_SENSITIVE");
 
-    m_leftGrbx.SetInverted(true);
+    m_rightGrbx.SetInverted(true);
+
     m_leftGrbx.SetSensorDirection(true);
 
     m_rightGrbx.SetSensorDirection(true);
@@ -41,8 +42,6 @@ DriveTrain::DriveTrain() {
 
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     // Modified Cheesy Drive; base code courtesy of FRC Team 254
-
-    throttle *= -1;
 
     // Limit values to [-1 .. 1]
     throttle = Limit(throttle, 1.f);
