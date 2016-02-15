@@ -21,7 +21,7 @@ Robot::Robot() {
 void Robot::OperatorControl() {
     while (IsEnabled() && IsOperatorControl()) {
         // Enables QuickTurn if button is pressed
-        robotDrive.Drive(driveStick1.GetY(), driveStick2.GetX(),
+        robotDrive.Drive(-driveStick1.GetY(), driveStick2.GetX(),
                          driveStick2.GetRawButton(2));
 
         if (shootButtons.PressedButton(3)) {
@@ -30,7 +30,7 @@ void Robot::OperatorControl() {
 
         if (shooter.GetManualOverride()) {
             shooter.SetManualShooterSpeed(JoystickRescale(
-                                              shootStick.GetThrottle(), 2.f));
+                                              shootStick.GetThrottle(), 1.f));
         }
         /*
          *  else {
@@ -42,8 +42,9 @@ void Robot::OperatorControl() {
         arm.SetManualArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
-        shooter.SetManualShooterHeight(shootStick.GetY() * 0.5);
+        shooter.SetManualShooterHeight(shootStick.GetY() * .1);
 
+        std::cout << shooter.GetShootHeightValue() << std::endl;
 
         shootButtons.Update();
 
