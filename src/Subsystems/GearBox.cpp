@@ -46,6 +46,10 @@ void GearBox::Set(float value) {
     m_motors[0]->Set(value);
 }
 
+int32_t GearBox::Get() const {
+	return m_motors[0]->GetPosition();
+}
+
 float GearBox::GetPosition() const {
     return m_motors[0]->GetPosition() * m_distancePerPulse;
 }

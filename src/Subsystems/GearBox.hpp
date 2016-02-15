@@ -28,6 +28,9 @@ public:
     // Disables PID controller and sets the motor speeds manually
     void Set(float value);
 
+    // Returns current count on encoder
+    int32_t Get() const;
+
     // Returns current position of master CANTalon
     float GetPosition() const;
 
