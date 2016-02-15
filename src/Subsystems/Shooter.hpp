@@ -18,6 +18,7 @@
 #include "GearBox.hpp"
 #include <DigitalInput.h>
 #include <Timer.h>
+#include "LeverPIDController.hpp"
 #include <PIDSource.h>
 #include <PIDOutput.h>
 
@@ -31,6 +32,8 @@ public:
 
     void ToggleManualOverride();
     bool GetManualOverride() const;
+
+    int32_t GetShootHeightValue() const;
 
     void SetPIDShooterSpeed(double speed);
     void SetManualShooterSpeed(double speed);
@@ -64,7 +67,7 @@ private:
     std::shared_ptr<PIDController> m_rightShootPID;
 
     GearBox m_shooterHeightGrbx{-1, k_shooterHeightID};
-    std::shared_ptr<PIDController> m_shooterHeightPID;
+    std::shared_ptr<LeverPIDController> m_shooterHeightPID;
     std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
 
     GearBox m_rollBallGrbx{-1, k_rollBallID};

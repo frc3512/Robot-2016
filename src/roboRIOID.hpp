@@ -14,24 +14,24 @@
     constexpr int k_armStickPort = 3;
 
     // Shooter gearbox ID
-    constexpr int k_leftShooterID = 14;
-    constexpr int k_rightShooterID = 6;
-    constexpr int k_shooterHeightID = 7;
-    constexpr int k_rollBallID = 5; // TODO: fix ID
+    constexpr int k_leftShooterID = 3;
+    constexpr int k_rightShooterID = 5;
+    constexpr int k_shooterHeightID = 2;
+    constexpr int k_rollBallID = 1; // TODO: fix ID
 
     // Shooter limit switch pin
     constexpr int k_intakeLimitPin = 1;
     constexpr int k_bottomLimitPin = 2;
 
     // Drivetrain gearbox ID
-    constexpr int k_leftDriveMasterID = 1;
-    constexpr int k_leftDriveSlaveID = 3;
+    constexpr int k_leftDriveMasterID = 8;
+    constexpr int k_leftDriveSlaveID = 10;
     constexpr int k_rightDriveMasterID = 4;
-    constexpr int k_rightDriveSlaveID = 9;
+    constexpr int k_rightDriveSlaveID = 6;
 
     // Arm gearbox ID
-    constexpr int k_leftArmLiftID = 27; // TODO: Change ID
-    constexpr int k_rightArmLiftID = 26; // TODO: Change ID
+    constexpr int k_leftArmLiftID = 11; // TODO: Change ID
+    constexpr int k_rightArmLiftID = 12; // TODO: Change ID
     constexpr int k_carriagePositionID = 25; // TODO: Change ID
 
     // Arm limit switch pin

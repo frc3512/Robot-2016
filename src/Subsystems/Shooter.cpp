@@ -13,9 +13,9 @@ Shooter::Shooter() {
         std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
                                         &m_rightShootGrbx, &m_rightShootGrbx);
     m_shooterHeightPID =
-        std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
-                                        &m_shooterHeightGrbx,
-                                        &m_shooterHeightGrbx);
+        std::make_shared<LeverPIDController>(0.f, 0.f, 0.f, 0.f, 0.f, 0.f,
+                                             & m_shooterHeightGrbx,
+                                             &m_shooterHeightGrbx);
     m_shootHeightProfile = std::make_shared<TrapezoidProfile>(
         m_shooterHeightPID, 0.0, 0.0);
 
@@ -28,6 +28,8 @@ Shooter::Shooter() {
     m_joystickEvent.RegisterButtonEvent("PressedShooterButton",
                                         k_shootStickPort, 2, true);
     m_dioEvent.RegisterInputEvent("BallLoaded", k_intakeLimitPin, true, false,
+                                  m_shootSM);
+    m_dioEvent.RegisterInputEvent("ShooterZeroed", k_bottomLimitPin, true, false,
                                   m_shootSM);
 
     // Idle
@@ -64,10 +66,14 @@ Shooter::Shooter() {
 
     // Idle
     state = std::make_unique<State>("Idle");
-    state->CheckTransition = [] (const std::string& event) {
+    state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "PressedIntakeButton") {
                                      return "StartIntake";
                                  }
+                                 else if (event == "ShooterZeroed")  {
+									 m_shooterHeightGrbx.ResetEncoder();
+									 return "";
+							     }
                                  else {
                                      return "";
                                  }
@@ -84,9 +90,13 @@ Shooter::Shooter() {
         m_rightShootGrbx.Set(-.5);
         m_rollBallGrbx.Set(.75);
     };
-    state->CheckTransition = [] (const std::string& event) {
+    state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "ShootTimer") {
                                      return "Idle";
+                                 }
+                                 else if (event == "ShooterZeroed") {
+                                	 m_shooterHeightGrbx.ResetEncoder();
+                                	 return "";
                                  }
                                  else {
                                      return "";
@@ -97,6 +107,10 @@ Shooter::Shooter() {
         m_rollBallGrbx.Set(0);
     };
     m_shootSM.AddState(std::move(state));
+}
+
+int32_t Shooter::GetShootHeightValue() const {
+	return m_shooterHeightGrbx.Get();
 }
 
 void Shooter::ToggleManualOverride() {
@@ -149,18 +163,16 @@ void Shooter::SetManualShooterSpeed(double speed) {
  */
 float Shooter::GetLeftRPM() const {
     // TODO: document magic number math
-    std::cout << "Left Motor Raw Output: " <<
-        m_leftShootGrbx.GetSpeed() <<
-        std::endl;
+    //std::cout << "Left Motor Raw Output: " << m_leftShootGrbx.GetSpeed() <<
+    //    std::endl;
     return m_leftShootGrbx.GetSpeed() * 5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }
 
 float Shooter::GetRightRPM() const {
     // TODO: document magic number math
-    std::cout << "Right Motor Raw Output: " <<
-        m_rightShootGrbx.GetSpeed() <<
-        std::endl;
+    //std::cout << "Right Motor Raw Output: " << m_rightShootGrbx.GetSpeed() <<
+    //    std::endl;
     return m_rightShootGrbx.GetSpeed() * 5.0f * 1000.0f * 60.0f * 2.0f /
            (100.0f * 360.0f);
 }
