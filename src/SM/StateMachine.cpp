@@ -1,0 +1,66 @@
+// =============================================================================
+// Description: Provides an easier way to create state machines
+// Author: FRC Team 3512, Spartatroniks
+// =============================================================================
+
+#include "StateMachine.hpp"
+#include <iostream>
+
+StateMachine::StateMachine(std::string name) : State(std::move(name)) {
+    Run = [this] { m_currentState->Run(); };
+}
+
+void StateMachine::AddState(std::unique_ptr<State> state) {
+    // First state added is made the initial state
+    if (m_states.empty()) {
+        m_currentState = state.get();
+    }
+
+    m_states.push_back(std::move(state));
+}
+
+std::string StateMachine::StackTrace() const {
+    // Prepend state machine's name to provide a stack trace
+    return Name() + " > " + m_currentState->StackTrace();
+}
+
+std::string StateMachine::HandleEvent(std::string& event) {
+    auto newState = m_currentState->HandleEvent(event);
+
+    // If current state didn't handle event
+    if (newState.length() == 0) {
+        // Check whether state machine itself will handle event
+        auto ret = CheckTransition(event);
+
+        // If state machine requested a transition, consume the event
+        if (ret.length() != 0) {
+            event.resize(0);
+        }
+
+        return ret;
+    }
+    else {
+        if (!SetState(newState)) {
+            // Failed to find state matching the returned name
+            std::cout << "\"" << newState << "\" is not a known state\n";
+        }
+
+        return newState;
+    }
+}
+
+bool StateMachine::SetState(const std::string& newState) {
+    for (auto& state : m_states) {
+        if (state->Name() == newState) {
+            if (m_currentState != nullptr) {
+                m_currentState->Exit();
+            }
+            m_currentState = state.get();
+            m_currentState->Entry();
+
+            return true;
+        }
+    }
+
+    return false;
+}

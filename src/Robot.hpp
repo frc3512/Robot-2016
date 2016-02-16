@@ -14,6 +14,7 @@ using namespace std::chrono_literals;
 #include <Solenoid.h>
 #include <Timer.h>
 
+#include "ButtonTracker.hpp"
 #include "Subsystems/Shooter.hpp"
 #include "Subsystems/DriveTrain.hpp"
 #include "Subsystems/Arm.hpp"
@@ -46,14 +47,10 @@ private:
     Joystick shootStick{k_shootStickPort};
     Joystick armStick{k_armStickPort};
 
-    ButtonTracker drive1Buttons{k_driveStick1Port};
-    ButtonTracker drive2Buttons{k_driveStick2Port};
-    ButtonTracker shootButton{k_shootStickPort};
-    ButtonTracker armButton{k_armStickPort};
+    ButtonTracker shootButtons{k_shootStickPort};
 
     Timer autoTimer;
     Timer displayTimer;
-    Timer shootTimer;
 
     // Used for sending data to the Driver Station
     DSDisplay& dsDisplay{DSDisplay::GetInstance(k_dsPort)};

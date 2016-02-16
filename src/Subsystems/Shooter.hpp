@@ -10,13 +10,16 @@
 #include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../WPILib/CANTalon.h"
 #include "../WPILib/PIDController.hpp"
-#include "GearBox.hpp"
-#include "DigitalInput.h"
-#include "../StateMachine.hpp"
-#include "Timer.h"
-#include "PIDSource.h"
-#include "PIDOutput.h"
+#include "../Events/JoystickEventGenerator.hpp"
+#include "../Events/DigitalInputEventGenerator.hpp"
+#include "../Events/TimerEventGenerator.hpp"
+#include "../SM/StateMachine.hpp"
 #include "../roboRIOID.hpp"
+#include "GearBox.hpp"
+#include <DigitalInput.h>
+#include <Timer.h>
+#include <PIDSource.h>
+#include <PIDOutput.h>
 
 class Shooter : public SubsystemBase {
 public:
@@ -25,11 +28,6 @@ public:
 
     void ReloadPID();
     void ResetEncoders();
-
-    void Shoot();
-    void StartIntake();
-    bool IsBallLoaded() const;
-    void StopIntakeMotor();
 
     void ToggleManualOverride();
     bool GetManualOverride() const;
@@ -54,6 +52,10 @@ private:
     float m_latestLeftRPM = 0;
     float m_latestRightRPM = 0;
 
+    JoystickEventGenerator m_joystickEvent;
+    DigitalInputEventGenerator m_dioEvent;
+    TimerEventGenerator m_timerEvent{"ShootTimer", 3.0};
+
     // TODO: some CAN IDs conflict
     GearBox m_leftShootGrbx{-1, k_leftShooterID};
     std::shared_ptr<PIDController> m_leftShootPID;
@@ -67,10 +69,10 @@ private:
 
     GearBox m_rollBallGrbx{-1, k_rollBallID};
 
-    DigitalInput m_intakeLimit{k_intakeLimitPin};
     DigitalInput m_bottomLimit{k_bottomLimitPin};
 
-    StateMachine m_intakeSM{"START_INTAKE"};
+    StateMachine m_intakeSM{"IntakeSM"};
+    StateMachine m_shootSM{"ShootSM"};
 };
 
 #endif // ELEVATOR_HPP
