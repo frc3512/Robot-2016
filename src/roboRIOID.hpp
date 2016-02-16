@@ -7,6 +7,9 @@
 #ifndef ROBORIOID_HPP
 #define ROBORIOID_HPP
 
+// DS port
+constexpr double k_dsPort = 1130;
+
 // Joystick and button port
 constexpr int k_driveStick1Port = 0;
 constexpr int k_driveStick2Port = 1;
@@ -37,5 +40,13 @@ constexpr int k_carriagePositionID = 25;     // TODO: Change ID
 // Arm limit switch pin
 constexpr int k_bottomLeftLimitSwitchPin = 3;     // TODO: Confirm these port numbers
 constexpr int k_bottomRightLimitSwitchPin = 4;     // TODO: Confirm these port numbers
+
+// Other settings
+constexpr double k_lowGearSensitive = 0.75;
+constexpr double k_turnNonLinearity = 1.0;
+constexpr double k_inertia = 5.0;
+constexpr double k_inertiaDampen = 2.5;
+constexpr double k_inertiaHighTurn = 5.0;
+constexpr double k_inertiaLowTurn = 3.0;
 
 #endif // ROBORIOID_HPP
