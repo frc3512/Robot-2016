@@ -8,7 +8,7 @@
 #define ROBORIOID_HPP
 
     //DS port
-    constexpr double k_dsPort = 1130
+    constexpr double k_dsPort = 1130;
 
     // Joystick and button port
     constexpr int k_driveStick1Port = 0;
