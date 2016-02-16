@@ -5,6 +5,7 @@
 
 #include "DriveTrain.hpp"
 #include "../WPILib/PIDController.hpp"
+#include "roboRIOID.hpp"
 
 #include <cmath>
 #include "../WPILib/CANTalon.hpp"
@@ -12,7 +13,7 @@
 const float DriveTrain::maxWheelSpeed = 80.0;
 
 DriveTrain::DriveTrain() {
-    m_sensitivity = m_settings.GetDouble("LOW_GEAR_SENSITIVE");
+    m_sensitivity = k_lowGearSensitive;
 
     m_rightGrbx.SetInverted(true);
 
@@ -59,7 +60,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     double negInertia = turn - m_oldTurn;
     m_oldTurn = turn;
 
-    float turnNonLinearity = m_settings.GetDouble("TURN_NON_LINEARITY");
+    float turnNonLinearity = k_turnNonLinearity;
 
     /* Apply a sine function that's scaled to make turning sensitivity feel better.
      * turnNonLinearity should never be zero, but can be close
@@ -74,14 +75,14 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     // Negative inertia!
     double negInertiaScalar;
     if (turn * negInertia > 0) {
-        negInertiaScalar = m_settings.GetDouble("INERTIA_DAMPEN");
+        negInertiaScalar = k_inertiaDampen;
     }
     else {
         if (fabs(turn) > 0.65) {
-            negInertiaScalar = m_settings.GetDouble("INERTIA_HIGH_TURN");
+            negInertiaScalar = k_inertiaHighTurn;
         }
         else {
-            negInertiaScalar = m_settings.GetDouble("INERTIA_LOW_TURN");
+            negInertiaScalar = k_inertiaLowTurn;
         }
     }
 
@@ -170,26 +171,24 @@ void DriveTrain::SetDeadband(float band) {
 }
 
 void DriveTrain::ReloadPID() {
-    m_settings.Update();
-
     float p = 0.f;
     float i = 0.f;
     float d = 0.f;
     float v = 0.f;
     float a = 0.f;
 
-    p = m_settings.GetDouble("PID_DRIVE_LEFT_P");
-    i = m_settings.GetDouble("PID_DRIVE_LEFT_I");
-    d = m_settings.GetDouble("PID_DRIVE_LEFT_D");
-    v = m_settings.GetDouble("PID_DRIVE_LEFT_V");
-    a = m_settings.GetDouble("PID_DRIVE_LEFT_A");
+    p = k_leftDriveP;
+    i = k_leftDriveI;
+    d = k_leftDriveD;
+    v = k_leftDriveV;
+    a = k_leftDriveA;
     m_leftPID->SetPID(p, i, d, v, a);
 
-    p = m_settings.GetDouble("PID_DRIVE_RIGHT_P");
-    i = m_settings.GetDouble("PID_DRIVE_RIGHT_I");
-    d = m_settings.GetDouble("PID_DRIVE_RIGHT_D");
-    v = m_settings.GetDouble("PID_DRIVE_RIGHT_V");
-    a = m_settings.GetDouble("PID_DRIVE_RIGHT_A");
+    p = k_rightDriveP;
+    i = k_rightDriveI;
+    d = k_rightDriveD;
+    v = k_rightDriveV;
+    a = k_rightDriveA;
     m_rightPID->SetPID(p, i, d, v, a);
 }
 
