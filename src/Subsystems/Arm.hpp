@@ -13,7 +13,7 @@
 #include "../WPILib/CANTalon.hpp"
 #include <DigitalInput.h>
 #include <Timer.h>
-#include "../roboRIOID.hpp"
+#include "../Constants.hpp"
 
 class PIDController;
 class TrapezoidProfile;

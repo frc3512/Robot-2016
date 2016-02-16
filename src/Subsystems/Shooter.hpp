@@ -14,11 +14,11 @@
 #include "../Events/DigitalInputEventGenerator.hpp"
 #include "../Events/TimerEventGenerator.hpp"
 #include "../SM/StateMachine.hpp"
-#include "../roboRIOID.hpp"
+#include "../Constants.hpp"
 #include "GearBox.hpp"
 #include <DigitalInput.h>
 #include <Timer.h>
-#include "LeverPIDController.hpp"
+#include "../LeverPIDController.hpp"
 #include <PIDSource.h>
 #include <PIDOutput.h>
 

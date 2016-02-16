@@ -6,7 +6,6 @@
 #ifndef SUBSYSTEM_BASE_HPP
 #define SUBSYSTEM_BASE_HPP
 
-#include "../Settings.hpp"
 
 class SubsystemBase {
 public:
@@ -15,8 +14,6 @@ public:
     virtual void ReloadPID() = 0;
     virtual void ResetEncoders() = 0;
 
-protected:
-    Settings m_settings{"/home/lvuser/RobotSettings.txt"};
 };
 
 #endif // SUBSYSTEM_BASE_HPP

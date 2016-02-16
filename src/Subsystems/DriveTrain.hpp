@@ -11,7 +11,7 @@
 #include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../Utility.hpp"
 #include <memory>
-#include "../roboRIOID.hpp"
+#include "../Constants.hpp"
 
 class GearBox;
 class PIDController;
