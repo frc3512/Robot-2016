@@ -18,7 +18,6 @@ using namespace std::chrono_literals;
 #include "Subsystems/DriveTrain.hpp"
 #include "Subsystems/Arm.hpp"
 #include "ButtonTracker.hpp"
-#include "Settings.hpp"
 #include "roboRIOID.hpp"
 
 #include "DSDisplay.hpp"
@@ -38,8 +37,6 @@ public:
     void DS_PrintOut();
 
 private:
-    Settings settings{"/home/lvuser/RobotSettings.txt"};
-
     DriveTrain robotDrive;
     Shooter shooter;
     Arm arm;
@@ -59,7 +56,7 @@ private:
     Timer shootTimer;
 
     // Used for sending data to the Driver Station
-    DSDisplay& dsDisplay{DSDisplay::GetInstance(settings.GetInt("DS_Port"))};
+    DSDisplay& dsDisplay{DSDisplay::GetInstance(k_dsPort)};
 
     // The LiveGrapher host
     GraphHost pidGraph{3513};
