@@ -50,8 +50,7 @@ public:
 
 private:
     bool m_manual = false;
-    float m_latestLeftRPM = 0;
-    float m_latestRightRPM = 0;
+    double m_manualShooterSpeed;
 
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
@@ -72,7 +71,6 @@ private:
 
     DigitalInput m_bottomLimit{k_bottomLimitPin};
 
-    StateMachine m_intakeSM{"IntakeSM"};
     StateMachine m_shootSM{"ShootSM"};
 };
 
