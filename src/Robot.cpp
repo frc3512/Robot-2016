@@ -45,11 +45,11 @@ void Robot::OperatorControl() {
         shooter.SetManualShooterHeight(shootStick.GetY());
 
         std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-        std::endl;
+            std::endl;
         std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
-        std::endl;
+            std::endl;
         std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-        std::endl;
+            std::endl;
 
         shootButtons.Update();
 

@@ -23,6 +23,15 @@ Shooter::Shooter() {
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
+    // Sets encoder type
+    m_leftShootGrbx.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+    m_rightShootGrbx.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+    m_shooterHeightGrbx.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+
+
     m_joystickEvent.RegisterButtonEvent("PressedIntakeButton",
                                         k_shootStickPort, 2, true);
     m_joystickEvent.RegisterButtonEvent("ReleasedIntakeButton",
@@ -46,7 +55,7 @@ Shooter::Shooter() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  std::cout << "Event polling: " << event <<
-        std::endl;
+                                     std::endl;
                                  if (event == "PressedIntakeButton") {
                                      return "StartIntake";
                                  }
@@ -72,7 +81,7 @@ Shooter::Shooter() {
     };
     state->CheckTransition = [] (const std::string& event) {
                                  std::cout << "Event polling: " << event <<
-        std::endl;
+                                     std::endl;
                                  if (event == "ReleasedIntakeButton") {
                                      return "Idle";
                                  }
@@ -115,7 +124,7 @@ Shooter::Shooter() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  std::cout << "Event polling: " << event <<
-        std::endl;
+                                     std::endl;
                                  if (event == "ShootTimer") {
                                      return "Idle";
                                  }

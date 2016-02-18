@@ -50,7 +50,7 @@ public:
 
 private:
     bool m_manual = false;
-    double m_manualShooterSpeed;
+    double m_manualShooterSpeed = 0.0;
 
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
