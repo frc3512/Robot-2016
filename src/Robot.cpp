@@ -43,14 +43,14 @@ void Robot::OperatorControl() {
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
         shooter.SetManualShooterHeight(shootStick.GetY());
-
-        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-        std::endl;
-        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
-        std::endl;
-        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-        std::endl;
-
+        /*
+         *  std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
+         *   std::endl;
+         *  std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
+         *   std::endl;
+         *  std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
+         *   std::endl;
+         */
         shootButtons.Update();
 
         shooter.UpdateState();
