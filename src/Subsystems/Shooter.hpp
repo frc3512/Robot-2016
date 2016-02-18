@@ -34,22 +34,20 @@ public:
 
     int32_t GetShootHeightValue() const;
 
-    void SetPIDShooterSpeed(double speed);
-    void SetManualShooterSpeed(double speed);
+    void SetShooterSpeed(double speed);
 
-    // void SetShooterHeight(double height);
+    void SetShooterHeight(double height);
 
     float GetLeftRPM() const;
     float GetRightRPM() const;
     void ManualChangeSetpoint(double delta);
 
-    void SetManualShooterHeight(double position);
-
     // Periodic
     void UpdateState();
 
 private:
-    bool m_manual = false;
+    // TODO: change this to false once the velocity feed forwards are non-zero
+    bool m_manual = true;
     double m_manualShooterSpeed;
 
     JoystickEventGenerator m_joystickEvent;

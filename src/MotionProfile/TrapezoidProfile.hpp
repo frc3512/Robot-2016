@@ -27,24 +27,10 @@ public:
                      double timeToMaxV);
     virtual ~TrapezoidProfile() = default;
 
-    /* If distance:
-     *     curSetpoint is current distance set to which to travel
-     *     curSource is current position (not used)
-     *
-     * If velocity:
-     *     curSetpoint is current velocity at which to travel
-     *     curSource is current velocity (not used)
-     *
-     * curTime is current time
-     */
-    virtual PIDState UpdateSetpoint(double curTime);
-
     /* goal is a distance to which to travel
      * curSource is the current position
-     * t initializes m_lastTime
      */
-    virtual PIDState SetGoal(double t, PIDState goal,
-                             PIDState curSource = PIDState());
+    virtual PIDState SetGoal(PIDState goal, PIDState curSource = PIDState());
 
     void SetMaxVelocity(double v);
     double GetMaxVelocity() const;
@@ -57,6 +43,9 @@ protected:
     double m_timeFromMaxVelocity;
     double m_timeToMaxVelocity;
     double m_sign;
+
+    // curTime is current time
+    virtual PIDState UpdateSetpoint(double curTime);
 };
 
 #endif // TRAPEZOID_PROFILE_HPP

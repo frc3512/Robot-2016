@@ -15,36 +15,7 @@ TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDInterface> pid,
     SetTimeToMaxV(timeToMaxV);
 }
 
-PIDState TrapezoidProfile::UpdateSetpoint(double curTime) {
-    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
-
-    if (curTime < m_timeToMaxVelocity) {
-        // Accelerate up
-        m_sp.acceleration = m_acceleration;
-        m_sp.velocity = m_sp.acceleration * curTime;
-    }
-    else if (curTime < m_timeFromMaxVelocity) {
-        // Maintain max velocity
-        m_sp.acceleration = 0.0;
-        m_sp.velocity = m_profileMaxVelocity;
-    }
-    else if (curTime < m_timeTotal) {
-        // Accelerate down
-        double decelTime = curTime - m_timeFromMaxVelocity;
-        m_sp.acceleration = -m_acceleration;
-        m_sp.velocity = m_profileMaxVelocity - m_sp.acceleration * decelTime;
-    }
-
-    m_sp.acceleration *= m_sign;
-    m_sp.velocity *= m_sign;
-    m_sp.displacement += m_sp.velocity * (curTime - m_lastTime);
-
-    m_lastTime = curTime;
-    return m_sp;
-}
-
-PIDState TrapezoidProfile::SetGoal(double t, PIDState goal,
-                                   PIDState curSource) {
+PIDState TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
     m_sp = m_goal = goal;
@@ -101,8 +72,6 @@ PIDState TrapezoidProfile::SetGoal(double t, PIDState goal,
         m_profileMaxVelocity = m_velocity;
     }
 
-    m_lastTime = t;
-
     // Set setpoint to current distance since setpoint hasn't moved yet
     m_sp = curSource;
 
@@ -121,4 +90,32 @@ double TrapezoidProfile::GetMaxVelocity() const {
 
 void TrapezoidProfile::SetTimeToMaxV(double timeToMaxV) {
     m_acceleration = m_velocity / timeToMaxV;
+}
+
+PIDState TrapezoidProfile::UpdateSetpoint(double curTime) {
+    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
+
+    if (curTime < m_timeToMaxVelocity) {
+        // Accelerate up
+        m_sp.acceleration = m_acceleration;
+        m_sp.velocity = m_sp.acceleration * curTime;
+    }
+    else if (curTime < m_timeFromMaxVelocity) {
+        // Maintain max velocity
+        m_sp.acceleration = 0.0;
+        m_sp.velocity = m_profileMaxVelocity;
+    }
+    else if (curTime < m_timeTotal) {
+        // Accelerate down
+        double decelTime = curTime - m_timeFromMaxVelocity;
+        m_sp.acceleration = -m_acceleration;
+        m_sp.velocity = m_profileMaxVelocity - m_sp.acceleration * decelTime;
+    }
+
+    m_sp.acceleration *= m_sign;
+    m_sp.velocity *= m_sign;
+    m_sp.displacement += m_sp.velocity * (curTime - m_lastTime);
+
+    m_lastTime = curTime;
+    return m_sp;
 }

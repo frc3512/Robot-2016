@@ -28,12 +28,6 @@ public:
     BezierTrapezoidProfile(std::shared_ptr<PIDInterface> pid, double maxV,
                            double timeToMaxV);
 
-    /* curTime is current time
-     *
-     * returns updated uncompensated setpoint (see double getMidSetpoint())
-     */
-    PIDState UpdateSetpoint(double curTime);
-
     /* Returns uncompensated setpoint for use in control of systems other than
      * the drive train
      */
@@ -44,16 +38,23 @@ public:
 
     /* goal is a Bézier curve for robot to follow
      * curSource is the current position
-     * t initializes m_lastTime
      *
      * returns starting setpoint
      */
-    PIDState SetCurveGoal(const BezierCurve& curve, double t);
+    PIDState SetCurveGoal(const BezierCurve& curve,
+                          PIDState curSource = PIDState());
 
     void ResetProfile();
 
     // Sets distance between two sides of drive train
     void SetWidth(double width);
+
+protected:
+    /* curTime is current time
+     *
+     * returns updated uncompensated setpoint (see double getMidSetpoint())
+     */
+    PIDState UpdateSetpoint(double curTime);
 
 private:
     // The robot follows this by turning in the motion profile
