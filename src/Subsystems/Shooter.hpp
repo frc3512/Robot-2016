@@ -48,7 +48,7 @@ public:
 private:
     // TODO: change this to false once the velocity feed forwards are non-zero
     bool m_manual = true;
-    double m_manualShooterSpeed;
+    double m_manualShooterSpeed = 0.0;
 
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;

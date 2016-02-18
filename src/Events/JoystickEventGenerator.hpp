@@ -8,13 +8,14 @@
 
 #include "EventGenerator.hpp"
 #include "../SM/StateMachine.hpp"
-#include <DriverStation.h>
 #include <string>
 #include <vector>
 #include <cstdint>
 
 class JoystickEventGenerator : public EventGenerator {
 public:
+    JoystickEventGenerator();
+
     /* Registers a joystick button to be checked for either a rising or trailing
      * edge.
      *
@@ -27,6 +28,9 @@ public:
 
     void Poll(EventAcceptor& acceptor) override;
 
+    // This should be called after finished calling Poll() on event acceptors
+    void Update();
+
 private:
     struct JoystickEvent {
         std::string name;
@@ -38,8 +42,8 @@ private:
     // tuple of port, button, risingEdge, eventName
     std::vector<JoystickEvent> m_events;
 
-    std::vector<uint32_t> m_oldStates{DriverStation::kJoystickPorts, 0};
-    std::vector<uint32_t> m_newStates{DriverStation::kJoystickPorts, 0};
+    std::vector<uint32_t> m_oldStates;
+    std::vector<uint32_t> m_newStates;
 
     bool GetButtonState(uint32_t buttonStates, uint32_t button);
 };

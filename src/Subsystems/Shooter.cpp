@@ -23,6 +23,15 @@ Shooter::Shooter() {
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
+    // Sets encoder type
+    m_leftShootGrbx.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+    m_rightShootGrbx.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+    m_shooterHeightGrbx.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+
+
     m_joystickEvent.RegisterButtonEvent("PressedIntakeButton",
                                         k_shootStickPort, 2, true);
     m_joystickEvent.RegisterButtonEvent("ReleasedIntakeButton",
@@ -45,8 +54,6 @@ Shooter::Shooter() {
         m_rollBallGrbx.Set(0);
     };
     state->CheckTransition = [this] (const std::string& event) {
-                                 std::cout << "Event polling: " << event <<
-        std::endl;
                                  if (event == "PressedIntakeButton") {
                                      return "StartIntake";
                                  }
@@ -71,8 +78,6 @@ Shooter::Shooter() {
         m_rightShootGrbx.Set(-0.5);
     };
     state->CheckTransition = [] (const std::string& event) {
-                                 std::cout << "Event polling: " << event <<
-        std::endl;
                                  if (event == "ReleasedIntakeButton") {
                                      return "Idle";
                                  }
@@ -114,8 +119,6 @@ Shooter::Shooter() {
         m_rightShootGrbx.Set(m_manualShooterSpeed);
     };
     state->CheckTransition = [this] (const std::string& event) {
-                                 std::cout << "Event polling: " << event <<
-        std::endl;
                                  if (event == "ShootTimer") {
                                      return "Idle";
                                  }
@@ -138,8 +141,8 @@ void Shooter::ToggleManualOverride() {
 void Shooter::UpdateState() {
     m_shootSM.Run();
     m_joystickEvent.Poll(m_shootSM);
+    m_joystickEvent.Update();
     m_timerEvent.Poll(m_shootSM);
-    std::cout << "STATE: " << m_shootSM.StackTrace() << std::endl;
 }
 
 bool Shooter::GetManualOverride() const {
