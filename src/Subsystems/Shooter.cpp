@@ -46,7 +46,7 @@ Shooter::Shooter() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  std::cout << "Event polling: " << event <<
-        std::endl;
+                                     std::endl;
                                  if (event == "PressedIntakeButton") {
                                      return "StartIntake";
                                  }
@@ -72,7 +72,7 @@ Shooter::Shooter() {
     };
     state->CheckTransition = [] (const std::string& event) {
                                  std::cout << "Event polling: " << event <<
-        std::endl;
+                                     std::endl;
                                  if (event == "ReleasedIntakeButton") {
                                      return "Idle";
                                  }
@@ -115,7 +115,7 @@ Shooter::Shooter() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  std::cout << "Event polling: " << event <<
-        std::endl;
+                                     std::endl;
                                  if (event == "ShootTimer") {
                                      return "Idle";
                                  }

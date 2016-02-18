@@ -23,10 +23,9 @@
 /**
  * CTRE Talon SRX Speed Controller with CAN Control
  */
-class CANTalon: public MotorSafety, public CANSpeedController,
-public ErrorBase,
-public LiveWindowSendable, public ITableListener, public PIDSource,
-public PIDInterface{
+class CANTalon : public MotorSafety, public CANSpeedController,
+                 public ErrorBase, public LiveWindowSendable,
+                 public ITableListener, public PIDSource, public PIDInterface {
 public:
     enum FeedbackDevice {
         QuadEncoder = 0,
@@ -408,13 +407,13 @@ public:
 
     // LiveWindow stuff.
     void ValueChanged(ITable* source, llvm::StringRef key,
-                      std::shared_ptr < nt::Value > value, bool isNew) override;
+                      std::shared_ptr<nt::Value> value, bool isNew) override;
     void UpdateTable() override;
     void StartLiveWindowMode() override;
     void StopLiveWindowMode() override;
     std::string GetSmartDashboardType() const override;
-    void InitTable(std::shared_ptr < ITable > subTable) override;
-    std::shared_ptr < ITable > GetTable() const override;
+    void InitTable(std::shared_ptr<ITable> subTable) override;
+    std::shared_ptr<ITable> GetTable() const override;
 
     // SpeedController overrides
     virtual void SetInverted(bool isInverted) override;
@@ -434,8 +433,8 @@ private:
     };
 
     int m_deviceNumber;
-    std::unique_ptr < CanTalonSRX > m_impl;
-    std::unique_ptr < MotorSafetyHelper > m_safetyHelper;
+    std::unique_ptr<CanTalonSRX> m_impl;
+    std::unique_ptr<MotorSafetyHelper> m_safetyHelper;
     int m_profile = 0; // Profile from CANTalon to use. Set to zero until we can
     // actually test this.
 
@@ -528,7 +527,7 @@ private:
                                  int32_t nativeVel) const;
 
     // LiveWindow stuff.
-    std::shared_ptr < ITable > m_table;
+    std::shared_ptr<ITable> m_table;
     bool m_isInverted;
 
     HasBeenMoved m_hasBeenMoved;
