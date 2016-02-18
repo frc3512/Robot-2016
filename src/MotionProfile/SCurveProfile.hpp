@@ -22,15 +22,10 @@ public:
     SCurveProfile(std::shared_ptr<PIDInterface> pid, double maxV, double maxA,
                   double timeToMaxA);
 
-    // curTime is current time
-    virtual PIDState UpdateSetpoint(double curTime);
-
     /* goal is a distance to which to travel
      * curSource is the current position
-     * t initializes m_lastTime
      */
-    virtual PIDState SetGoal(double t, PIDState goal,
-                             PIDState curSource = PIDState());
+    virtual PIDState SetGoal(PIDState goal, PIDState curSource = PIDState());
 
     void SetMaxVelocity(double v);
     double GetMaxVelocity() const;
@@ -52,6 +47,9 @@ protected:
     double m_t7;
 
     double m_sign;
+
+    // curTime is current time
+    virtual PIDState UpdateSetpoint(double curTime);
 };
 
 #endif // SCURVE_PROFILE_HPP

@@ -19,20 +19,20 @@ public:
     ProfileBase(std::shared_ptr<PIDInterface> pid);
     virtual ~ProfileBase();
 
-    virtual PIDState UpdateSetpoint(double curTime) = 0;
-
     // Should return initial setpoint for start of profile
-    virtual PIDState SetGoal(double t, PIDState goal,
-                             PIDState curSource) = 0;
+    virtual PIDState SetGoal(PIDState goal, PIDState curSource) = 0;
     virtual bool AtGoal();
 
     PIDState GetGoal() const;
     PIDState GetSetpoint() const;
 
     virtual void ResetProfile();
+    void StopProfile();
 
 protected:
     void StartProfile();
+
+    virtual PIDState UpdateSetpoint(double curTime) = 0;
 
     // Use this to make UpdateSetpoint() and SetGoal() thread-safe
     std::recursive_mutex m_varMutex;

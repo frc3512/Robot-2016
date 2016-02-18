@@ -17,6 +17,70 @@ SCurveProfile::SCurveProfile(std::shared_ptr<PIDInterface> pid,
     SetTimeToMaxA(timeToMaxA);
 }
 
+PIDState SCurveProfile::SetGoal(PIDState goal, PIDState curSource) {
+    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
+
+    m_sp = m_goal = goal;
+    m_sp.displacement -= curSource.displacement;
+
+    m_sign = (m_sp.displacement < 0) ? -1.0 : 1.0;
+
+    // If profile can't accelerate up to max velocity before decelerating
+    bool shortProfile = m_maxVelocity * (m_timeToMaxA + m_maxVelocity /
+                                         m_acceleration) >
+                        m_sign * m_sp.displacement;
+
+    if (shortProfile) {
+        m_profileMaxVelocity = m_acceleration *
+                               (std::sqrt(m_sign * m_sp.displacement /
+                                          m_acceleration - 0.75 *
+                                          std::pow(m_timeToMaxA, 2)) - 0.5 *
+                                m_timeToMaxA);
+    }
+    else {
+        m_profileMaxVelocity = m_maxVelocity;
+    }
+
+    // Find times at critical points
+    m_t2 = m_profileMaxVelocity / m_acceleration;
+    m_t3 = m_t2 + m_timeToMaxA;
+    if (shortProfile) {
+        m_t4 = m_t3;
+    }
+    else {
+        m_t4 = m_sign * m_sp.displacement / m_profileMaxVelocity;
+    }
+    m_t5 = m_t4 + m_timeToMaxA;
+    m_t6 = m_t4 + m_t2;
+    m_t7 = m_t6 + m_timeToMaxA;
+    m_timeTotal = m_t7;
+
+    // Set setpoint to current distance since setpoint hasn't moved yet
+    m_sp = curSource;
+
+    StartProfile();
+
+    return curSource;
+}
+
+void SCurveProfile::SetMaxVelocity(double v) {
+    m_maxVelocity = v;
+}
+
+double SCurveProfile::GetMaxVelocity() const {
+    return m_maxVelocity;
+}
+
+void SCurveProfile::SetMaxAcceleration(double a) {
+    m_acceleration = a;
+    m_jerk = m_acceleration / m_timeToMaxA;
+}
+
+void SCurveProfile::SetTimeToMaxA(double timeToMaxA) {
+    m_timeToMaxA = timeToMaxA;
+    m_jerk = m_acceleration / m_timeToMaxA;
+}
+
 PIDState SCurveProfile::UpdateSetpoint(double curTime) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
@@ -64,70 +128,4 @@ PIDState SCurveProfile::UpdateSetpoint(double curTime) {
 
     m_lastTime = curTime;
     return m_sp;
-}
-
-PIDState SCurveProfile::SetGoal(double t, PIDState goal, PIDState curSource) {
-    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
-
-    m_sp = m_goal = goal;
-    m_sp.displacement -= curSource.displacement;
-
-    m_sign = (m_sp.displacement < 0) ? -1.0 : 1.0;
-
-    // If profile can't accelerate up to max velocity before decelerating
-    bool shortProfile = m_maxVelocity * (m_timeToMaxA + m_maxVelocity /
-                                         m_acceleration) >
-                        m_sign * m_sp.displacement;
-
-    if (shortProfile) {
-        m_profileMaxVelocity = m_acceleration *
-                               (std::sqrt(m_sign * m_sp.displacement /
-                                          m_acceleration - 0.75 *
-                                          std::pow(m_timeToMaxA, 2)) - 0.5 *
-                                m_timeToMaxA);
-    }
-    else {
-        m_profileMaxVelocity = m_maxVelocity;
-    }
-
-    // Find times at critical points
-    m_t2 = m_profileMaxVelocity / m_acceleration;
-    m_t3 = m_t2 + m_timeToMaxA;
-    if (shortProfile) {
-        m_t4 = m_t3;
-    }
-    else {
-        m_t4 = m_sign * m_sp.displacement / m_profileMaxVelocity;
-    }
-    m_t5 = m_t4 + m_timeToMaxA;
-    m_t6 = m_t4 + m_t2;
-    m_t7 = m_t6 + m_timeToMaxA;
-    m_timeTotal = m_t7;
-
-    m_lastTime = t;
-
-    // Set setpoint to current distance since setpoint hasn't moved yet
-    m_sp = curSource;
-
-    StartProfile();
-
-    return curSource;
-}
-
-void SCurveProfile::SetMaxVelocity(double v) {
-    m_maxVelocity = v;
-}
-
-double SCurveProfile::GetMaxVelocity() const {
-    return m_maxVelocity;
-}
-
-void SCurveProfile::SetMaxAcceleration(double a) {
-    m_acceleration = a;
-    m_jerk = m_acceleration / m_timeToMaxA;
-}
-
-void SCurveProfile::SetTimeToMaxA(double timeToMaxA) {
-    m_timeToMaxA = timeToMaxA;
-    m_jerk = m_acceleration / m_timeToMaxA;
 }

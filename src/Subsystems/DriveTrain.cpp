@@ -228,8 +228,8 @@ PIDState DriveTrain::GetRightSetpoint() const {
 }
 
 void DriveTrain::SetGoal(PIDState goal) {
-    m_leftProfile->SetGoal(0.0, goal);
-    m_rightProfile->SetGoal(0.0, goal);
+    m_leftProfile->SetGoal(goal);
+    m_rightProfile->SetGoal(goal);
 }
 
 bool DriveTrain::AtGoal() const {

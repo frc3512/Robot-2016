@@ -17,6 +17,33 @@ BezierTrapezoidProfile::BezierTrapezoidProfile(
     SetTimeToMaxV(timeToMaxV);
 }
 
+PIDState BezierTrapezoidProfile::GetLeftSetpoint() const {
+    return m_leftSetpoint;
+}
+
+PIDState BezierTrapezoidProfile::GetRightSetpoint() const {
+    return m_rightSetpoint;
+}
+
+PIDState BezierTrapezoidProfile::SetCurveGoal(const BezierCurve& curve,
+                                              PIDState curSource) {
+    m_curve = curve;
+
+    PIDState state = {m_curve.GetArcLength(0, 1), 0.0, 0.0};
+    return TrapezoidProfile::SetGoal(state, curSource);
+}
+
+void BezierTrapezoidProfile::ResetProfile() {
+    TrapezoidProfile::ResetProfile();
+
+    m_leftSetpoint = PIDState();
+    m_rightSetpoint = PIDState();
+}
+
+void BezierTrapezoidProfile::SetWidth(double width) {
+    m_width = width;
+}
+
 PIDState BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
     // TODO: Verify correct acceleration is used along curve
 
@@ -84,33 +111,6 @@ PIDState BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
     StartProfile();
 
     return m_sp;
-}
-
-PIDState BezierTrapezoidProfile::GetLeftSetpoint() const {
-    return m_leftSetpoint;
-}
-
-PIDState BezierTrapezoidProfile::GetRightSetpoint() const {
-    return m_rightSetpoint;
-}
-
-PIDState BezierTrapezoidProfile::SetCurveGoal(const BezierCurve& curve,
-                                              double t) {
-    m_curve = curve;
-
-    PIDState state = {m_curve.GetArcLength(0, 1), 0.0, 0.0};
-    return TrapezoidProfile::SetGoal(t, state);
-}
-
-void BezierTrapezoidProfile::ResetProfile() {
-    TrapezoidProfile::ResetProfile();
-
-    m_leftSetpoint = PIDState();
-    m_rightSetpoint = PIDState();
-}
-
-void BezierTrapezoidProfile::SetWidth(double width) {
-    m_width = width;
 }
 
 double BezierTrapezoidProfile::GetLeftVelocity(double t, double v) const {

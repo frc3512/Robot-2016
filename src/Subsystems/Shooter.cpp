@@ -146,26 +146,30 @@ bool Shooter::GetManualOverride() const {
     return m_manual;
 }
 
-void Shooter::SetManualShooterHeight(double position) {
-    m_shooterHeightGrbx.Set(position);
+void Shooter::SetShooterHeight(double height) {
+    if (GetManualOverride()) {
+        m_shooterHeightGrbx.Set(height);
+    }
+    else {
+        m_shootHeightProfile->SetGoal({height, 0.0, 0.0});
+    }
 }
 
-void Shooter::SetPIDShooterSpeed(double speed) {
-    m_leftShootPID->Enable();
-    m_rightShootPID->Enable();
-}
-/*
- *  void Shooter::SetShooterHeight(double height) {
- *   if (m_manual == false) {
- *        m_shootHeightProfile->SetGoal(height);
- *   }
- *  }
- */
-void Shooter::SetManualShooterSpeed(double speed) {
-    m_leftShootPID->Disable();
-    m_rightShootPID->Disable();
+void Shooter::SetShooterSpeed(double speed) {
+    if (GetManualOverride()) {
+        m_leftShootPID->Disable();
+        m_rightShootPID->Disable();
 
-    m_manualShooterSpeed = speed;
+        m_manualShooterSpeed = speed;
+    }
+    else {
+        m_leftShootPID->Enable();
+        m_rightShootPID->Enable();
+
+        m_leftShootPID->SetSetpoint({0.0, speed / m_leftShootPID->GetV(), 0.0});
+        m_rightShootPID->SetSetpoint({0.0, speed / m_leftShootPID->GetV(),
+                                      0.0});
+    }
 }
 
 /* Conversion table for calculating RPM

@@ -17,8 +17,7 @@ ProfileBase::ProfileBase(std::shared_ptr<PIDInterface> pid) {
 }
 
 ProfileBase::~ProfileBase() {
-    m_interrupt = true;
-    m_task.join();
+    StopProfile();
 }
 
 bool ProfileBase::AtGoal() {
@@ -42,10 +41,14 @@ void ProfileBase::ResetProfile() {
     m_timeTotal = 0.0;
 }
 
-void ProfileBase::StartProfile() {
-    // Stop currently running profile
+void ProfileBase::StopProfile() {
     m_interrupt = true;
     m_task.join();
+}
+
+void ProfileBase::StartProfile() {
+    // Stop currently running profile
+    StopProfile();
 
     m_timer.Reset();
 

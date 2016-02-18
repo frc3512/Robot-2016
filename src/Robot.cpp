@@ -28,21 +28,11 @@ void Robot::OperatorControl() {
             shooter.ToggleManualOverride();
         }
 
-        if (shooter.GetManualOverride()) {
-            shooter.SetManualShooterSpeed(JoystickRescale(
-                                              shootStick.GetThrottle(), 1.f));
-        }
-        /*
-         *  else {
-         *   shooter.SetPIDShooterSpeed(JoystickRescale(
-         *                                  shootStick.GetThrottle(), 1.f));
-         *  }
-         */
+        shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
+        shooter.SetShooterHeight(shootStick.GetY());
 
         arm.SetManualArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
-
-        shooter.SetManualShooterHeight(shootStick.GetY());
 
         std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
         std::endl;
