@@ -6,7 +6,7 @@
  *----------------------------------------------------------------------------
  */
 
-#include "CANTalon.h"
+#include "CANTalon.hpp"
 #include "WPIErrors.h"
 #include <unistd.h>  // usleep
 #include <sstream>

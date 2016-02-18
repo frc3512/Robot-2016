@@ -8,7 +8,7 @@
 
 #include "SubsystemBase.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
-#include "../WPILib/CANTalon.h"
+#include "../WPILib/CANTalon.hpp"
 #include "../WPILib/PIDController.hpp"
 #include "../Events/JoystickEventGenerator.hpp"
 #include "../Events/DigitalInputEventGenerator.hpp"

@@ -10,7 +10,7 @@
 #include "GearBox.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../SM/StateMachine.hpp"
-#include "../WPILib/CANTalon.h"
+#include "../WPILib/CANTalon.hpp"
 #include <DigitalInput.h>
 #include <Timer.h>
 #include "../roboRIOID.hpp"
