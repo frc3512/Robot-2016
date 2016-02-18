@@ -20,6 +20,11 @@ Arm::Arm() {
     m_rightArmProfile = std::make_shared<TrapezoidProfile>(m_rightArmPID,
                                                            0.0, 0.0);
 
+    m_leftArmActuator.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+    m_rightArmActuator.GetMaster()->SetFeedbackDevice(
+        CANTalon::CtreMagEncoder_Relative);
+
 
     m_leftArmHeightProfile = std::make_shared<TrapezoidProfile>(
         m_leftArmPID, 0.0, 0.0);
@@ -33,6 +38,7 @@ Arm::Arm() {
 
 void Arm::SetManualArmHeight(double height) {
     m_leftArmActuator.Set(height);
+    m_rightArmActuator.Set(height);
 }
 
 void Arm::SetManualCarriagePosition(double position) {

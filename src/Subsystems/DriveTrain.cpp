@@ -20,6 +20,9 @@ DriveTrain::DriveTrain() {
 
     m_rightGrbx.SetSensorDirection(true);
 
+    m_leftGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
+    m_rightGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
+
     m_leftGrbx.SetDistancePerPulse(72.0 / 2800.0);
     m_rightGrbx.SetDistancePerPulse(72.0 / 2800.0);
 
@@ -42,6 +45,9 @@ DriveTrain::DriveTrain() {
 
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     // Modified Cheesy Drive; base code courtesy of FRC Team 254
+
+    std::cout << "Left Gearbox: " << m_leftGrbx.Get() << std::endl;
+    std::cout << "Right Gearbox: " << m_rightGrbx.Get() << std::endl;
 
     // Limit values to [-1 .. 1]
     throttle = Limit(throttle, 1.f);

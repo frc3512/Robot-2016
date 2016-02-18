@@ -4,6 +4,7 @@
 // =============================================================================
 
 #include "JoystickEventGenerator.hpp"
+#include <bitset>
 
 void JoystickEventGenerator::RegisterButtonEvent(std::string eventName,
                                                  uint32_t port,
@@ -13,10 +14,20 @@ void JoystickEventGenerator::RegisterButtonEvent(std::string eventName,
 }
 
 void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
-    for (auto& event : m_events) {
-        m_newStates[event.port] =
-            DriverStation::GetInstance().GetStickButtons(event.port);
+    // Update joystick button states
+    for (uint32_t i = 0; i < m_newStates.size(); i++) {
+        m_newStates[i] = DriverStation::GetInstance().GetStickButtons(i);
+    }
 
+    for (auto& event : m_events) {
+        std::bitset<32> oldStates(m_oldStates[event.port]);
+        std::bitset<32> newStates(m_newStates[event.port]);
+        std::cout << "Old States: " << oldStates << " New States: " <<
+            newStates << std::endl;
+        std::cout << "Old Button State: " <<
+            GetButtonState(m_oldStates[event.port], event.button) << std::endl;
+        std::cout << "New Button State: " <<
+            GetButtonState(m_newStates[event.port], event.button) << std::endl;
         // If checking for rising edge
         if (event.risingEdge) {
             // If button wasn't pressed before and is now
@@ -24,6 +35,7 @@ void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
                                event.button) == false &&
                 GetButtonState(m_newStates[event.port],
                                event.button) == true) {
+                std::cout << "Pressed Event Generated" << std::endl;
                 acceptor.HandleEvent(event.name);
             }
         }
@@ -33,12 +45,16 @@ void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
                                event.button) == true &&
                 GetButtonState(m_newStates[event.port],
                                event.button) == false) {
+                std::cout << "Released Event Generated" << std::endl;
                 acceptor.HandleEvent(event.name);
             }
         }
+        std::cout << std::endl;
 
         // Update old states for next check
-        m_oldStates[event.port] = m_newStates[event.port];
+        for (uint32_t i = 0; i < m_oldStates.size(); i++) {
+            m_oldStates[i] = m_newStates[i];
+        }
     }
 }
 
