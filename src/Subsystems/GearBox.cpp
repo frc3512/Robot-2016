@@ -67,9 +67,7 @@ void GearBox::ResetEncoder() {
 }
 
 void GearBox::SetInverted(bool reverse) {
-    for (auto& motor : m_motors) {
-        motor->SetInverted(reverse);
-    }
+    m_motors[0]->SetInverted(reverse);
 }
 
 bool GearBox::GetInverted() const {
