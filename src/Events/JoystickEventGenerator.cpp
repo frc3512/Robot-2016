@@ -32,7 +32,9 @@ void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
                                event.button) == false &&
                 GetButtonState(m_newStates[event.port],
                                event.button) == true) {
-                acceptor.HandleEvent(event.name);
+                // Force a deep copy to keep the original event name intact
+                std::string temp = event.name;
+                acceptor.HandleEvent(temp);
             }
         }
         else {
@@ -41,7 +43,9 @@ void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
                                event.button) == true &&
                 GetButtonState(m_newStates[event.port],
                                event.button) == false) {
-                acceptor.HandleEvent(event.name);
+                // Force a deep copy to keep the original event name intact
+                std::string temp = event.name;
+                acceptor.HandleEvent(temp);
             }
         }
     }

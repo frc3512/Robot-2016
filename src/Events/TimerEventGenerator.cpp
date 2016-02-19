@@ -17,11 +17,17 @@ TimerEventGenerator::TimerEventGenerator(std::string eventName,
 
 void TimerEventGenerator::Poll(EventAcceptor& acceptor) {
     if (m_timer.HasPeriodPassed(m_period)) {
-        acceptor.HandleEvent(m_eventName);
+        /* This is done before calling HandleEvent() so the current state's Exit
+         * or the next state's Entry can start it again if desired.
+         */
         if (m_oneShot) {
             m_timer.Stop();
             m_timer.Reset();
         }
+
+        // Force a deep copy to keep the original event name intact
+        std::string temp = m_eventName;
+        acceptor.HandleEvent(temp);
     }
 }
 
