@@ -33,5 +33,8 @@ void DigitalInputEventGenerator::Poll(EventAcceptor& acceptor) {
 void DigitalInputEventGenerator::Handler(uint32_t interruptAssertedMask,
                                          void* param) {
     auto object = static_cast<EventAcceptor*>(param);
-    object->HandleEvent(m_eventAcceptorMap[object]);
+
+    // Force a deep copy to keep the original event name intact
+    std::string temp = m_eventAcceptorMap[object];
+    object->HandleEvent(temp);
 }
