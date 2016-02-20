@@ -106,7 +106,7 @@ Shooter::Shooter() {
                                  else {
                                      return "";
                                  }
-                            };
+                             };
 
     // Shooter
     state = std::make_unique<State>("StartShooter");
@@ -163,7 +163,7 @@ void Shooter::SetShooterSpeed(double speed) {
         m_leftShootPID->Disable();
         m_rightShootPID->Disable();
 
-         m_manualShooterSpeed = speed;
+        m_manualShooterSpeed = speed;
     }
     else {
         m_leftShootPID->Enable();
