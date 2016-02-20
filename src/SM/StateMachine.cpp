@@ -25,10 +25,18 @@ std::string StateMachine::StackTrace() const {
 }
 
 std::string StateMachine::HandleEvent(std::string& event) {
+    if (m_debugEnabled) {
+        std::cout << '[' << Name() << "] event: " << event;
+    }
+
     auto newState = m_currentState->HandleEvent(event);
 
     // If current state didn't handle event
     if (newState.length() == 0) {
+        if (m_debugEnabled) {
+            std::cout << " not consumed" << std::endl;
+        }
+
         // Check whether state machine itself will handle event
         auto ret = CheckTransition(event);
 
@@ -40,6 +48,9 @@ std::string StateMachine::HandleEvent(std::string& event) {
         return ret;
     }
     else {
+        if (m_debugEnabled) {
+            std::cout << " consumed -> " << newState << std::endl;
+        }
         if (!SetState(newState)) {
             // Failed to find state matching the returned name
             std::cout << "\"" << newState << "\" is not a known state\n";
@@ -63,4 +74,8 @@ bool StateMachine::SetState(const std::string& newState) {
     }
 
     return false;
+}
+
+void StateMachine::EnableDebug(bool enable) {
+    m_debugEnabled = enable;
 }
