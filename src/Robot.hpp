@@ -6,20 +6,18 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
-#include <chrono>
-using namespace std::chrono_literals;
-
 #include <SampleRobot.h>
 #include <Joystick.h>
-#include <Solenoid.h>
-#include <Timer.h>
 
-#include "ButtonTracker.hpp"
 #include "Subsystems/Shooter.hpp"
 #include "Subsystems/DriveTrain.hpp"
 #include "Subsystems/Arm.hpp"
+<<<<<<< 042dcf13499c4f94d122456b1e9038c3cc9e312f
 #include "Constants.hpp"
+=======
+>>>>>>> Edited all of the includes to match the wpilib c++ format guide, also got rid of all not in use includes in src and subsystem
 
+#include "ButtonTracker.hpp"
 #include "DSDisplay.hpp"
 #include "LiveGrapherHost/GraphHost.hpp"
 

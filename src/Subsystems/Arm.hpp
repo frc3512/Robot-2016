@@ -6,14 +6,20 @@
 #ifndef ARM_HPP
 #define ARM_HPP
 
-#include "SubsystemBase.hpp"
-#include "GearBox.hpp"
-#include "../MotionProfile/TrapezoidProfile.hpp"
-#include "../SM/StateMachine.hpp"
-#include "../WPILib/CANTalon.hpp"
 #include <DigitalInput.h>
 #include <Timer.h>
+<<<<<<< 042dcf13499c4f94d122456b1e9038c3cc9e312f
 #include "../Constants.hpp"
+=======
+
+#include "../MotionProfile/TrapezoidProfile.hpp"
+#include "../roboRIOID.hpp"
+#include "../SM/StateMachine.hpp"
+
+#include "GearBox.hpp"
+#include "SubsystemBase.hpp"
+
+>>>>>>> Edited all of the includes to match the wpilib c++ format guide, also got rid of all not in use includes in src and subsystem
 
 class PIDController;
 class TrapezoidProfile;

@@ -6,6 +6,9 @@
 #ifndef DS_DISPLAY_HPP
 #define DS_DISPLAY_HPP
 
+#include <string>
+#include <cstdint>
+
 /* This class allows you to pack data into an SFML packet and send it to an
  * application on the DriverStation that displays it in a GUI.
  *
@@ -43,8 +46,6 @@
 
 #include "AutonContainer.hpp"
 
-#include <cstdint>
-#include <string>
 
 class DSDisplay {
 public:

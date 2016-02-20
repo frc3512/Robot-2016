@@ -6,12 +6,16 @@
 #ifndef DRIVE_TRAIN_HPP
 #define DRIVE_TRAIN_HPP
 
-#include "SubsystemBase.hpp"
-#include "GearBox.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../Utility.hpp"
+<<<<<<< 042dcf13499c4f94d122456b1e9038c3cc9e312f
 #include <memory>
 #include "../Constants.hpp"
+=======
+#include "../roboRIOID.hpp"
+#include "SubsystemBase.hpp"
+#include "GearBox.hpp"
+>>>>>>> Edited all of the includes to match the wpilib c++ format guide, also got rid of all not in use includes in src and subsystem
 
 class GearBox;
 class PIDController;

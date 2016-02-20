@@ -9,12 +9,6 @@
 #include "SFML/Network/IpAddress.hpp"
 #include "SFML/Network/UdpSocket.hpp"
 
-#include <string>
-#include <vector>
-#include <utility>
-
-#include <cstdint>
-
 class Insight {
 public:
     Insight(const Insight&) = delete;

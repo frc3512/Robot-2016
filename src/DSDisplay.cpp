@@ -3,11 +3,11 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "DSDisplay.hpp"
 #include <functional>
-#include <fstream>
 #include <cstring>
+#include <fstream>
 #include <iostream>
+#include "DSDisplay.hpp"
 
 DSDisplay& DSDisplay::GetInstance(unsigned short dsPort) {
     static DSDisplay dsDisplay(dsPort);
@@ -42,7 +42,7 @@ const std::string DSDisplay::ReceiveFromDS() {
 
             // Open the file
             std::ifstream guiFile("/home/lvuser/GUISettings.txt",
-                                  std::ifstream::binary);
+            		std::ifstream::binary);
 
             if (guiFile.is_open()) {
                 // Get its length

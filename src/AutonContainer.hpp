@@ -6,9 +6,9 @@
 #ifndef AUTON_CONTAINER_HPP
 #define AUTON_CONTAINER_HPP
 
-#include <vector>
-#include <string>
 #include <functional>
+#include <string>
+#include <vector>
 
 struct AutonMethod {
     std::string name;

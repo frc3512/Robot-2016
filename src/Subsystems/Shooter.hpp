@@ -6,13 +6,11 @@
 #ifndef SHOOTER_HPP
 #define SHOOTER_HPP
 
-#include "SubsystemBase.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
-#include "../WPILib/CANTalon.hpp"
-#include "../WPILib/PIDController.hpp"
 #include "../Events/JoystickEventGenerator.hpp"
 #include "../Events/DigitalInputEventGenerator.hpp"
 #include "../Events/TimerEventGenerator.hpp"
+<<<<<<< 042dcf13499c4f94d122456b1e9038c3cc9e312f
 #include "../SM/StateMachine.hpp"
 #include "../Constants.hpp"
 #include "GearBox.hpp"
@@ -21,6 +19,14 @@
 #include "../LeverPIDController.hpp"
 #include <PIDSource.h>
 #include <PIDOutput.h>
+=======
+#include "../roboRIOID.hpp"
+
+#include "LeverPIDController.hpp"
+#include "GearBox.hpp"
+#include "SubsystemBase.hpp"
+
+>>>>>>> Edited all of the includes to match the wpilib c++ format guide, also got rid of all not in use includes in src and subsystem
 
 class Shooter : public SubsystemBase {
 public:

@@ -6,13 +6,8 @@
 #ifndef GEARBOX_HPP
 #define GEARBOX_HPP
 
-#include <PIDOutput.h>
-#include <PIDSource.h>
 #include <Solenoid.h>
 #include "../WPILib/CANTalon.hpp"
-#include "../MotionProfile/ProfileBase.hpp"
-#include <vector>
-#include <memory>
 
 /* Notes:
  * This class uses only CANTalons.

@@ -3,9 +3,8 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "Insight.hpp"
-
 #include <cstring>
+#include "Insight.hpp"
 
 Insight::~Insight() {
     m_socket.unbind();

@@ -3,12 +3,11 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
+#include <chrono>
 #include "Robot.hpp"
 #include "Utility.hpp"
 
-#include <cmath>
-#include <iostream>
-
+using namespace std::chrono_literals;
 Robot::Robot() {
     dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
     dsDisplay.AddAutoMethod("Profile Auton", &Robot::AutoMotionProfile, this);
