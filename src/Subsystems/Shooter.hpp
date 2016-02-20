@@ -67,8 +67,6 @@ private:
 
     GearBox m_rollBallGrbx{-1, k_rollBallID};
 
-    DigitalInput m_bottomLimit{k_bottomLimitPin};
-
     StateMachine m_shootSM{"ShootSM"};
 };
 

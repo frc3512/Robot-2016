@@ -34,13 +34,17 @@ void Robot::OperatorControl() {
         arm.SetManualArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
-        /* std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue()
-         *     << std::endl;
-         * std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM()
-         *     << std::endl;
-         * std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM()
-         *     << std::endl;
-         */
+        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
+            std::endl;
+        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
+            std::endl;
+        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
+            std::endl;
+        std::cout << "LEFT DRIVE: " << robotDrive.GetLeftDisplacement() <<
+            std::endl;
+        std::cout << "RIGHT DRIVE: " << robotDrive.GetRightDisplacement() <<
+            std::endl;
+
         shootButtons.Update();
 
         shooter.UpdateState();
@@ -70,7 +74,15 @@ void Robot::Disabled() {
 
 void Robot::Test() {
     while (IsEnabled() && IsTest()) {
-        std::cout << "PRACTICE MODE" << std::endl;
+        std::cout << "TEST MODE" << std::endl;
+        shooter.SetShooterSpeed(0.5);
+        shooter.SetShooterHeight(shootStick.GetY());
+        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
+            std::endl;
+        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
+        std::endl;
+        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
+        std::endl;
     }
 }
 

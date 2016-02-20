@@ -46,9 +46,6 @@ DriveTrain::DriveTrain() {
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     // Modified Cheesy Drive; base code courtesy of FRC Team 254
 
-    std::cout << "Left Gearbox: " << m_leftGrbx.Get() << std::endl;
-    std::cout << "Right Gearbox: " << m_rightGrbx.Get() << std::endl;
-
     // Limit values to [-1 .. 1]
     throttle = Limit(throttle, 1.f);
     turn = Limit(turn, 1.f);
