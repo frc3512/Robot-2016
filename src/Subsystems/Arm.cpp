@@ -49,7 +49,10 @@ Arm::Arm() {
                                         k_armStickPort, 2, false);     // TODO: change port number
     m_joystickEvent.RegisterButtonEvent("PressedButton",
                                         k_armStickPort, 1, true);     // TODO: change port number
-    m_dioEvent.RegisterInputEvent("ArmDown", k_intakeLimitPin, true, false,
+    m_dioEvent.RegisterInputEvent("ArmBottomButton",
+                                  k_intakeLimitPin,
+                                  true,
+                                  false,
                                   m_armSM);
     m_dioEvent.RegisterInputEvent("ArmUp",
                                   k_armBottomLimitPin,
@@ -65,7 +68,7 @@ Arm::Arm() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "PressedButton" &&
-                                     !m_leftArmActuator.GetPosition() == 1) {
+                                     m_leftArmActuator.GetPosition() != 1) {
                                      return "CarryingHeight";
                                      m_leftArmActuator.Set(1);
                                      m_rightArmActuator.Set(1);
@@ -90,10 +93,9 @@ Arm::Arm() {
                                      return "Idle";
                                  }
                                  else {
-                                	 return"";
+                                     return "";
                                  }
                              };
-    m_timerEvent.Reset();
 
     m_armSM.AddState(std::move(state));
 }
@@ -127,13 +129,6 @@ void Arm::SetCarryingHeight(double speed) {
 void Arm::SetClimbHeight() {
 }
 
-void Arm::UpdateState() {
-    m_armSM.Run();
-    m_joystickEvent.Poll(m_armSM);
-    m_joystickEvent.Update();
-    m_timerEvent.Poll(m_armSM);
-}
-
 void Arm::SetManualArmHeight(double height) {
     m_leftArmActuator.Set(height);
     m_rightArmActuator.Set(height);
@@ -150,4 +145,11 @@ void Arm::ReloadPID() {
 }
 
 void Arm::ResetEncoders() {
+}
+
+void Arm::UpdateState() {
+    m_armSM.Run();
+    m_joystickEvent.Poll(m_armSM);
+    m_joystickEvent.Update();
+    m_timerEvent.Poll(m_armSM);
 }

@@ -25,7 +25,6 @@ class Arm : public SubsystemBase {
 public:
     Arm();
 
-
     void ReloadPID();
     void ResetEncoders();
 
@@ -65,7 +64,7 @@ private:
     std::shared_ptr<TrapezoidProfile> m_rightArmHeightProfile;
     std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;
 
-    StateMachine m_armSM{"ShootSM"};
+    StateMachine m_armSM{"ArmSM"};
 };
 
 #endif // ARM_HPP
