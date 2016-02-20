@@ -32,7 +32,7 @@ void Robot::OperatorControl() {
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
         shooter.SetShooterHeight(shootStick.GetY());
 
-        arm.SetManualArmHeight(armStick.GetY());
+        arm.SetArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
         std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
@@ -81,9 +81,9 @@ void Robot::Test() {
         std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
             std::endl;
         std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-        std::endl;
+            std::endl;
         std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-        std::endl;
+            std::endl;
     }
 }
 
