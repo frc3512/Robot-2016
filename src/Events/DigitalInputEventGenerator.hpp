@@ -6,13 +6,15 @@
 #ifndef DIGITAL_INPUT_EVENT_GENERATOR_HPP
 #define DIGITAL_INPUT_EVENT_GENERATOR_HPP
 
-#include "EventGenerator.hpp"
-#include "../SM/StateMachine.hpp"
-#include <DigitalInput.h>
+#include <cstdint>
 #include <map>
 #include <memory>
 #include <vector>
-#include <cstdint>
+
+#include <DigitalInput.h>
+
+#include "../SM/StateMachine.hpp"
+#include "EventGenerator.hpp"
 
 class DigitalInputEventGenerator : public EventGenerator {
 public:

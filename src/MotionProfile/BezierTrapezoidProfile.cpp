@@ -5,8 +5,10 @@
 // =============================================================================
 
 #include "BezierTrapezoidProfile.hpp"
-#include "../WPILib/PIDInterface.hpp"
+
 #include <cmath>
+
+#include "../WPILib/PIDInterface.hpp"
 
 BezierTrapezoidProfile::BezierTrapezoidProfile(
     std::shared_ptr<PIDInterface> pid,

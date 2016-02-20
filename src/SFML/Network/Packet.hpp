@@ -32,14 +32,9 @@
 #ifndef SFML_PACKET_HPP
 #define SFML_PACKET_HPP
 
-#include <string>
-
-namespace std {
-typedef basic_string<wchar_t> wstring;
-}
-
-#include <vector>
 #include <cstdint>
+#include <string>
+#include <vector>
 
 uint64_t htonll(uint64_t value);
 uint64_t ntohll(uint64_t value);

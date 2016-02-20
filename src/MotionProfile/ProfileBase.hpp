@@ -6,11 +6,12 @@
 #ifndef PROFILE_BASE_HPP
 #define PROFILE_BASE_HPP
 
+#include <memory>
+#include <mutex>
+
 #include "../WPILib/PIDState.hpp"
 #include <Task.h>
 #include <Timer.h>
-#include <memory>
-#include <mutex>
 
 class PIDInterface;
 

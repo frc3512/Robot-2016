@@ -4,10 +4,9 @@
 // =============================================================================
 
 #include "SocketConnection.hpp"
-#include "GraphHost.hpp"
 
-#include <algorithm>
 #include <cstring>
+#include <algorithm>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -15,6 +14,8 @@
 #ifdef __VXWORKS__
 #include <sockLib.h>
 #endif
+
+#include "GraphHost.hpp"
 
 std::vector<std::string> SocketConnection::graphNames;
 

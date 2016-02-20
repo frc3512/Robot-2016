@@ -10,20 +10,20 @@
 #ifdef __VXWORKS__
 
 #include <cstdio>
-#include <pipeDrv.h>
 
-#include <sockLib.h>
 #include <hostLib.h>
+#include <pipeDrv.h>
 #include <selectLib.h>
+#include <sockLib.h>
 
 #define be64toh(x) x
 
 #else
 
+#include <endian.h>
+#include <fcntl.h>
 #include <netinet/in.h>
 #include <signal.h>
-#include <fcntl.h>
-#include <endian.h>
 
 #endif
 

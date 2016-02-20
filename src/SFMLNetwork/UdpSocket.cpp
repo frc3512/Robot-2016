@@ -23,11 +23,13 @@
 ////////////////////////////////////////////////////////////
 
 #include "../SFML/Network/UdpSocket.hpp"
+
+#include <algorithm>
+#include <iostream>
+
 #include "../SFML/Network/IpAddress.hpp"
 #include "../SFML/Network/Packet.hpp"
 #include "Socket.hpp"
-#include <algorithm>
-#include <iostream>
 
 namespace sf {
 UdpSocket::UdpSocket() :

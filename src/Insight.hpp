@@ -6,14 +6,13 @@
 #ifndef INSIGHT_HPP
 #define INSIGHT_HPP
 
+#include <cstddef>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "SFML/Network/IpAddress.hpp"
 #include "SFML/Network/UdpSocket.hpp"
-
-#include <string>
-#include <vector>
-#include <utility>
-
-#include <cstdint>
 
 class Insight {
 public:

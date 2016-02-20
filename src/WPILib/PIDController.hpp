@@ -8,17 +8,17 @@
 
 #pragma once
 
-#include "Base.h"
-#include "LiveWindow/LiveWindow.h"
-#include "PIDInterface.hpp"
-#include "PIDSource.h"
-#include "Notifier.h"
-#include "HAL/cpp/priority_mutex.h"
-#include "Timer.h"
-
 #include <atomic>
 #include <memory>
 #include <queue>
+
+#include "Base.h"
+#include "HAL/cpp/priority_mutex.h"
+#include "LiveWindow/LiveWindow.h"
+#include "Notifier.h"
+#include "PIDInterface.hpp"
+#include "PIDSource.h"
+#include "Timer.h"
 
 class PIDOutput;
 

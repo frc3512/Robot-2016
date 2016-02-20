@@ -20,10 +20,9 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #include "../SFML/Network/IpAddress.hpp"
-#include "Socket.hpp"
 
+#include "Socket.hpp"
 
 namespace {
 uint32_t resolve(const std::string& address) {

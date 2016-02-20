@@ -6,8 +6,9 @@
 #ifndef EVENT_GENERATOR_HPP
 #define EVENT_GENERATOR_HPP
 
-#include "EventAcceptor.hpp"
 #include <string>
+
+#include "EventAcceptor.hpp"
 
 class EventGenerator {
 public:

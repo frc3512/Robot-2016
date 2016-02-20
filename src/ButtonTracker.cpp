@@ -5,6 +5,7 @@
 // =============================================================================
 
 #include "ButtonTracker.hpp"
+
 #include <DriverStation.h>
 
 ButtonTracker::ButtonTracker(uint32_t port) {

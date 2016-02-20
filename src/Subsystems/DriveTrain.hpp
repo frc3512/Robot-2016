@@ -6,12 +6,14 @@
 #ifndef DRIVE_TRAIN_HPP
 #define DRIVE_TRAIN_HPP
 
-#include "SubsystemBase.hpp"
-#include "GearBox.hpp"
-#include "../MotionProfile/TrapezoidProfile.hpp"
-#include "../Utility.hpp"
 #include <memory>
+
 #include "../Constants.hpp"
+#include "../MotionProfile/TrapezoidProfile.hpp"
+#include "../SM/StateMachine.hpp"
+#include "../Utility.hpp"
+#include "GearBox.hpp"
+#include "SubsystemBase.hpp"
 
 class GearBox;
 class PIDController;

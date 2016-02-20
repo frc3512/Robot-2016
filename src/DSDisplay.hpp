@@ -6,6 +6,14 @@
 #ifndef DS_DISPLAY_HPP
 #define DS_DISPLAY_HPP
 
+#include <cstdint>
+#include <string>
+
+#include "AutonContainer.hpp"
+#include "SFML/Network/IpAddress.hpp"
+#include "SFML/Network/Packet.hpp"
+#include "SFML/Network/UdpSocket.hpp"
+
 /* This class allows you to pack data into an SFML packet and send it to an
  * application on the DriverStation that displays it in a GUI.
  *
@@ -36,15 +44,6 @@
  *
  * The packets are always sent to 10.35.12.42 for testing purposes
  */
-
-#include "SFML/Network/IpAddress.hpp"
-#include "SFML/Network/Packet.hpp"
-#include "SFML/Network/UdpSocket.hpp"
-
-#include "AutonContainer.hpp"
-
-#include <cstdint>
-#include <string>
 
 class DSDisplay {
 public:

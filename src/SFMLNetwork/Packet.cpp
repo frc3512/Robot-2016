@@ -23,8 +23,10 @@
 ////////////////////////////////////////////////////////////
 
 #include "../SFML/Network/Packet.hpp"
-#include "Socket.hpp"
+
 #include <cstring>
+
+#include "Socket.hpp"
 
 uint64_t htonll(uint64_t value) {
     // PowerPC for VxWorks 6.3 is big endian

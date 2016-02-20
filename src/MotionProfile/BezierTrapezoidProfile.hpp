@@ -17,9 +17,10 @@
 #ifndef BEZIER_TRAPEZOID_PROFILE_HPP
 #define BEZIER_TRAPEZOID_PROFILE_HPP
 
-#include "TrapezoidProfile.hpp"
-#include "BezierCurve.hpp"
 #include <memory>
+
+#include "BezierCurve.hpp"
+#include "TrapezoidProfile.hpp"
 
 class PIDInterface;
 

@@ -4,6 +4,7 @@
 // =============================================================================
 
 #include "BezierCurve.hpp"
+
 #include <cmath>
 
 Point::Point(double x, double y) {

@@ -12,8 +12,9 @@
 #ifndef SCURVE_PROFILE_HPP
 #define SCURVE_PROFILE_HPP
 
-#include "ProfileBase.hpp"
 #include <memory>
+
+#include "ProfileBase.hpp"
 
 class PIDInterface;
 

@@ -4,6 +4,7 @@
 // =============================================================================
 
 #include "Utility.hpp"
+
 #include <cmath>
 
 float ApplyDeadband(float value, float deadband) {

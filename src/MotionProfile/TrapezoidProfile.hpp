@@ -16,8 +16,9 @@
 #ifndef TRAPEZOID_PROFILE_HPP
 #define TRAPEZOID_PROFILE_HPP
 
-#include "ProfileBase.hpp"
 #include <memory>
+
+#include "ProfileBase.hpp"
 
 class PIDInterface;
 

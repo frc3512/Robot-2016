@@ -3,9 +3,10 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "SCurveProfile.hpp"
-#include "../WPILib/PIDInterface.hpp"
 #include <cmath>
+
+#include "../WPILib/PIDInterface.hpp"
+#include "SCurveProfile.hpp"
 
 SCurveProfile::SCurveProfile(std::shared_ptr<PIDInterface> pid,
                              double maxV,

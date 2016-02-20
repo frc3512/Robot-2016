@@ -4,8 +4,10 @@
 // =============================================================================
 
 #include "TrapezoidProfile.hpp"
-#include "../WPILib/PIDInterface.hpp"
+
 #include <cmath>
+
+#include "../WPILib/PIDInterface.hpp"
 
 TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDInterface> pid,
                                    double maxV,

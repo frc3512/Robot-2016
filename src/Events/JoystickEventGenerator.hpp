@@ -6,11 +6,12 @@
 #ifndef JOYSTICK_EVENT_GENERATOR_HPP
 #define JOYSTICK_EVENT_GENERATOR_HPP
 
-#include "EventGenerator.hpp"
-#include "../SM/StateMachine.hpp"
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
+
+#include "../SM/StateMachine.hpp"
+#include "EventGenerator.hpp"
 
 class JoystickEventGenerator : public EventGenerator {
 public:

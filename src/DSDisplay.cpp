@@ -4,9 +4,10 @@
 // =============================================================================
 
 #include "DSDisplay.hpp"
-#include <functional>
-#include <fstream>
+
 #include <cstring>
+#include <fstream>
+#include <functional>
 #include <iostream>
 
 DSDisplay& DSDisplay::GetInstance(unsigned short dsPort) {

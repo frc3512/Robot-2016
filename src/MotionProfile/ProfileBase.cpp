@@ -3,10 +3,11 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "ProfileBase.hpp"
-#include "../WPILib/PIDInterface.hpp"
 #include <chrono>
 #include <thread>
+
+#include "../WPILib/PIDInterface.hpp"
+#include "ProfileBase.hpp"
 
 using namespace std::chrono_literals;
 

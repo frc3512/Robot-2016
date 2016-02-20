@@ -6,9 +6,10 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include "../Events/EventAcceptor.hpp"
 #include <functional>
 #include <string>
+
+#include "../Events/EventAcceptor.hpp"
 
 class State : public EventAcceptor {
 public:

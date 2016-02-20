@@ -4,6 +4,7 @@
 // =============================================================================
 
 #include "JoystickEventGenerator.hpp"
+
 #include <DriverStation.h>
 
 JoystickEventGenerator::JoystickEventGenerator() :

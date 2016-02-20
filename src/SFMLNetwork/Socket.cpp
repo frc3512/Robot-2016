@@ -23,8 +23,10 @@
 ////////////////////////////////////////////////////////////
 
 #include "Socket.hpp"
+
 #include <cstring>
 #include <iostream>
+
 #include <fcntl.h>
 
 namespace sf {

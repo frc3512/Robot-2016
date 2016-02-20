@@ -7,12 +7,14 @@
  */
 
 #include "PIDController.hpp"
-#include "Notifier.h"
-#include "PIDSource.h"
-#include "PIDOutput.h"
-#include <math.h>
+
+#include <cmath>
 #include <vector>
+
 #include "HAL/HAL.hpp"
+#include "Notifier.h"
+#include "PIDOutput.h"
+#include "PIDSource.h"
 
 static const std::string kP = "p";
 static const std::string kI = "i";

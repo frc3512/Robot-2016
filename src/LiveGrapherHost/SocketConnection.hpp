@@ -6,11 +6,10 @@
 #ifndef SOCKET_CONNECTION_HPP
 #define SOCKET_CONNECTION_HPP
 
-#include <vector>
-#include <string>
-#include <queue>
-
 #include <cstdint>
+#include <queue>
+#include <string>
+#include <vector>
 
 class SocketConnection {
 public:

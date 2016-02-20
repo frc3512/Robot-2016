@@ -6,11 +6,13 @@
  *----------------------------------------------------------------------------
  */
 
-#include "CANTalon.hpp"
-#include "WPIErrors.h"
-#include <unistd.h>  // usleep
 #include <sstream>
+
+#include <unistd.h>  // usleep
+
+#include "CANTalon.hpp"
 #include "LiveWindow/LiveWindow.h"
+#include "WPIErrors.h"
 
 /**
  * Number of adc engineering units per 0 to 3.3V sweep.

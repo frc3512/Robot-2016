@@ -4,6 +4,7 @@
 // =============================================================================
 
 #include "StateMachine.hpp"
+
 #include <iostream>
 
 StateMachine::StateMachine(std::string name) : State(std::move(name)) {

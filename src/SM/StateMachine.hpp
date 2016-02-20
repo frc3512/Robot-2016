@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <vector>
+
 #include "State.hpp"
 
 /* The first state added to the state machine will be made the initial state.

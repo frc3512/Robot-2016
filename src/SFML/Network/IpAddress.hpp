@@ -36,7 +36,6 @@
 #include <ostream>
 #include <string>
 
-
 namespace sf {
 class IpAddress {
 public:

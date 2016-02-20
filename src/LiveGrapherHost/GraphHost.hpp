@@ -6,6 +6,16 @@
 #ifndef GRAPHHOST_HPP
 #define GRAPHHOST_HPP
 
+#include <cstdint>
+#include <atomic>
+#include <chrono>
+#include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
+
+#include "SocketConnection.hpp"
+
 /* Usage:
  *
  * The GraphHost interface is started upon object initialization.
@@ -29,18 +39,8 @@
  *     }
  */
 
-#include <vector>
-#include <string>
-#include <thread>
-#include <mutex>
-#include <chrono>
-#include <atomic>
-#include <cstdint>
-
 using namespace std::chrono;
 using namespace std::chrono_literals;
-
-#include "SocketConnection.hpp"
 
 struct[[gnu::packed]] graph_payload_t{
     char type; // Set to 'd' to identify this as a graph payload packet

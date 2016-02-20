@@ -6,22 +6,16 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
-#include <chrono>
-using namespace std::chrono_literals;
-
 #include <SampleRobot.h>
 #include <Joystick.h>
-#include <Solenoid.h>
-#include <Timer.h>
 
 #include "ButtonTracker.hpp"
+#include "Constants.hpp"
+#include "DSDisplay.hpp"
+#include "LiveGrapherHost/GraphHost.hpp"
 #include "Subsystems/Shooter.hpp"
 #include "Subsystems/DriveTrain.hpp"
 #include "Subsystems/Arm.hpp"
-#include "Constants.hpp"
-
-#include "DSDisplay.hpp"
-#include "LiveGrapherHost/GraphHost.hpp"
 
 class Robot : public SampleRobot {
 public:

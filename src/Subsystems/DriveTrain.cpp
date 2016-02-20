@@ -4,10 +4,10 @@
 // =============================================================================
 
 #include "DriveTrain.hpp"
-#include "../WPILib/PIDController.hpp"
 
 #include <cmath>
-#include "../WPILib/CANTalon.hpp"
+
+#include "../WPILib/PIDController.hpp"
 
 const float DriveTrain::maxWheelSpeed = 80.0;
 

@@ -6,9 +6,11 @@
 #ifndef TIMER_EVENT_GENERATOR_HPP
 #define TIMER_EVENT_GENERATOR_HPP
 
-#include "EventGenerator.hpp"
-#include <Timer.h>
 #include <string>
+
+#include <Timer.h>
+
+#include "EventGenerator.hpp"
 
 class TimerEventGenerator : public EventGenerator {
 public:
