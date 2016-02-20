@@ -70,7 +70,7 @@ Shooter::Shooter() {
                              };
     m_shootSM.AddState(std::move(state));
 
-    // Start intake
+    // Intake
     state = std::make_unique<State>("StartIntake");
     state->Run = [this] {
         m_rollBallGrbx.Set(-0.5);
@@ -106,9 +106,9 @@ Shooter::Shooter() {
                                  else {
                                      return "";
                                  }
-                             };
+                            };
 
-    // Start shooter
+    // Shooter
     state = std::make_unique<State>("StartShooter");
     state->Entry = [this] {
         m_timerEvent.Reset();
@@ -163,7 +163,7 @@ void Shooter::SetShooterSpeed(double speed) {
         m_leftShootPID->Disable();
         m_rightShootPID->Disable();
 
-        m_manualShooterSpeed = speed;
+         m_manualShooterSpeed = speed;
     }
     else {
         m_leftShootPID->Enable();

@@ -3,7 +3,7 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "../WPILib/PIDController.hpp"
+#include "WPILib/PIDController.hpp"
 
 class LeverPIDController : public PIDController {
 public:
