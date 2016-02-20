@@ -57,6 +57,11 @@ public:
      */
     std::string HandleEvent(std::string& event) override;
 
+    /* If set to 'true', enables print statements for current state, event
+     * occurrences, and transitons.
+     */
+    void EnableDebug(bool enable);
+
 private:
     /* Moves the state machine to the given state. If the next state is found,
      * Exit() for the current state and Entry() for the next state are called.
@@ -66,6 +71,7 @@ private:
 
     std::vector<std::unique_ptr<State>> m_states;
     State* m_currentState = nullptr;
+    bool m_debugEnabled = false;
 };
 
 #endif // STATE_MACHINE_HPP
