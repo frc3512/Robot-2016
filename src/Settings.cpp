@@ -4,9 +4,9 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "Settings.hpp"
 #include <fstream>
 #include <iostream>
+#include "Settings.hpp"
 
 Settings::Settings(std::string fileName) : m_fileName(fileName) {
     Update();

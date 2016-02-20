@@ -3,9 +3,8 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "Arm.hpp"
-#include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../WPILib/PIDController.hpp"
+#include "Arm.hpp"
 
 Arm::Arm() {
     m_leftArmPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,

@@ -6,14 +6,15 @@
 #ifndef ARM_HPP
 #define ARM_HPP
 
-#include "SubsystemBase.hpp"
-#include "GearBox.hpp"
-#include "../MotionProfile/TrapezoidProfile.hpp"
-#include "../SM/StateMachine.hpp"
-#include "../WPILib/CANTalon.hpp"
 #include <DigitalInput.h>
 #include <Timer.h>
+
+#include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../roboRIOID.hpp"
+
+#include "SubsystemBase.hpp"
+#include "GearBox.hpp"
+
 
 class PIDController;
 class TrapezoidProfile;

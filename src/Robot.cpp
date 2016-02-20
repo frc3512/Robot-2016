@@ -6,9 +6,6 @@
 #include "Robot.hpp"
 #include "Utility.hpp"
 
-#include <cmath>
-#include <iostream>
-
 Robot::Robot() {
     dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
     dsDisplay.AddAutoMethod("Profile Auton", &Robot::AutoMotionProfile, this);

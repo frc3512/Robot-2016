@@ -6,21 +6,16 @@
 #ifndef SHOOTER_HPP
 #define SHOOTER_HPP
 
-#include "SubsystemBase.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
-#include "../WPILib/CANTalon.hpp"
-#include "../WPILib/PIDController.hpp"
 #include "../Events/JoystickEventGenerator.hpp"
 #include "../Events/DigitalInputEventGenerator.hpp"
 #include "../Events/TimerEventGenerator.hpp"
-#include "../SM/StateMachine.hpp"
 #include "../roboRIOID.hpp"
-#include "GearBox.hpp"
-#include <DigitalInput.h>
-#include <Timer.h>
+
 #include "LeverPIDController.hpp"
-#include <PIDSource.h>
-#include <PIDOutput.h>
+#include "GearBox.hpp"
+#include "SubsystemBase.hpp"
+
 
 class Shooter : public SubsystemBase {
 public:

@@ -2,10 +2,9 @@
 // Description: Receives Insight's processed target data
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
+#include <cstring>
 
 #include "Insight.hpp"
-
-#include <cstring>
 
 Insight::~Insight() {
     m_socket.unbind();

@@ -43,8 +43,6 @@
 
 #include "AutonContainer.hpp"
 
-#include <cstdint>
-#include <string>
 
 class DSDisplay {
 public:

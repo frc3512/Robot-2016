@@ -3,8 +3,8 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "Utility.hpp"
 #include <cmath>
+#include "Utility.hpp"
 
 float ApplyDeadband(float value, float deadband) {
     if (std::fabs(value) > deadband) {

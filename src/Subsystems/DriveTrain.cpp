@@ -3,11 +3,8 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
-#include "DriveTrain.hpp"
 #include "../WPILib/PIDController.hpp"
-
-#include <cmath>
-#include "../WPILib/CANTalon.hpp"
+#include "DriveTrain.hpp"
 
 const float DriveTrain::maxWheelSpeed = 80.0;
 

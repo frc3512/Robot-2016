@@ -7,7 +7,6 @@
 #define AUTON_CONTAINER_HPP
 
 #include <vector>
-#include <string>
 #include <functional>
 
 struct AutonMethod {
