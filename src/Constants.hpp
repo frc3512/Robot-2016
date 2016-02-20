@@ -25,6 +25,16 @@ constexpr int k_rollBallID = 1;     // TODO: fix ID
 // Shooter limit switch pin
 constexpr int k_intakeLimitPin = 1;
 constexpr int k_bottomLimitPin = 2;
+constexpr int k_armBottomLimitPin = 3;
+constexpr int k_armTopLimitPin = 4;
+constexpr int k_rightCarriageLimitPin = 5;
+constexpr int k_leftCarriageLimitPin = 6;
+
+constexpr int k_armHeight1 = 1;
+constexpr int k_armHeight2 = 2;
+
+constexpr int k_armZeroButton = 11;
+constexpr int k_armCarryingButton = 12;
 
 // Drivetrain gearbox ID
 constexpr int k_leftDriveMasterID = 8;
