@@ -32,7 +32,7 @@ void Robot::OperatorControl() {
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
         shooter.SetShooterHeight(JoystickRescale(armStick.GetThrottle(), 1.f)); // TODO: Change back to GetY and shootStick
 
-        arm.SetManualArmHeight(armStick.GetY());
+        arm.SetArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
         /*
