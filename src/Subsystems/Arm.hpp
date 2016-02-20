@@ -14,6 +14,9 @@
 #include <DigitalInput.h>
 #include <Timer.h>
 #include "../Constants.hpp"
+#include "../Events/JoystickEventGenerator.hpp"
+#include "../Events/DigitalInputEventGenerator.hpp"
+#include "../Events/TimerEventGenerator.hpp"
 
 class PIDController;
 class TrapezoidProfile;
@@ -25,6 +28,10 @@ public:
     void ReloadPID();
     void ResetEncoders();
 
+    void SetCarryingHeight(double speed);
+    void SetClimbHeight();
+    bool GetManualOverride();
+
     void SetManualArmHeight(double height);
     void SetPIDArmHeight(double height);
     void SetManualCarriagePosition(double position);
@@ -32,6 +39,13 @@ public:
     void UpdateState();
 
 private:
+    bool m_manual = true;
+    double m_manualArmSpeed = 0.0;
+
+    JoystickEventGenerator m_joystickEvent;
+    DigitalInputEventGenerator m_dioEvent;
+    TimerEventGenerator m_timerEvent{"LiftTime", 3.0}; // TODO: change LiftTime value
+
     GearBox m_leftArmActuator{-1, k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
@@ -49,6 +63,8 @@ private:
 
     std::shared_ptr<TrapezoidProfile> m_rightArmHeightProfile;
     std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;
+
+    StateMachine m_armSM{"ArmSM"};
 };
 
 #endif // ARM_HPP
