@@ -26,6 +26,8 @@ constexpr int k_rollBallID = 1;     // TODO: fix ID
 constexpr int k_intakeLimitPin = 1;
 constexpr int k_bottomLimitPin = 2;
 constexpr int k_armBottomLimitPin = 3;
+constexpr int k_rightCarriageLimitPin = 4;
+constexpr int k_leftCarriageLimitPin = 5;
 
 // Drivetrain gearbox ID
 constexpr int k_leftDriveMasterID = 8;

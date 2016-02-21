@@ -16,6 +16,7 @@
 #include "../MotionProfile/TrapezoidProfile.hpp"
 #include "GearBox.hpp"
 #include "SubsystemBase.hpp"
+#include "Joystick.h"
 
 
 class PIDController;
@@ -42,9 +43,10 @@ private:
     bool m_manual = true;
     double m_manualArmSpeed = 0.0;
 
+    Joystick armStick{k_armStickPort};
+
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
-    TimerEventGenerator m_timerEvent{"LiftTime", 3.0}; // TODO: change LiftTime value
 
     GearBox m_leftArmActuator{-1, k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
@@ -58,8 +60,10 @@ private:
     std::shared_ptr<PIDController> m_carriagePositionPID;
     std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
 
-    DigitalInput m_bottomLeftLimitSwitch{k_bottomLeftLimitSwitchPin};
-    DigitalInput m_bottomRightLimitSwitch{k_bottomRightLimitSwitchPin};
+    DigitalInput m_bottomLimitSwitch{k_bottomLeftLimitSwitchPin};
+    DigitalInput m_topLimitSwitch{k_bottomRightLimitSwitchPin};
+    DigitalInput m_leftCarriageLimitSwitch{k_leftCarriageLimitPin};
+    DigitalInput m_rightCarriageLimitSwitch{k_rightCarriageLimitPin};
 
     std::shared_ptr<TrapezoidProfile> m_rightArmHeightProfile;
     std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;
