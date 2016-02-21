@@ -13,7 +13,6 @@ public:
 
     virtual void ReloadPID() = 0;
     virtual void ResetEncoders() = 0;
-
 };
 
 #endif // SUBSYSTEM_BASE_HPP

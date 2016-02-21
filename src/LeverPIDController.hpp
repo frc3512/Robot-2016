@@ -11,8 +11,9 @@ public:
                        PIDSource* source, PIDOutput* output,
                        float period = 0.05);
     void SetF(double f);
+    double GetF() const;
     double CalculateFeedForward();
 
 private:
-    float m_F;
+    double m_F;
 };

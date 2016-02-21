@@ -23,9 +23,13 @@ LeverPIDController::LeverPIDController(float p,
 
 double LeverPIDController::CalculateFeedForward() {
     return GetV() * GetSetpoint().velocity + GetA() *
-           GetSetpoint().acceleration;
+           GetSetpoint().acceleration + GetF();
 }
 
 void LeverPIDController::SetF(double f) {
     m_F = f;
+}
+
+double LeverPIDController::GetF() const {
+    return m_F;
 }

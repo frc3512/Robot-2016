@@ -73,9 +73,9 @@ Shooter::Shooter() {
     // Intake
     state = std::make_unique<State>("StartIntake");
     state->Run = [this] {
-        m_rollBallGrbx.Set(-0.5);
-        m_leftShootGrbx.Set(-0.5);
-        m_rightShootGrbx.Set(-0.5);
+        m_rollBallGrbx.Set(-1);
+        m_leftShootGrbx.Set(-1);
+        m_rightShootGrbx.Set(-1);
     };
     state->CheckTransition = [] (const std::string& event) {
                                  if (event == "ReleasedIntakeButton") {
@@ -101,15 +101,15 @@ Shooter::Shooter() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "ShootTimer") {
-                                     return "StartShooter";
+                                     return "Shoot";
                                  }
                                  else {
                                      return "";
                                  }
-                            };
+                             };
 
     // Shooter
-    state = std::make_unique<State>("StartShooter");
+    state = std::make_unique<State>("Shoot");
     state->Entry = [this] {
         m_timerEvent.Reset();
     };
@@ -127,6 +127,7 @@ Shooter::Shooter() {
                                  }
                              };
     m_shootSM.AddState(std::move(state));
+    m_shootSM.EnableDebug(true);
 }
 
 
@@ -163,7 +164,7 @@ void Shooter::SetShooterSpeed(double speed) {
         m_leftShootPID->Disable();
         m_rightShootPID->Disable();
 
-         m_manualShooterSpeed = speed;
+        m_manualShooterSpeed = speed;
     }
     else {
         m_leftShootPID->Enable();

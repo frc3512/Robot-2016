@@ -30,22 +30,26 @@ void Robot::OperatorControl() {
         }
 
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
-        shooter.SetShooterHeight(shootStick.GetY());
+        shooter.SetShooterHeight(JoystickRescale(armStick.GetThrottle(), 1.f)); // TODO: Change back to GetY and shootStick
 
         arm.SetManualArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
-        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-            std::endl;
-        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
-            std::endl;
-        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-            std::endl;
-        std::cout << "LEFT DRIVE: " << robotDrive.GetLeftDisplacement() <<
-            std::endl;
-        std::cout << "RIGHT DRIVE: " << robotDrive.GetRightDisplacement() <<
-            std::endl;
-
+        /*
+         *  std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
+         *   std::endl;
+         *  std::cout << "HEIGHT THROTTLE: " << JoystickRescale(armStick.GetThrottle(), 1.f) << std::endl;
+         *
+         *
+         *  std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
+         *   std::endl;
+         *  std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
+         *   std::endl;
+         *  std::cout << "LEFT DRIVE: " << robotDrive.GetLeftDisplacement() <<
+         *   std::endl;
+         *  std::cout << "RIGHT DRIVE: " << robotDrive.GetRightDisplacement() <<
+         *   std::endl;
+         */
         shootButtons.Update();
 
         shooter.UpdateState();
@@ -81,9 +85,9 @@ void Robot::Test() {
         std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
             std::endl;
         std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-        std::endl;
+            std::endl;
         std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-        std::endl;
+            std::endl;
     }
 }
 
