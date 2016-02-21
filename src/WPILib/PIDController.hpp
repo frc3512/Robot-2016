@@ -90,11 +90,11 @@ protected:
     virtual double CalculateFeedForward();
 
 private:
-    float m_P;            // factor for "proportional" control
-    float m_I;            // factor for "integral" control
-    float m_D;            // factor for "derivative" control
-    float m_V;            // factor for "velocity feed forward" control
-    float m_A;            // factor for "acceleration feed forward" control
+    double m_P;            // factor for "proportional" control
+    double m_I;            // factor for "integral" control
+    double m_D;            // factor for "derivative" control
+    double m_V;            // factor for "velocity feed forward" control
+    double m_A;            // factor for "acceleration feed forward" control
     float m_maximumOutput = 1.0; // |maximum output|
     float m_minimumOutput = -1.0; // |minimum output|
     float m_maximumInput = 0; // maximum input - limit setpoint to this

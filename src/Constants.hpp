@@ -20,7 +20,7 @@ constexpr int k_armStickPort = 3;
 constexpr int k_leftShooterID = 3;
 constexpr int k_rightShooterID = 5;
 constexpr int k_shooterHeightID = 2;
-constexpr int k_rollBallID = 1;     // TODO: fix ID
+constexpr int k_rollBallID = 1;
 
 // Shooter limit switch pin
 constexpr int k_intakeLimitPin = 1;
@@ -47,20 +47,19 @@ constexpr double k_rightDriveV = 0;
 constexpr double k_rightDriveA = 0;
 
 // Arm gearbox ID
-constexpr int k_leftArmLiftID = 11;     // TODO: Change ID
-constexpr int k_rightArmLiftID = 12;     // TODO: Change ID
+constexpr int k_leftArmLiftID = 11;
+constexpr int k_rightArmLiftID = 12;
 constexpr int k_carriagePositionID = 25;     // TODO: Change ID
 
 // Arm limit switch pin
 constexpr int k_bottomLeftLimitSwitchPin = 3;     // TODO: Confirm these port numbers
 constexpr int k_bottomRightLimitSwitchPin = 4;     // TODO: Confirm these port numbers
 
-// Other settings
+// CheesyDrive constants
 constexpr double k_lowGearSensitive = 0.75;
 constexpr double k_turnNonLinearity = 1.0;
-constexpr double k_inertia = 5.0;
 constexpr double k_inertiaDampen = 2.5;
-constexpr double k_inertiaHighTurn = 5.0;
+constexpr double k_inertiaHighTurn = 3.0;
 constexpr double k_inertiaLowTurn = 3.0;
 
 #endif // CONSTANTS_HPP
