@@ -27,7 +27,11 @@ std::string StateMachine::StackTrace() const {
 
 std::string StateMachine::HandleEvent(std::string& event) {
     if (m_debugEnabled) {
-        std::cout << '[' << Name() << "] event: " << event;
+        using namespace std::chrono;
+        auto now = steady_clock::now();
+        auto timeStamp = duration_cast<microseconds>(now - m_startTime).count();
+
+        std::cout << '[' << timeStamp << ", " << Name() << "] event: " << event;
     }
 
     auto newState = m_currentState->HandleEvent(event);
@@ -50,7 +54,9 @@ std::string StateMachine::HandleEvent(std::string& event) {
     }
     else {
         if (m_debugEnabled) {
-            std::cout << " consumed -> " << newState << std::endl;
+            std::cout << " consumed -> transition from "
+                      << m_currentState->Name() << " to " << newState
+                      << std::endl;
         }
         if (!SetState(newState)) {
             // Failed to find state matching the returned name

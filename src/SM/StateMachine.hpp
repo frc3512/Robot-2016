@@ -6,6 +6,7 @@
 #ifndef STATE_MACHINE_HPP
 #define STATE_MACHINE_HPP
 
+#include <chrono>
 #include <memory>
 #include <vector>
 
@@ -73,6 +74,8 @@ private:
     std::vector<std::unique_ptr<State>> m_states;
     State* m_currentState = nullptr;
     bool m_debugEnabled = false;
+    std::chrono::steady_clock::time_point m_startTime =
+        std::chrono::steady_clock::now();
 };
 
 #endif // STATE_MACHINE_HPP
