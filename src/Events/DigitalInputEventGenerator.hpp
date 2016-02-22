@@ -7,7 +7,6 @@
 #define DIGITAL_INPUT_EVENT_GENERATOR_HPP
 
 #include <cstdint>
-#include <map>
 #include <memory>
 #include <vector>
 
@@ -15,6 +14,13 @@
 
 #include "../SM/StateMachine.hpp"
 #include "EventGenerator.hpp"
+
+struct InterruptParam {
+    InterruptParam(EventAcceptor* object, std::string eventName);
+
+    EventAcceptor* acceptor;
+    std::string eventName;
+};
 
 class DigitalInputEventGenerator : public EventGenerator {
 public:
@@ -36,7 +42,7 @@ public:
     void Poll(EventAcceptor& acceptor) override;
 
 private:
-    static std::map<EventAcceptor*, std::string> m_eventAcceptorMap;
+    static std::vector<InterruptParam> m_params;
     static std::vector<std::unique_ptr<DigitalInput>> m_inputs;
 
     static void Handler(uint32_t interruptAssertedMask, void* param);
