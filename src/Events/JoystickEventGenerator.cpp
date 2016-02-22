@@ -5,18 +5,20 @@
 
 #include "JoystickEventGenerator.hpp"
 
-#include <DriverStation.h>
-
-JoystickEventGenerator::JoystickEventGenerator() :
-    m_oldStates(DriverStation::kJoystickPorts, 0),
-    m_newStates(DriverStation::kJoystickPorts, 0) {
+JoystickEventGenerator::JoystickEventGenerator() {
+    for (auto& state : m_oldStates) {
+        state = 0;
+    }
+    for (auto& state : m_newStates) {
+        state = 0;
+    }
 }
 
 void JoystickEventGenerator::RegisterButtonEvent(std::string eventName,
                                                  uint32_t port,
                                                  uint32_t button,
-                                                 bool risingEdge) {
-    m_events.push_back({std::move(eventName), port, button, risingEdge});
+                                                 bool onRisingEdge) {
+    m_events.push_back({std::move(eventName), port, button, onRisingEdge});
 }
 
 void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
@@ -27,7 +29,7 @@ void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
 
     for (auto& event : m_events) {
         // If checking for rising edge
-        if (event.risingEdge) {
+        if (event.onRisingEdge) {
             // If button wasn't pressed before and is now
             if (GetButtonState(m_oldStates[event.port],
                                event.button) == false &&
