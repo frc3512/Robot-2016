@@ -5,29 +5,26 @@
 
 #include "JoystickEventGenerator.hpp"
 
-#include <DriverStation.h>
-
-JoystickEventGenerator::JoystickEventGenerator() :
-    m_oldStates(DriverStation::kJoystickPorts, 0),
-    m_newStates(DriverStation::kJoystickPorts, 0) {
+JoystickEventGenerator::JoystickEventGenerator() {
+    for (auto& state : m_oldStates) {
+        state = 0;
+    }
+    for (auto& state : m_newStates) {
+        state = 0;
+    }
 }
 
 void JoystickEventGenerator::RegisterButtonEvent(std::string eventName,
                                                  uint32_t port,
                                                  uint32_t button,
-                                                 bool risingEdge) {
-    m_events.push_back({std::move(eventName), port, button, risingEdge});
+                                                 bool onRisingEdge) {
+    m_events.push_back({std::move(eventName), port, button, onRisingEdge});
 }
 
 void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
-    // Update joystick button states
-    for (uint32_t i = 0; i < m_newStates.size(); i++) {
-        m_newStates[i] = DriverStation::GetInstance().GetStickButtons(i);
-    }
-
     for (auto& event : m_events) {
         // If checking for rising edge
-        if (event.risingEdge) {
+        if (event.onRisingEdge) {
             // If button wasn't pressed before and is now
             if (GetButtonState(m_oldStates[event.port],
                                event.button) == false &&
@@ -53,9 +50,10 @@ void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
 }
 
 void JoystickEventGenerator::Update() {
-    // Update old states for next check
+    // Update old states for next check and get new joystick button states
     for (uint32_t i = 0; i < m_oldStates.size(); i++) {
         m_oldStates[i] = m_newStates[i];
+        m_newStates[i] = DriverStation::GetInstance().GetStickButtons(i);
     }
 }
 
