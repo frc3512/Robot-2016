@@ -23,6 +23,11 @@ Shooter::Shooter() {
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
+    /* Distance per pulse unit conversions:
+     *           1 revolution   60 sec
+     * X ticks * ------------ * ------
+     *            360 ticks     1 min
+     */
     m_leftShootGrbx.SetDistancePerPulse(60.0 / 360.0);
     m_rightShootGrbx.SetDistancePerPulse(60.0 / 360.0);
 
