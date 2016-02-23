@@ -3,6 +3,7 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
+#include <cmath>
 #include <chrono>
 #include <thread>
 
@@ -22,7 +23,13 @@ ProfileBase::~ProfileBase() {
 }
 
 bool ProfileBase::AtGoal() {
-    return m_lastTime >= m_timeTotal;
+    /* Checking also whether the goal was reached allows the profile to stop
+     * early for non-zero goal velocities and accelerations
+     */
+    return m_lastTime >= m_timeTotal ||
+           (std::fabs(m_goal.displacement - m_sp.displacement) < 0.001 &&
+            std::fabs(m_goal.velocity - m_sp.velocity) < 0.001 &&
+            std::fabs(m_goal.acceleration - m_sp.acceleration) < 0.001);
 }
 
 PIDState ProfileBase::GetGoal() const {
