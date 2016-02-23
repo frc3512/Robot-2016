@@ -23,6 +23,14 @@ Shooter::Shooter() {
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
+    /* Distance per pulse unit conversions:
+     * X ticks   1 revolution   60 sec
+     * ------- * ------------ * ------
+     *  1 sec     360 ticks     1 min
+     *
+     * Shooter has 1:1 gear ratio, so no conversion between driving and driven
+     * RPMs needed
+     */
     m_leftShootGrbx.SetDistancePerPulse(60.0 / 360.0);
     m_rightShootGrbx.SetDistancePerPulse(60.0 / 360.0);
 
