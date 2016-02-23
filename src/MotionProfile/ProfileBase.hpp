@@ -13,11 +13,11 @@
 #include <Task.h>
 #include <Timer.h>
 
-class PIDInterface;
+class PIDController;
 
 class ProfileBase {
 public:
-    ProfileBase(std::shared_ptr<PIDInterface> pid);
+    ProfileBase(std::shared_ptr<PIDController> pid);
     virtual ~ProfileBase();
 
     // Should return initial setpoint for start of profile
@@ -38,7 +38,7 @@ protected:
     // Use this to make UpdateSetpoint() and SetGoal() thread-safe
     std::recursive_mutex m_varMutex;
 
-    std::shared_ptr<PIDInterface> m_pid;
+    std::shared_ptr<PIDController> m_pid;
 
     Task m_task;
     Timer m_timer;
