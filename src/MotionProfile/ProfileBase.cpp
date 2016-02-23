@@ -3,15 +3,16 @@
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
 
+#include <cmath>
 #include <chrono>
 #include <thread>
 
-#include "../WPILib/PIDInterface.hpp"
+#include "../WPILib/PIDController.hpp"
 #include "ProfileBase.hpp"
 
 using namespace std::chrono_literals;
 
-ProfileBase::ProfileBase(std::shared_ptr<PIDInterface> pid) {
+ProfileBase::ProfileBase(std::shared_ptr<PIDController> pid) {
     m_pid = pid;
     ResetProfile();
     m_timer.Start();
@@ -22,7 +23,24 @@ ProfileBase::~ProfileBase() {
 }
 
 bool ProfileBase::AtGoal() {
-    return m_lastTime >= m_timeTotal;
+    if (m_lastTime >= m_timeTotal) {
+        return true;
+    }
+
+    /* Checking also whether the goal was reached allows the profile to stop
+     * early for non-zero goal velocities and accelerations
+     */
+    if (m_pid->GetPIDSourceType() == PIDSourceType::kRate) {
+        return std::fabs(m_goal.velocity - m_sp.velocity) < 0.001 &&
+               std::fabs(m_goal.acceleration - m_sp.acceleration) < 0.001;
+    }
+    else {
+        return std::fabs(m_goal.displacement - m_sp.displacement) < 0.001 &&
+               std::fabs(m_goal.velocity - m_sp.velocity) < 0.001 &&
+               std::fabs(m_goal.acceleration - m_sp.acceleration) < 0.001;
+    }
+
+    return false;
 }
 
 PIDState ProfileBase::GetGoal() const {

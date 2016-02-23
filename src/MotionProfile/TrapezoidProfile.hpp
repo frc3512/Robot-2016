@@ -20,11 +20,11 @@
 
 #include "ProfileBase.hpp"
 
-class PIDInterface;
+class PIDController;
 
 class TrapezoidProfile : public ProfileBase {
 public:
-    TrapezoidProfile(std::shared_ptr<PIDInterface> pid, double maxV,
+    TrapezoidProfile(std::shared_ptr<PIDController> pid, double maxV,
                      double timeToMaxV);
     virtual ~TrapezoidProfile() = default;
 
