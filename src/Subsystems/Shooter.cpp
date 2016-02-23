@@ -23,6 +23,9 @@ Shooter::Shooter() {
     m_leftShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx.SetPIDSourceType(PIDSourceType::kRate);
 
+    m_leftShootGrbx.SetDistancePerPulse(60 / 360);
+    m_rightShootGrbx.SetDistancePerPulse(60 / 360);
+
     // Sets encoder type
     m_leftShootGrbx.GetMaster()->SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
@@ -176,27 +179,12 @@ void Shooter::SetShooterSpeed(double speed) {
     }
 }
 
-/* Conversion table for calculating RPM
- * ||///////////////||/////////////////||///////////////||//////////////||
- * ||    S ticks    ||    1 rev        ||    1000 ms    ||    60 sec    ||
- * ||    -------    ||    ---------    ||    -------    ||    ------    ||
- * ||    100 ms     ||    360 ticks    ||    1 sec      ||    1 min     ||
- * ||///////////////||/////////////////||///////////////||//////////////||
- */
 float Shooter::GetLeftRPM() const {
-    // TODO: document magic number math
-    // std::cout << "Left Motor Raw Output: " << m_leftShootGrbx.GetSpeed() <<
-    //    std::endl;
-    return m_leftShootGrbx.GetSpeed(); // * 5.0f * 1000.0f * 60.0f * 2.0f /
-    // (100.0f * 360.0f);
+    return m_leftShootGrbx.GetSpeed();
 }
 
 float Shooter::GetRightRPM() const {
-    // TODO: document magic number math
-    // std::cout << "Right Motor Raw Output: " << m_rightShootGrbx.GetSpeed() <<
-    //    std::endl;
-    return m_rightShootGrbx.GetSpeed(); // * 5.0f * 1000.0f * 60.0f * 2.0f /
-    // (100.0f * 360.0f);
+    return m_rightShootGrbx.GetSpeed();
 }
 
 void Shooter::ReloadPID() {
