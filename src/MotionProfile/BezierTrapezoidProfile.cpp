@@ -8,10 +8,10 @@
 
 #include <cmath>
 
-#include "../WPILib/PIDInterface.hpp"
+#include "../WPILib/PIDController.hpp"
 
 BezierTrapezoidProfile::BezierTrapezoidProfile(
-    std::shared_ptr<PIDInterface> pid,
+    std::shared_ptr<PIDController> pid,
     double maxV,
     double timeToMaxV) :
     TrapezoidProfile(std::move(pid), maxV, timeToMaxV) {

@@ -22,11 +22,11 @@
 #include "BezierCurve.hpp"
 #include "TrapezoidProfile.hpp"
 
-class PIDInterface;
+class PIDController;
 
 class BezierTrapezoidProfile : public TrapezoidProfile {
 public:
-    BezierTrapezoidProfile(std::shared_ptr<PIDInterface> pid, double maxV,
+    BezierTrapezoidProfile(std::shared_ptr<PIDController> pid, double maxV,
                            double timeToMaxV);
 
     /* Returns uncompensated setpoint for use in control of systems other than

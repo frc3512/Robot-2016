@@ -16,11 +16,11 @@
 
 #include "ProfileBase.hpp"
 
-class PIDInterface;
+class PIDController;
 
 class SCurveProfile : public ProfileBase {
 public:
-    SCurveProfile(std::shared_ptr<PIDInterface> pid, double maxV, double maxA,
+    SCurveProfile(std::shared_ptr<PIDController> pid, double maxV, double maxA,
                   double timeToMaxA);
 
     /* goal is a distance to which to travel

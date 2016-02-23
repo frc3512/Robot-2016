@@ -128,7 +128,12 @@ void PIDController::Calculate() {
         float result;
         PIDOutput* pidOutput;
 
-        m_error = m_setpoint.displacement - input;
+        if (m_pidInput->GetPIDSourceType() == PIDSourceType::kRate) {
+            m_error = m_setpoint.velocity - input;
+        }
+        else {
+            m_error = m_setpoint.displacement - input;
+        }
         if (m_continuous) {
             if (fabs(m_error) > (m_maximumInput - m_minimumInput) / 2) {
                 if (m_error > 0) {

@@ -7,9 +7,9 @@
 
 #include <cmath>
 
-#include "../WPILib/PIDInterface.hpp"
+#include "../WPILib/PIDController.hpp"
 
-TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDInterface> pid,
+TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDController> pid,
                                    double maxV,
                                    double timeToMaxV) :
     ProfileBase(std::move(pid)) {

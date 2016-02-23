@@ -5,10 +5,10 @@
 
 #include <cmath>
 
-#include "../WPILib/PIDInterface.hpp"
+#include "../WPILib/PIDController.hpp"
 #include "SCurveProfile.hpp"
 
-SCurveProfile::SCurveProfile(std::shared_ptr<PIDInterface> pid,
+SCurveProfile::SCurveProfile(std::shared_ptr<PIDController> pid,
                              double maxV,
                              double maxA,
                              double timeToMaxA) :
