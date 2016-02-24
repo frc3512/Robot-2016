@@ -10,7 +10,6 @@
 
 #include <atomic>
 #include <memory>
-#include <queue>
 
 #include "Base.h"
 #include "HAL/cpp/priority_mutex.h"
@@ -62,7 +61,6 @@ public:
     virtual PIDState GetSetpoint() const override;
 
     virtual float GetError() const;
-    virtual float GetAvgError() const;
 
     virtual void SetPIDSourceType(PIDSourceType pidSource);
     virtual PIDSourceType GetPIDSourceType() const;
@@ -70,7 +68,6 @@ public:
     virtual void SetTolerance(float percent);
     virtual void SetAbsoluteTolerance(float absValue);
     virtual void SetPercentTolerance(float percentValue);
-    virtual void SetToleranceBuffer(unsigned buf = 1);
     virtual bool OnTarget() const;
 
     virtual void Enable() override;
@@ -117,11 +114,6 @@ private:
     float m_error = 0;
     float m_result = 0;
     float m_period;
-
-    // Length of buffer for averaging for tolerances.
-    std::atomic<unsigned> m_bufLength{1};
-    std::queue<double> m_buf;
-    double m_bufTotal = 0;
 
     mutable priority_recursive_mutex m_mutex;
 

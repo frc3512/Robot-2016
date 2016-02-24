@@ -196,15 +196,6 @@ void PIDController::Calculate() {
         result = m_result;
 
         pidOutput->PIDWrite(result);
-
-        // Update the buffer.
-        m_buf.push(m_error);
-        m_bufTotal += m_error;
-        // Remove old elements when buffer is full.
-        if (m_buf.size() > m_bufLength) {
-            m_bufTotal -= m_buf.front();
-            m_buf.pop();
-        }
     }
 }
 
@@ -397,9 +388,6 @@ void PIDController::SetSetpoint(PIDState setpoint) {
         else {
             m_setpoint = setpoint;
         }
-
-        // Clear m_buf.
-        m_buf = std::queue<double>();
     }
 
     if (m_table != nullptr) {
@@ -443,24 +431,6 @@ PIDSourceType PIDController::GetPIDSourceType() const {
     return m_pidInput->GetPIDSourceType();
 }
 
-/**
- * Returns the current average of the error over the past few iterations.
- * You can specify the number of iterations to average with SetToleranceBuffer()
- * (defaults to 1). This is the same value that is used for OnTarget().
- * @return the average error
- */
-float PIDController::GetAvgError() const {
-    float avgError = 0;
-    {
-        std::lock_guard<priority_recursive_mutex> sync(m_mutex);
-        // Don't divide by zero.
-        if (m_buf.size()) {
-            avgError = m_bufTotal / m_buf.size();
-        }
-    }
-    return avgError;
-}
-
 /*
  * Set the percentage error which is considered tolerable for use with
  * OnTarget.
@@ -501,26 +471,6 @@ void PIDController::SetAbsoluteTolerance(float absTolerance) {
 }
 
 /*
- * Set the number of previous error samples to average for tolerancing. When
- * determining whether a mechanism is on target, the user may want to use a
- * rolling average of previous measurements instead of a precise position or
- * velocity. This is useful for noisy sensors which return a few erroneous
- * measurements when the mechanism is on target. However, the mechanism will
- * not register as on target for at least the specified bufLength cycles.
- * @param bufLength Number of previous cycles to average. Defaults to 1.
- */
-void PIDController::SetToleranceBuffer(unsigned bufLength) {
-    std::lock_guard<priority_recursive_mutex> sync(m_mutex);
-    m_bufLength = bufLength;
-
-    // Cut the buffer down to size if needed.
-    while (m_buf.size() > bufLength) {
-        m_bufTotal -= m_buf.front();
-        m_buf.pop();
-    }
-}
-
-/*
  * Return true if the error is within the percentage of the total input range,
  * determined by SetTolerance. This asssumes that the maximum and minimum input
  * were set using SetInput.
@@ -532,10 +482,7 @@ void PIDController::SetToleranceBuffer(unsigned bufLength) {
  */
 bool PIDController::OnTarget() const {
     std::lock_guard<priority_recursive_mutex> sync(m_mutex);
-    if (m_buf.size() == 0) {
-        return false;
-    }
-    double error = GetAvgError();
+    double error = GetError();
     switch (m_toleranceType) {
     case kPercentTolerance:
         return fabs(error) <
