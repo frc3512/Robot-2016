@@ -6,6 +6,8 @@
 #ifndef SHOOTER_HPP
 #define SHOOTER_HPP
 
+#include <Filters/LinearDigitalFilter.h>
+
 #include "../Constants.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../Events/JoystickEventGenerator.hpp"
@@ -49,10 +51,12 @@ private:
     TimerEventGenerator m_timerEvent{"ShootTimer", 3.0};
 
     // TODO: some CAN IDs conflict
-    GearBox m_leftShootGrbx{-1, k_leftShooterID};
+    std::shared_ptr<GearBox> m_leftShootGrbx;
+    LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}};
     std::shared_ptr<PIDController> m_leftShootPID;
 
-    GearBox m_rightShootGrbx{-1, k_rightShooterID};
+    std::shared_ptr<GearBox> m_rightShootGrbx;
+    LinearDigitalFilter m_rightShootFilter{nullptr, {}, {}};
     std::shared_ptr<PIDController> m_rightShootPID;
 
     GearBox m_shooterHeightGrbx{-1, k_shooterHeightID};
