@@ -5,6 +5,7 @@
 
 #include "../WPILib/PIDController.hpp"
 #include "Arm.hpp"
+#include <iostream>
 
 Arm::Arm() {
     m_leftArmPID = std::make_shared<PIDController>(0.f,
@@ -33,18 +34,22 @@ Arm::Arm() {
     m_rightArmActuator.GetMaster()->SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
 
-    m_joystickEvent.RegisterButtonEvent("ZeroHeightButton",
-                                        k_armStickPort,
+    m_joystickEvent.RegisterButtonEvent("ZeroHeightButton", k_armStickPort,
                                         k_armZeroButton,
                                         true); // TODO: change port number
-    m_joystickEvent.RegisterButtonEvent("CarryingHeightButton",
-                                        k_armStickPort,
+    m_joystickEvent.RegisterButtonEvent("CarryingHeightButton", k_armStickPort,
                                         k_armCarryingButton,
                                         true); // TODO: change port number
-    m_dioEvent.RegisterInputEvent("ArmZeroed", k_armBottomLimitPin,
+    m_dioEvent.RegisterInputEvent("RightArmZeroed", k_armRightBottomLimitPin,
                                   true,
                                   false, m_armSM);
-    m_dioEvent.RegisterInputEvent("ArmUp", k_armTopLimitPin,
+    m_dioEvent.RegisterInputEvent("RightArmUp", k_armRightTopLimitPin,
+                                  true,
+                                  false, m_armSM);
+    m_dioEvent.RegisterInputEvent("LeftArmZeroed", k_armLeftBottomLimitPin,
+                                  true,
+                                  false, m_armSM);
+    m_dioEvent.RegisterInputEvent("LeftArmUp", k_armLeftTopLimitPin,
                                   true,
                                   false, m_armSM);
 
@@ -98,7 +103,12 @@ Arm::Arm() {
         m_rightArmActuator.Set(-1);
     };
     state->CheckTransition = [this] (const std::string& event) {
-                                 if (event == "ArmZeroed") {
+                                 if (event == "LeftArmZeroed") {
+                                     m_leftArmActuator.ResetEncoder();
+                                     m_rightArmActuator.ResetEncoder();
+                                     return "Idle";
+                                 }
+                                 else if (event == "RightArmZeroed") {
                                      m_leftArmActuator.ResetEncoder();
                                      m_rightArmActuator.ResetEncoder();
                                      return "Idle";
@@ -135,33 +145,42 @@ void Arm::SetCarryingHeight(double speed) {
     }
 }
 
-void Arm::SetArmHeight(double height, double offset) {
+void Arm::SetArmHeight(double height) {
+    std::cout << "m_topLeftLimitSwitch:  " << m_topLeftLimitSwitch.Get()
+              << std::endl;
+    std::cout << "m_topRightLimitSwitch:  " << m_topRightLimitSwitch.Get()
+              << std::endl;
+    std::cout << "m_bottomLeftLimitSwitch:  " << m_bottomLeftLimitSwitch.Get()
+              << std::endl;
+    std::cout << "m_bottomRightLimitSwitch:  " << m_bottomRightLimitSwitch.Get()
+              << std::endl;
+    std::cout << "m_rightArmActuator:  " << m_rightArmActuator.Get()
+              << std::endl;
+    std::cout << "m_leftArmActuator:  " << m_leftArmActuator.Get() << std::endl;
+
     if (GetManualOverride()) {
-        m_rightArmActuator.Set(height - offset);
-        m_leftArmActuator.Set(height + offset);
-    }
-    else {
-        m_leftArmProfile->SetGoal({height, 0, 0});
-        m_rightArmProfile->SetGoal({height, 0, 0});
+        if ((m_topLeftLimitSwitch.Get() == false && height > 0)
+            || (m_bottomLeftLimitSwitch.Get() == false && height < 0)) {
+            m_leftArmActuator.Set(height);
+        }
+        else {
+            m_leftArmActuator.Set(0);
+        }
     }
 }
 
 void Arm::SetManualCarriagePosition(int direction) {
-    if (direction == 90 && m_leftCarriageLimitSwitch.Get() == false) {
-        m_carriagePositionMotor.Set(0.2);
-    }
-    else if (direction == 270 && m_rightCarriageLimitSwitch.Get() == false) {
-        m_carriagePositionMotor.Set(-0.2);
-    }
-    else {
-        m_carriagePositionMotor.Set(0.0);
-    }
+    m_carriagePositionMotor.Set(direction);
 }
 bool Arm::AtGoal() const {
     return m_leftArmProfile->AtGoal() && m_rightArmProfile->AtGoal();
 }
 
 void Arm::ReloadPID() {
+}
+
+void Arm::SetManualWinchHeight(double speed) {
+    m_winchPositionMotor.Set(speed);
 }
 
 void Arm::ResetEncoders() {

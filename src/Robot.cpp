@@ -32,15 +32,26 @@ void Robot::OperatorControl() {
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
         shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
 
-        arm.SetManualCarriagePosition(armStick.GetPOV());
         if (armStick.GetPOV() == 0) {
-            arm.SetArmHeight(0.5, armStick.GetX() * 0.1);
+            arm.SetManualWinchHeight(1);
         }
         else if (armStick.GetPOV() == 180) {
-            arm.SetArmHeight(-0.5, armStick.GetX() * 0.1);
+            arm.SetManualWinchHeight(-1);
         }
         else {
-            arm.SetArmHeight(0.0, 0.0);
+            arm.SetManualWinchHeight(0);
+        }
+        arm.SetArmHeight(armStick.GetY());
+
+
+        if (armStick.GetPOV() == 90) {
+            arm.SetManualCarriagePosition(armStick.GetPOV() * 0.1);
+        }
+        else if (armStick.GetPOV() == 270) {
+            arm.SetManualCarriagePosition(armStick.GetPOV() * 0.1);
+        }
+        else {
+            arm.SetManualCarriagePosition(armStick.GetPOV() * 0.1);
         }
 
         /*
@@ -94,6 +105,14 @@ void Robot::Test() {
 
         DS_PrintOut();
         std::this_thread::sleep_for(10ms);
+        shooter.SetShooterSpeed(0.5);
+        shooter.SetShooterHeight(shootStick.GetY());
+        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM()
+                  << std::endl;
+        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM()
+                  << std::endl;
+        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue()
+                  << std::endl;
     }
 }
 
@@ -105,9 +124,12 @@ void Robot::DS_PrintOut() {
         pidGraph.GraphData(shooter.GetLeftSetpoint().velocity, "Left SP");
         pidGraph.GraphData(
             robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
+        pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
+        pidGraph.GraphData(robotDrive.GetLeftSetpoint().displacement,
+                           "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
-        pidGraph.GraphData(
-            robotDrive.GetRightSetpoint().displacement, "Right SP (DR)");
+        pidGraph.GraphData(robotDrive.GetRightSetpoint().displacement,
+                           "Right SP (DR)");
 
         pidGraph.ResetInterval();
     }

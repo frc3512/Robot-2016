@@ -35,6 +35,8 @@ public:
 
     void SetManualCarriagePosition(int direction);
 
+    void SetManualWinchHeight(double speed);
+
     void UpdateState();
 
 private:
@@ -56,8 +58,14 @@ private:
     std::shared_ptr<PIDController> m_carriagePositionPID;
     std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
 
-    DigitalInput m_bottomLimitSwitch{k_armBottomLimitPin};
-    DigitalInput m_topLimitSwitch{k_armTopLimitPin};
+    GearBox m_winchPositionMotor{-1, k_winchPositionID};
+    std::shared_ptr<PIDController> m_winchPositionPID;
+    std::shared_ptr<TrapezoidProfile> m_winchPositionProfile;
+
+    DigitalInput m_bottomRightLimitSwitch{k_armRightBottomLimitPin};
+    DigitalInput m_topRightLimitSwitch{k_armRightTopLimitPin};
+    DigitalInput m_bottomLeftLimitSwitch{k_armLeftBottomLimitPin};
+    DigitalInput m_topLeftLimitSwitch{k_armLeftTopLimitPin};
     DigitalInput m_leftCarriageLimitSwitch{k_leftCarriageLimitPin};
     DigitalInput m_rightCarriageLimitSwitch{k_rightCarriageLimitPin};
 
