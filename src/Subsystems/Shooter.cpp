@@ -10,7 +10,8 @@ Shooter::Shooter() {
     m_rightShootGrbx = std::make_shared<GearBox>(-1, k_rightShooterID);
 
     m_leftShootFilter = LinearDigitalFilter::MovingAverage(m_leftShootGrbx, 5);
-    m_rightShootFilter = LinearDigitalFilter::MovingAverage(m_rightShootGrbx, 5);
+    m_rightShootFilter =
+        LinearDigitalFilter::MovingAverage(m_rightShootGrbx, 5);
 
     m_leftShootPID =
         std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,

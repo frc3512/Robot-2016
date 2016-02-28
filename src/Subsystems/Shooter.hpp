@@ -52,11 +52,13 @@ private:
 
     // TODO: some CAN IDs conflict
     std::shared_ptr<GearBox> m_leftShootGrbx;
-    LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}};
+    LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}
+    };
     std::shared_ptr<PIDController> m_leftShootPID;
 
     std::shared_ptr<GearBox> m_rightShootGrbx;
-    LinearDigitalFilter m_rightShootFilter{nullptr, {}, {}};
+    LinearDigitalFilter m_rightShootFilter{nullptr, {}, {}
+    };
     std::shared_ptr<PIDController> m_rightShootPID;
 
     GearBox m_shooterHeightGrbx{-1, k_shooterHeightID};

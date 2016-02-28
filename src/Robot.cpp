@@ -32,6 +32,15 @@ void Robot::OperatorControl() {
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
         shooter.SetShooterHeight(JoystickRescale(armStick.GetThrottle(), 1.f)); // TODO: Change back to GetY and shootStick
 
+        if (armStick.GetPOV() == 0) {
+            arm.SetManualWinchHeight(1);
+        }
+        else if (armStick.GetPOV() == 180) {
+            arm.SetManualWinchHeight(-1);
+        }
+        else {
+            arm.SetManualWinchHeight(0);
+        }
         arm.SetArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
 
@@ -82,23 +91,23 @@ void Robot::Test() {
         std::cout << "TEST MODE" << std::endl;
         shooter.SetShooterSpeed(0.5);
         shooter.SetShooterHeight(shootStick.GetY());
-        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
-            std::endl;
-        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-            std::endl;
-        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-            std::endl;
+        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM()
+                  << std::endl;
+        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM()
+                  << std::endl;
+        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue()
+                  << std::endl;
     }
 }
 
 void Robot::DS_PrintOut() {
     if (pidGraph.HasIntervalPassed()) {
         pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
-        pidGraph.GraphData(
-            robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
+        pidGraph.GraphData(robotDrive.GetLeftSetpoint().displacement,
+                           "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
-        pidGraph.GraphData(
-            robotDrive.GetRightSetpoint().displacement, "Right SP (DR)");
+        pidGraph.GraphData(robotDrive.GetRightSetpoint().displacement,
+                           "Right SP (DR)");
 
         pidGraph.ResetInterval();
     }
