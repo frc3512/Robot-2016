@@ -10,5 +10,4 @@ fi
 
 ssh $USER@$HOST "killall FRCUserProgram"
 scp $1/FRCUserProgram $USER@$HOST:/home/lvuser
-ssh $USER@$HOST "/home/lvuser/FRCUserProgram &"
-
+ssh $USER@$HOST "/etc/profile.d/natinst-path.sh; chmod a+x /home/lvuser/FRCUserProgram; /usr/local/frc/bin/frcKillRobot.sh -t -r"
