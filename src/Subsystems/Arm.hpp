@@ -28,7 +28,7 @@ public:
     void ResetEncoders();
 
     void SetCarryingHeight(double speed);
-    void SetArmHeight(double height);
+    void SetArmHeight(double height, double offset);
     void SetManualOverride(bool manual);
     bool GetManualOverride() const;
     bool AtGoal() const;

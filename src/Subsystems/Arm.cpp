@@ -135,10 +135,10 @@ void Arm::SetCarryingHeight(double speed) {
     }
 }
 
-void Arm::SetArmHeight(double height) {
+void Arm::SetArmHeight(double height, double offset) {
     if (GetManualOverride()) {
-        m_rightArmActuator.Set(height);
-        m_leftArmActuator.Set(height);
+        m_rightArmActuator.Set(height - offset);
+        m_leftArmActuator.Set(height + offset);
     }
     else {
         m_leftArmProfile->SetGoal({height, 0, 0});

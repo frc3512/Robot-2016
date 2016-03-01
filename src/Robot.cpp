@@ -26,14 +26,22 @@ void Robot::OperatorControl() {
                          driveStick2.GetRawButton(2));
 
         if (shootButtons.PressedButton(3)) {
-            shooter.ToggleManualOverride();
+            shooter.SetManualOverride(!shooter.GetManualOverride());
         }
 
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
-        shooter.SetShooterHeight(JoystickRescale(armStick.GetThrottle(), 1.f)); // TODO: Change back to GetY and shootStick
+        shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
 
-        arm.SetArmHeight(armStick.GetY());
         arm.SetManualCarriagePosition(armStick.GetPOV());
+        if (armStick.GetPOV() == 0) {
+            arm.SetArmHeight(0.5, armStick.GetX() * 0.1);
+        }
+        else if (armStick.GetPOV() == 180) {
+            arm.SetArmHeight(-0.5, armStick.GetX() * 0.1);
+        }
+        else {
+            arm.SetArmHeight(0.0, 0.0);
+        }
 
         /*
          *  std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
@@ -78,22 +86,23 @@ void Robot::Disabled() {
 }
 
 void Robot::Test() {
+    shooter.SetManualOverride(false);
     while (IsEnabled() && IsTest()) {
         std::cout << "TEST MODE" << std::endl;
-        shooter.SetShooterSpeed(0.5);
-        shooter.SetShooterHeight(shootStick.GetY());
-        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
-            std::endl;
-        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-            std::endl;
-        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-            std::endl;
+
+        shooter.SetShooterSpeed((shootStick.GetThrottle() + 1.0) / 2.0);
+
+        DS_PrintOut();
+        std::this_thread::sleep_for(10ms);
     }
 }
 
 void Robot::DS_PrintOut() {
     if (pidGraph.HasIntervalPassed()) {
-        pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
+        pidGraph.GraphData(shooter.GetLeftRPM(), "Left RPM");
+        pidGraph.GraphData(shooter.GetRightRPM(), "Right RPM");
+
+        pidGraph.GraphData(shooter.GetLeftSetpoint().velocity, "Left SP");
         pidGraph.GraphData(
             robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
@@ -112,6 +121,8 @@ void Robot::DS_PrintOut() {
 
         dsDisplay.SendToDS();
     }
+    // std::cout << "LEFT RPM: " << shooter.GetLeftRPM();
+    // std::cout << " RIGHT RPM: " << shooter.GetRightRPM() << std::endl;
 
     dsDisplay.ReceiveFromDS();
 }

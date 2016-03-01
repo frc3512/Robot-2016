@@ -10,23 +10,33 @@ Shooter::Shooter() {
     m_rightShootGrbx = std::make_shared<GearBox>(-1, k_rightShooterID);
 
     m_leftShootFilter = LinearDigitalFilter::MovingAverage(m_leftShootGrbx, 5);
-    m_rightShootFilter = LinearDigitalFilter::MovingAverage(m_rightShootGrbx, 5);
+    m_rightShootFilter =
+        LinearDigitalFilter::MovingAverage(m_rightShootGrbx, 5);
 
     m_leftShootPID =
-        std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+        std::make_shared<PIDController>(0.f,
+                                        0.f,
+                                        0.f,
+                                        1 / k_shooterWheelMaxSpeed,
+                                        0.f,
                                         &m_leftShootFilter,
                                         m_leftShootGrbx.get());
     m_rightShootPID =
-        std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
+        std::make_shared<PIDController>(0.f,
+                                        0.f,
+                                        0.f,
+                                        1 / k_shooterWheelMaxSpeed,
+                                        0.f,
                                         &m_rightShootFilter,
                                         m_rightShootGrbx.get());
     m_shooterHeightPID =
-        std::make_shared<LeverPIDController>(0.f, 0.f, 0.f, 0.f, 0.f, 0.f,
+        std::make_shared<LeverPIDController>(0.f, 0.f, 0.f, 0.f, 0.f, 0.075,
                                              &m_shooterHeightGrbx,
                                              &m_shooterHeightGrbx);
     m_shootHeightProfile = std::make_shared<TrapezoidProfile>(
         m_shooterHeightPID, 0.0, 0.0);
 
+    m_rightShootGrbx->SetSensorDirection(true);
     m_leftShootGrbx->SetInverted(true);
     m_leftShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
@@ -70,7 +80,7 @@ Shooter::Shooter() {
     state->Entry = [this] {
         m_leftShootGrbx->Set(0);
         m_rightShootGrbx->Set(0);
-        m_rollBallGrbx.Set(0);
+        m_rollBallRelay.Set(Relay::kOff);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "PressedIntakeButton") {
@@ -92,7 +102,7 @@ Shooter::Shooter() {
     // Intake
     state = std::make_unique<State>("StartIntake");
     state->Run = [this] {
-        m_rollBallGrbx.Set(-1);
+        m_rollBallRelay.Set(Relay::kReverse);
         m_leftShootGrbx->Set(-1);
         m_rightShootGrbx->Set(-1);
     };
@@ -126,6 +136,7 @@ Shooter::Shooter() {
                                      return "";
                                  }
                              };
+    m_shootSM.AddState(std::move(state));
 
     // Shooter
     state = std::make_unique<State>("Shoot");
@@ -133,7 +144,7 @@ Shooter::Shooter() {
         m_timerEvent.Reset();
     };
     state->Run = [this] {
-        m_rollBallGrbx.Set(1);
+        m_rollBallRelay.Set(Relay::kForward);
         m_leftShootGrbx->Set(m_manualShooterSpeed);
         m_rightShootGrbx->Set(m_manualShooterSpeed);
     };
@@ -154,8 +165,8 @@ int32_t Shooter::GetShootHeightValue() const {
     return m_shooterHeightGrbx.Get();
 }
 
-void Shooter::ToggleManualOverride() {
-    m_manual = !m_manual;
+void Shooter::SetManualOverride(bool manual) {
+    m_manual = manual;
 }
 
 void Shooter::UpdateState() {
@@ -184,13 +195,15 @@ void Shooter::SetShooterSpeed(double speed) {
         m_rightShootPID->Disable();
 
         m_manualShooterSpeed = speed;
+        // m_leftShootGrbx.Set(speed); //TODO: REMOVE
+        // m_rightShootGrbx.Set(speed); //TODO: REMOVE
     }
     else {
         m_leftShootPID->Enable();
         m_rightShootPID->Enable();
 
-        m_leftShootPID->SetSetpoint({0.0, speed / m_leftShootPID->GetV(), 0.0});
-        m_rightShootPID->SetSetpoint({0.0, speed / m_leftShootPID->GetV(),
+        m_leftShootPID->SetSetpoint({0.0, speed * k_shooterWheelMaxSpeed, 0.0});
+        m_rightShootPID->SetSetpoint({0.0, speed * k_shooterWheelMaxSpeed,
                                       0.0});
     }
 }
@@ -201,6 +214,14 @@ float Shooter::GetLeftRPM() const {
 
 float Shooter::GetRightRPM() const {
     return m_rightShootGrbx->GetSpeed();
+}
+
+PIDState Shooter::GetLeftSetpoint() const {
+    return m_leftShootPID->GetSetpoint();
+}
+
+PIDState Shooter::GetRightSetpoint() const {
+    return m_rightShootPID->GetSetpoint();
 }
 
 void Shooter::ReloadPID() {
