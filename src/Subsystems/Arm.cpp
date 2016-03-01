@@ -7,6 +7,7 @@
 #include "Arm.hpp"
 
 Arm::Arm() {
+    m_leftArmActuator.SetStaticFrictionVoltage(0.3);
     m_leftArmPID = std::make_shared<PIDController>(0.f,
                                                    0.f,
                                                    0.f,
@@ -17,6 +18,7 @@ Arm::Arm() {
     m_leftArmProfile = std::make_shared<TrapezoidProfile>(m_leftArmPID, 0.0,
                                                           0.0);
 
+    m_rightArmActuator.SetStaticFrictionVoltage(0.3);
     m_rightArmPID = std::make_shared<PIDController>(0.f,
                                                     0.f,
                                                     0.f,
