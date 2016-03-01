@@ -17,10 +17,10 @@ constexpr int k_shootStickPort = 2;
 constexpr int k_armStickPort = 3;
 
 // Shooter gearbox ID
-constexpr int k_leftShooterID = 3;
-constexpr int k_rightShooterID = 5;
-constexpr int k_shooterHeightID = 2;
-constexpr int k_rollBallID = 1;
+constexpr int k_leftShooterID = 5;
+constexpr int k_rightShooterID = 3;
+constexpr int k_shooterHeightID = 1;
+constexpr int k_rollBallRelay = 0;
 
 // Shooter limit switch pin
 constexpr int k_intakeLimitPin = 1;
@@ -37,10 +37,10 @@ constexpr int k_armZeroButton = 11;
 constexpr int k_armCarryingButton = 12;
 
 // Drivetrain gearbox ID
-constexpr int k_leftDriveMasterID = 8;
-constexpr int k_leftDriveSlaveID = 10;
-constexpr int k_rightDriveMasterID = 4;
-constexpr int k_rightDriveSlaveID = 6;
+constexpr int k_leftDriveMasterID = 10;
+constexpr int k_leftDriveSlaveID = 8;
+constexpr int k_rightDriveMasterID = 6;
+constexpr int k_rightDriveSlaveID = 4;
 
 // Left drivetrain PID values
 constexpr double k_leftDriveP = 5;
@@ -56,10 +56,14 @@ constexpr double k_rightDriveD = 3;
 constexpr double k_rightDriveV = 0;
 constexpr double k_rightDriveA = 0;
 
+// Shooter PID values
+constexpr double k_shooterWheelMaxSpeed = 800;
+
 // Arm gearbox ID
-constexpr int k_leftArmLiftID = 11;
-constexpr int k_rightArmLiftID = 12;
-constexpr int k_carriagePositionID = 25;     // TODO: Change ID
+constexpr int k_leftArmLiftID = 9;
+constexpr int k_rightArmLiftID = 7;
+constexpr int k_winchArmID = 1;
+constexpr int k_carriagePositionID = 20;
 
 // Arm limit switch pin
 constexpr int k_bottomLeftLimitSwitchPin = 3;     // TODO: Confirm these port numbers

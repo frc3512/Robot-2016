@@ -7,6 +7,7 @@
 #define SHOOTER_HPP
 
 #include <Filters/LinearDigitalFilter.h>
+#include <Relay.h>
 
 #include "../Constants.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
@@ -25,7 +26,7 @@ public:
     void ReloadPID();
     void ResetEncoders();
 
-    void ToggleManualOverride();
+    void SetManualOverride(bool manual);
     bool GetManualOverride() const;
 
     int32_t GetShootHeightValue() const;
@@ -36,6 +37,8 @@ public:
 
     float GetLeftRPM() const;
     float GetRightRPM() const;
+    PIDState GetLeftSetpoint() const;
+    PIDState GetRightSetpoint() const;
     void ManualChangeSetpoint(double delta);
 
     // Periodic
@@ -63,7 +66,7 @@ private:
     std::shared_ptr<LeverPIDController> m_shooterHeightPID;
     std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
 
-    GearBox m_rollBallGrbx{-1, k_rollBallID};
+    Relay m_rollBallRelay{k_rollBallRelay};
 
     StateMachine m_shootSM{"ShootSM"};
 };
