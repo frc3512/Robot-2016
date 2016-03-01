@@ -28,7 +28,7 @@ public:
     void ResetEncoders();
 
     void SetCarryingHeight(double speed);
-    void SetArmHeight(double height, double offset);
+    void SetArmHeight(double height);
     void SetManualOverride(bool manual);
     bool GetManualOverride() const;
     bool AtGoal() const;
@@ -50,10 +50,6 @@ private:
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
-    GearBox m_rightArmActuator{-1, k_rightArmLiftID};
-    std::shared_ptr<PIDController> m_rightArmPID;
-    std::shared_ptr<TrapezoidProfile> m_rightArmProfile;
-
     GearBox m_carriagePositionMotor{-1, k_carriagePositionID};
     std::shared_ptr<PIDController> m_carriagePositionPID;
     std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
@@ -62,14 +58,10 @@ private:
     std::shared_ptr<PIDController> m_winchPositionPID;
     std::shared_ptr<TrapezoidProfile> m_winchPositionProfile;
 
-    DigitalInput m_bottomRightLimitSwitch{k_armRightBottomLimitPin};
-    DigitalInput m_topRightLimitSwitch{k_armRightTopLimitPin};
     DigitalInput m_bottomLeftLimitSwitch{k_armLeftBottomLimitPin};
     DigitalInput m_topLeftLimitSwitch{k_armLeftTopLimitPin};
     DigitalInput m_leftCarriageLimitSwitch{k_leftCarriageLimitPin};
-    DigitalInput m_rightCarriageLimitSwitch{k_rightCarriageLimitPin};
 
-    std::shared_ptr<TrapezoidProfile> m_rightArmHeightProfile;
     std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;
 
     StateMachine m_armSM{"ArmSM"};
