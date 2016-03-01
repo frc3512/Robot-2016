@@ -72,6 +72,9 @@ public:
     // Gets current gearbox gear if available (false if not)
     bool GetGear() const;
 
+    // Motor value added to output to overcome static friction
+    void SetStaticFrictionVoltage(double value);
+
     // Returns non-owning pointer to master CANTalon
     CANTalon* GetMaster() const;
 
@@ -93,6 +96,8 @@ private:
 
     // Feedback device
     frc::CANTalon::FeedbackDevice m_feedbackDevice = frc::CANTalon::QuadEncoder;
+
+    double m_staticVoltage = 0.0;
 
     std::unique_ptr<frc::Solenoid> m_shifter;
 

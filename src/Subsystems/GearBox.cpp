@@ -75,8 +75,19 @@ void GearBox::Set(double value) {
          */
         m_motors[0]->Set(0);
     } else {
-        m_motors[0]->Set(value);
+        if (std::fabs(GetSpeed()) < 0.01) {
+            if (value > 0) {
+                m_motors[0]->Set(value + m_staticVoltage);
+            } else if (value < 0) {
+                m_motors[0]->Set(value - m_staticVoltage);
+            } else {
+                m_motors[0]->Set(0);
+            }
+        } else {
+            m_motors[0]->Set(value);
+        }
     }
+}
 #endif
     m_motors[0]->Set(value);  // TODO: Remove once #endif above is removed
 }
@@ -142,7 +153,11 @@ bool GearBox::GetGear() const {
     }
 }
 
-frc::CANTalon* GearBox::GetMaster() const { return m_motors[0].get(); }
+void GearBox::SetStaticFrictionVoltage(double value) {
+    m_staticVoltage = value;
+}
+
+CANTalon* GearBox::GetMaster() const { return m_motors[0].get(); }
 
 void GearBox::PIDWrite(double output) {
     if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
@@ -172,7 +187,17 @@ void GearBox::PIDWrite(double output) {
         m_motors[0]->PIDWrite(0);
         // std::cout << "min" << std::endl;
     } else {
-        m_motors[0]->PIDWrite(output);
+        if (std::fabs(GetSpeed()) < 0.01) {
+            if (output > 0) {
+                m_motors[0]->PIDWrite(output + m_staticVoltage);
+            } else if (output < 0) {
+                m_motors[0]->PIDWrite(output - m_staticVoltage);
+            } else {
+                m_motors[0]->PIDWrite(0);
+            }
+        } else {
+            m_motors[0]->PIDWrite(output);
+        }
     }
 }
 

@@ -11,6 +11,8 @@
 Arm::Arm() {
     m_leftArmGrbx.SetLimitOnHigh(false);
     // m_leftArmGrbx.SetSoftPositionLimits(k_armMin , k_armMax);
+    m_leftArmGrbx.SetStaticFrictionVoltage(0.3);
+
     m_leftArmPID = std::make_shared<frc::PIDController>(
         0.f, 0.f, 0.f, 0.f, 0.f, &m_leftArmGrbx, &m_leftArmGrbx);
 
