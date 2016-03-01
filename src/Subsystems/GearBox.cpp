@@ -43,7 +43,15 @@ GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) {
 }
 
 void GearBox::Set(float value) {
-    m_motors[0]->Set(value);
+    if (value > 0.f && GetSpeed() > 0.01) {
+        m_motors[0]->Set(value + m_staticVoltage);
+    }
+    else if (value < 0.f && GetSpeed() < 0.01) {
+        m_motors[0]->Set(value - m_staticVoltage);
+    }
+    else {
+        m_motors[0]->Set(value);
+    }
 }
 
 int32_t GearBox::Get() const {
@@ -98,12 +106,24 @@ bool GearBox::GetGear() const {
     }
 }
 
+void GearBox::SetStaticFrictionVoltage(float value) {
+    m_staticVoltage = value;
+}
+
 CANTalon* GearBox::GetMaster() const {
     return m_motors[0].get();
 }
 
 void GearBox::PIDWrite(float output) {
-    m_motors[0]->PIDWrite(output);
+    if (output > 0.f && GetSpeed() > 0.01) {
+        m_motors[0]->PIDWrite(output + m_staticVoltage);
+    }
+    else if (output < 0.f && GetSpeed() < 0.01) {
+        m_motors[0]->PIDWrite(output - m_staticVoltage);
+    }
+    else {
+        m_motors[0]->PIDWrite(output);
+    }
 }
 
 double GearBox::PIDGet() {
