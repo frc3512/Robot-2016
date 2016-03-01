@@ -20,31 +20,27 @@ constexpr int k_armStickPort = 3;
 constexpr int k_leftShooterID = 5;
 constexpr int k_rightShooterID = 3;
 constexpr int k_shooterHeightID = 1;
-constexpr int k_rollBallID = 2;
+constexpr int k_rollBallRelay = 2;
 
 // Shooter limit switch pin
-constexpr int k_intakeLimitPin = 1;
-constexpr int k_bottomLimitPin = 0;
+constexpr int k_shooterIntakeLimitPin = 2;
+constexpr int k_shooterBottomLimitPin = 1;
 
-// arm Limit Switch Pin
-constexpr int k_armRightBottomLimitPin = 3;
-constexpr int k_armLeftBottomLimitPin = 2;
-constexpr int k_armLeftTopLimitPin = 4;
-constexpr int k_armRightTopLimitPin = 5;
-constexpr int k_rightCarriageLimitPin = 6;
-constexpr int k_leftCarriageLimitPin = 7;
-
-constexpr int k_armHeight1 = 1;
-constexpr int k_armHeight2 = 2;
-
-constexpr int k_armZeroButton = 11;
-constexpr int k_armCarryingButton = 12;
+// Shooter PID values
+constexpr double k_shooterWheelMaxSpeed = 800;
 
 // Drivetrain gearbox ID
-constexpr int k_leftDriveMasterID = 10;
-constexpr int k_leftDriveSlaveID = 8;
+constexpr int k_leftDriveMasterID = 8;
+constexpr int k_leftDriveSlaveID = 10;
 constexpr int k_rightDriveMasterID = 4;
 constexpr int k_rightDriveSlaveID = 6;
+
+// CheesyDrive constants
+constexpr double k_lowGearSensitive = 0.75;
+constexpr double k_turnNonLinearity = 1.0;
+constexpr double k_inertiaDampen = 2.5;
+constexpr double k_inertiaHighTurn = 3.0;
+constexpr double k_inertiaLowTurn = 3.0;
 
 // Left drivetrain PID values
 constexpr double k_leftDriveP = 5;
@@ -60,24 +56,27 @@ constexpr double k_rightDriveD = 3;
 constexpr double k_rightDriveV = 0;
 constexpr double k_rightDriveA = 0;
 
-// Shooter PID values
-constexpr double k_shooterWheelMaxSpeed = 800;
+// Arm Carriage and Winch ID's
+constexpr int k_carriagePositionID = 2;    // TODO: Change ID
+constexpr int k_winchPositionID = 9;
 
-// Arm gearbox ID
-constexpr int k_leftArmLiftID = 9;
-constexpr int k_rightArmLiftID = 7;
+// Arm Gearbox ID
+constexpr int k_leftArmLiftID = 7;
 
-// Arm limit switch pin
-constexpr int k_bottomLeftLimitSwitchPin = 3;     // TODO: Confirm these port numbers
-constexpr int k_bottomRightLimitSwitchPin = 4;     // TODO: Confirm these port numbers
-constexpr int k_carriagePositionID = 25;    // TODO: Change ID
-constexpr int k_winchPositionID = 12;
+// Arm Limit Switch Pin
+constexpr int k_armLeftBottomLimitPin = 3;
+constexpr int k_armLeftTopLimitPin = 5;
 
-// CheesyDrive constants
-constexpr double k_lowGearSensitive = 0.75;
-constexpr double k_turnNonLinearity = 1.0;
-constexpr double k_inertiaDampen = 2.5;
-constexpr double k_inertiaHighTurn = 3.0;
-constexpr double k_inertiaLowTurn = 3.0;
+// Arm Sally Port Carriage Pin
+constexpr int k_rightCarriageLimitPin = 7;
+constexpr int k_leftCarriageLimitPin = 8;
+
+// Arm height constants
+constexpr int k_armHeight1 = 1;
+constexpr int k_armHeight2 = 2;
+
+// Arm buttons
+constexpr int k_armZeroButton = 11;
+constexpr int k_armCarryingButton = 12;
 
 #endif // CONSTANTS_HPP

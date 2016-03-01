@@ -30,7 +30,7 @@ Shooter::Shooter() {
                                         &m_rightShootFilter,
                                         m_rightShootGrbx.get());
     m_shooterHeightPID =
-        std::make_shared<LeverPIDController>(0.f, 0.f, 0.f, 0.f, 0.f, 0.075,
+        std::make_shared<LeverPIDController>(0.f, 0.f, 0.f, 0.f, 0.f, 0.125,
                                              &m_shooterHeightGrbx,
                                              &m_shooterHeightGrbx);
     m_shootHeightProfile = std::make_shared<TrapezoidProfile>(
@@ -67,10 +67,13 @@ Shooter::Shooter() {
                                         k_shootStickPort, 2, false);
     m_joystickEvent.RegisterButtonEvent("PressedShooterButton",
                                         k_shootStickPort, 1, true);
-    m_dioEvent.RegisterInputEvent("BallLoaded", k_intakeLimitPin, true, false,
+    m_dioEvent.RegisterInputEvent("BallLoaded",
+                                  k_shooterIntakeLimitPin,
+                                  true,
+                                  false,
                                   m_shootSM);
     m_dioEvent.RegisterInputEvent("ShooterZeroed",
-                                  k_bottomLimitPin,
+                                  k_shooterBottomLimitPin,
                                   true,
                                   false,
                                   m_shootSM);
