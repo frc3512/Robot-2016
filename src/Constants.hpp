@@ -23,16 +23,16 @@ constexpr int k_shooterHeightID = 1;
 constexpr int k_rollBallID = 2;
 
 // Shooter limit switch pin
-constexpr int k_intakeLimitPin = 1;
-constexpr int k_bottomLimitPin = 0;
+constexpr int k_intakeLimitPin = 2;
+constexpr int k_bottomLimitPin = 1;
 
 // arm Limit Switch Pin
-constexpr int k_armRightBottomLimitPin = 3;
-constexpr int k_armLeftBottomLimitPin = 2;
-constexpr int k_armLeftTopLimitPin = 4;
-constexpr int k_armRightTopLimitPin = 5;
-constexpr int k_rightCarriageLimitPin = 6;
-constexpr int k_leftCarriageLimitPin = 7;
+constexpr int k_armRightBottomLimitPin = 4;
+constexpr int k_armLeftBottomLimitPin = 3;
+constexpr int k_armLeftTopLimitPin = 5;
+constexpr int k_armRightTopLimitPin = 6;
+constexpr int k_rightCarriageLimitPin = 7;
+constexpr int k_leftCarriageLimitPin = 8;
 
 constexpr int k_armHeight1 = 1;
 constexpr int k_armHeight2 = 2;
