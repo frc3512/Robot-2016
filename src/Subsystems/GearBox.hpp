@@ -73,6 +73,9 @@ public:
     // Gets current gearbox gear if available (false if not)
     bool GetGear() const;
 
+    // Motor value added to output to overcome static friction
+    void SetStaticFrictionVoltage(float value);
+
     // Returns non-owning pointer to master CANTalon
     CANTalon* GetMaster() const;
 
@@ -91,6 +94,8 @@ private:
 
     // Conversion factor for setpoints with respect to encoder readings
     double m_distancePerPulse = 1.0;
+
+    float m_staticVoltage = 0.0;
 
     std::unique_ptr<Solenoid> m_shifter;
 
