@@ -14,23 +14,28 @@ Shooter::Shooter() {
         LinearDigitalFilter::MovingAverage(m_rightShootGrbx, 5);
 
     m_leftShootPID =
-        std::make_shared<PIDController>(0.f,
-                                        0.f,
-                                        0.f,
-                                        1 / k_shooterWheelMaxSpeed,
-                                        0.f,
+        std::make_shared<PIDController>(k_leftShooterP,
+                                        k_leftShooterI,
+                                        k_leftShooterD,
+                                        k_leftShooterV,
+                                        k_leftShooterA,
                                         &m_leftShootFilter,
                                         m_leftShootGrbx.get());
     m_rightShootPID =
-        std::make_shared<PIDController>(0.f,
-                                        0.f,
-                                        0.f,
-                                        1 / k_shooterWheelMaxSpeed,
-                                        0.f,
+        std::make_shared<PIDController>(k_rightShooterP,
+                                        k_rightShooterI,
+                                        k_rightShooterD,
+                                        k_rightShooterV,
+                                        k_rightShooterA,
                                         &m_rightShootFilter,
                                         m_rightShootGrbx.get());
     m_shooterHeightPID =
-        std::make_shared<LeverPIDController>(0.f, 0.f, 0.f, 0.f, 0.f, 0.125,
+        std::make_shared<LeverPIDController>(k_heightShooterP,
+                                             k_heightShooterI,
+                                             k_heightShooterD,
+                                             k_heightShooterV,
+                                             k_heightShooterA,
+                                             k_heightShooterF,
                                              &m_shooterHeightGrbx,
                                              &m_shooterHeightGrbx);
     m_shootHeightProfile = std::make_shared<TrapezoidProfile>(
