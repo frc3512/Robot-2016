@@ -32,6 +32,7 @@ void Robot::OperatorControl() {
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
         shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
 
+
         if (armStick.GetPOV() == 0) {
             arm.SetManualWinchHeight(1);
         }
@@ -41,7 +42,7 @@ void Robot::OperatorControl() {
         else {
             arm.SetManualWinchHeight(0);
         }
-        arm.SetArmHeight(armStick.GetY());
+        arm.SetArmHeight(-armStick.GetY());
 
 
         if (armStick.GetPOV() == 90) {
@@ -96,27 +97,27 @@ void Robot::Disabled() {
     robotDrive.ReloadPID();
 }
 
-void Robot::Test() {
+void Robot::Practice() {
     shooter.SetManualOverride(false);
     while (IsEnabled() && IsTest()) {
-        std::cout << "TEST MODE" << std::endl;
+        std::cout << "PRACTICE MODE" << std::endl;
 
         shooter.SetShooterSpeed((shootStick.GetThrottle() + 1.0) / 2.0);
 
-        DS_PrintOut();
-        std::this_thread::sleep_for(10ms);
-        shooter.SetShooterSpeed(0.5);
+
+        //shooter.SetShooterSpeed(0.5);
         shooter.SetShooterHeight(shootStick.GetY());
-        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM()
-                  << std::endl;
-        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM()
-                  << std::endl;
+
         std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue()
                   << std::endl;
+
+        DS_PrintOut();
+        std::this_thread::sleep_for(10ms);
     }
 }
 
 void Robot::DS_PrintOut() {
+	/*
     if (pidGraph.HasIntervalPassed()) {
         pidGraph.GraphData(shooter.GetLeftRPM(), "Left RPM");
         pidGraph.GraphData(shooter.GetRightRPM(), "Right RPM");
@@ -143,8 +144,14 @@ void Robot::DS_PrintOut() {
 
         dsDisplay.SendToDS();
     }
-    // std::cout << "LEFT RPM: " << shooter.GetLeftRPM();
-    // std::cout << " RIGHT RPM: " << shooter.GetRightRPM() << std::endl;
+    */
+    //std::cout << "LEFT RPM: " << shooter.GetLeftRPM() << " RIGHT RPM: " << shooter.GetRightRPM() << std::endl;
+
+
+    std::cout << "ARM ENC COUNT: " << arm.GetArmHeightValue() << std::endl;
+
+    //std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue()
+    //                  << std::endl;
 
     dsDisplay.ReceiveFromDS();
 }

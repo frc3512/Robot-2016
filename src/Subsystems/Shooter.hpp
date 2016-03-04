@@ -40,7 +40,6 @@ public:
     PIDState GetLeftSetpoint() const;
     PIDState GetRightSetpoint() const;
     void ManualChangeSetpoint(double delta);
-
     // Periodic
     void UpdateState();
 

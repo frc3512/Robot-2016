@@ -23,7 +23,7 @@ public:
     void OperatorControl();
     void Autonomous();
     void Disabled();
-    void Test();
+    void Practice();
 
     void AutoNoop();
     void AutoMotionProfile();

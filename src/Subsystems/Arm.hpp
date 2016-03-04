@@ -33,6 +33,8 @@ public:
     bool GetManualOverride() const;
     bool AtGoal() const;
 
+    int32_t GetArmHeightValue() const;
+
     void SetManualCarriagePosition(int direction);
 
     void SetManualWinchHeight(double speed);
