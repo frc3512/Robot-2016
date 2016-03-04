@@ -168,7 +168,6 @@ Shooter::Shooter() {
     m_shootSM.EnableDebug(true);
 }
 
-
 int32_t Shooter::GetShootHeightValue() const {
     return m_shooterHeightGrbx.Get();
 }
@@ -203,8 +202,8 @@ void Shooter::SetShooterSpeed(double speed) {
         m_rightShootPID->Disable();
 
         m_manualShooterSpeed = speed;
-        // m_leftShootGrbx.Set(speed); //TODO: REMOVE
-        // m_rightShootGrbx.Set(speed); //TODO: REMOVE
+        // m_leftShootGrbx->Set(speed); //TODO: REMOVE
+        // m_rightShootGrbx->Set(speed); //TODO: REMOVE
     }
     else {
         m_leftShootPID->Enable();

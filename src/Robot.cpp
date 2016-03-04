@@ -41,7 +41,7 @@ void Robot::OperatorControl() {
         else {
             arm.SetManualWinchHeight(0);
         }
-        arm.SetArmHeight(armStick.GetY());
+        arm.SetArmHeight(-armStick.GetY());
 
 
         if (armStick.GetPOV() == 90) {
@@ -99,20 +99,19 @@ void Robot::Disabled() {
 void Robot::Test() {
     shooter.SetManualOverride(false);
     while (IsEnabled() && IsTest()) {
-        std::cout << "TEST MODE" << std::endl;
+        std::cout << "PRACTICE MODE" << std::endl;
 
         shooter.SetShooterSpeed((shootStick.GetThrottle() + 1.0) / 2.0);
 
-        DS_PrintOut();
-        std::this_thread::sleep_for(10ms);
-        shooter.SetShooterSpeed(0.5);
+
+        // shooter.SetShooterSpeed(0.5);
         shooter.SetShooterHeight(shootStick.GetY());
-        std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM()
-                  << std::endl;
-        std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM()
-                  << std::endl;
+
         std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue()
                   << std::endl;
+
+        DS_PrintOut();
+        std::this_thread::sleep_for(10ms);
     }
 }
 
@@ -143,8 +142,6 @@ void Robot::DS_PrintOut() {
 
         dsDisplay.SendToDS();
     }
-    // std::cout << "LEFT RPM: " << shooter.GetLeftRPM();
-    // std::cout << " RIGHT RPM: " << shooter.GetRightRPM() << std::endl;
 
     dsDisplay.ReceiveFromDS();
 }

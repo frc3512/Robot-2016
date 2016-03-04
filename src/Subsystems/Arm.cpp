@@ -22,6 +22,8 @@ Arm::Arm() {
     // Sets encoder type
     m_leftArmActuator.GetMaster()->SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
+    m_leftArmActuator.SetSensorDirection(true);
+    m_leftArmActuator.SetDistancePerPulse(30.0f / 133.0f); // Angle per pulse
 
     m_joystickEvent.RegisterButtonEvent("ZeroHeightButton", k_armStickPort,
                                         k_armZeroButton,
@@ -112,17 +114,13 @@ void Arm::SetCarryingHeight(double speed) {
 }
 
 void Arm::SetArmHeight(double height) {
-    std::cout << "m_topLeftLimitSwitch:  " << m_topLeftLimitSwitch.Get()
-              << std::endl;
-    std::cout << "m_bottomLeftLimitSwitch:  " << m_bottomLeftLimitSwitch.Get()
-              << std::endl;
-    std::cout << "m_leftArmActuator:  " << m_leftArmActuator.Get() << std::endl;
-    if (!m_bottomLeftLimitSwitch.Get() || !m_topLeftLimitSwitch.Get()) {
-        std::cout << "STOP ARM!! STOP ARM !! STOP ARM!!" << std::endl;
-    }
     if (GetManualOverride()) {
         m_leftArmActuator.Set(height);
     }
+}
+
+int32_t Arm::GetArmHeightValue() const {
+    return m_leftArmActuator.Get();
 }
 
 void Arm::SetManualCarriagePosition(int direction) {

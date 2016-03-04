@@ -20,7 +20,7 @@ constexpr int k_armStickPort = 3;
 constexpr int k_leftShooterID = 5;
 constexpr int k_rightShooterID = 3;
 constexpr int k_shooterHeightID = 1;
-constexpr int k_rollBallRelay = 2;
+constexpr int k_rollBallRelay = 0;
 
 // Shooter limit switch pin
 constexpr int k_shooterIntakeLimitPin = 2;
@@ -86,7 +86,7 @@ constexpr double k_heightShooterI = 0.0;
 constexpr double k_heightShooterD = 0.0;
 constexpr double k_heightShooterV = 0.0;
 constexpr double k_heightShooterA = 0.0;
-constexpr double k_heightShooterF = 0.075;
+constexpr double k_heightShooterF = 0.125;
 
 // Arm gearbox ID
 constexpr int k_leftArmLiftID = 7;
