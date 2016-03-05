@@ -68,7 +68,7 @@ private:
     std::shared_ptr<LeverPIDController> m_shooterHeightPID;
     std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
 
-    Relay m_rollBallRelay{k_rollBallRelay};
+    GearBox m_rollBallGrbx{-1, -1, -1, k_rollBallID};
 
     StateMachine m_shootSM{"ShootSM"};
 };

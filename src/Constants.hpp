@@ -20,7 +20,7 @@ constexpr int k_armStickPort = 3;
 constexpr int k_leftShooterID = 5;
 constexpr int k_rightShooterID = 3;
 constexpr int k_shooterHeightID = 1;
-constexpr int k_rollBallRelay = 0;
+constexpr int k_rollBallID = 11;
 
 // Shooter limit switch pin
 constexpr int k_shooterIntakeLimitPin = 2;
@@ -67,14 +67,14 @@ constexpr int k_winchPositionID = 9;
 constexpr double k_shooterWheelMaxSpeed = 800.0;
 
 // Left shooter wheel PID
-constexpr double k_leftShooterP = 0.0;
+constexpr double k_leftShooterP = 0.001;
 constexpr double k_leftShooterI = 0.0;
 constexpr double k_leftShooterD = 0.0;
 constexpr double k_leftShooterV = 1.0 / k_shooterWheelMaxSpeed;
 constexpr double k_leftShooterA = 0.0;
 
 // Right shooter wheel PID
-constexpr double k_rightShooterP = 0.0;
+constexpr double k_rightShooterP = 0.001;
 constexpr double k_rightShooterI = 0.0;
 constexpr double k_rightShooterD = 0.0;
 constexpr double k_rightShooterV = 1.0 / k_shooterWheelMaxSpeed;

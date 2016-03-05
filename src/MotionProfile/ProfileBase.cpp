@@ -61,8 +61,10 @@ void ProfileBase::ResetProfile() {
 }
 
 void ProfileBase::StopProfile() {
-    m_interrupt = true;
-    m_task.join();
+    if (!m_interrupt && m_task.joinable()) {
+        m_interrupt = true;
+        m_task.join();
+    }
 }
 
 void ProfileBase::StartProfile() {
@@ -70,6 +72,11 @@ void ProfileBase::StartProfile() {
     StopProfile();
 
     m_timer.Reset();
+
+    // If PID is disabled, enable it
+    if (!m_pid->IsEnabled()) {
+        m_pid->Enable();
+    }
 
     m_task = Task("ProfileBase", [this] {
         m_interrupt = false;

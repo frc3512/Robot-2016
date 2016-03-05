@@ -377,9 +377,13 @@ void PIDController::SetSetpoint(PIDState setpoint) {
         if (m_maximumInput > m_minimumInput) {
             if (setpoint.displacement > m_maximumInput) {
                 m_setpoint.displacement = m_maximumInput;
+                m_setpoint.velocity = setpoint.velocity;
+                m_setpoint.acceleration = setpoint.acceleration;
             }
             else if (setpoint.displacement < m_minimumInput) {
                 m_setpoint.displacement = m_minimumInput;
+                m_setpoint.velocity = setpoint.velocity;
+                m_setpoint.acceleration = setpoint.acceleration;
             }
             else {
                 m_setpoint = setpoint;
