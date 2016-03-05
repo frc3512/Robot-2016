@@ -42,7 +42,6 @@ Shooter::Shooter() {
         m_shooterHeightPID, 0.0, 0.0);
 
     m_rightShootGrbx->SetSensorDirection(true);
-    m_leftShootGrbx->SetInverted(true);
     m_leftShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
 
@@ -88,7 +87,7 @@ Shooter::Shooter() {
     state->Entry = [this] {
         m_leftShootGrbx->Set(0);
         m_rightShootGrbx->Set(0);
-        m_rollBallRelay.Set(Relay::kOff);
+        m_rollBallGrbx.Set(0);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "PressedIntakeButton") {
@@ -110,7 +109,7 @@ Shooter::Shooter() {
     // Intake
     state = std::make_unique<State>("StartIntake");
     state->Run = [this] {
-        m_rollBallRelay.Set(Relay::kReverse);
+        m_rollBallGrbx.Set(-1);
         m_leftShootGrbx->Set(-1);
         m_rightShootGrbx->Set(-1);
     };
@@ -152,7 +151,7 @@ Shooter::Shooter() {
         m_timerEvent.Reset();
     };
     state->Run = [this] {
-        m_rollBallRelay.Set(Relay::kForward);
+        m_rollBallGrbx.Set(1);
         m_leftShootGrbx->Set(m_manualShooterSpeed);
         m_rightShootGrbx->Set(m_manualShooterSpeed);
     };
@@ -191,8 +190,11 @@ void Shooter::SetShooterHeight(double height) {
     if (GetManualOverride()) {
         m_shooterHeightGrbx.Set(height);
     }
+
     else {
-        m_shootHeightProfile->SetGoal({height, 0.0, 0.0});
+        if (m_shootHeightProfile->GetGoal().displacement != height) {
+            m_shootHeightProfile->SetGoal({height, 0.0, 0.0});
+        }
     }
 }
 
@@ -202,8 +204,6 @@ void Shooter::SetShooterSpeed(double speed) {
         m_rightShootPID->Disable();
 
         m_manualShooterSpeed = speed;
-        // m_leftShootGrbx->Set(speed); //TODO: REMOVE
-        // m_rightShootGrbx->Set(speed); //TODO: REMOVE
     }
     else {
         m_leftShootPID->Enable();

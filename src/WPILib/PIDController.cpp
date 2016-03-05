@@ -121,13 +121,11 @@ void PIDController::Calculate() {
     if (pidOutput == nullptr) {
         return;
     }
-
     if (enabled) {
         std::lock_guard<priority_recursive_mutex> sync(m_mutex);
         float input = pidInput->PIDGet();
         float result;
         PIDOutput* pidOutput;
-
         if (m_pidInput->GetPIDSourceType() == PIDSourceType::kRate) {
             m_error = m_setpoint.velocity - input;
         }
@@ -184,7 +182,6 @@ void PIDController::Calculate() {
                        m_D * (m_error - m_prevError) + CalculateFeedForward();
         }
         m_prevError = m_error;
-
         if (m_result > m_maximumOutput) {
             m_result = m_maximumOutput;
         }
