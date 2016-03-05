@@ -64,7 +64,7 @@ private:
     };
     std::shared_ptr<PIDController> m_rightShootPID;
 
-    GearBox m_shooterHeightGrbx{-1, k_shooterHeightID};
+    GearBox m_shooterHeightGrbx{-1, -1, -1, k_shooterHeightID};
     std::shared_ptr<LeverPIDController> m_shooterHeightPID;
     std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
 

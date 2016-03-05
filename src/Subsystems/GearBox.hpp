@@ -6,6 +6,7 @@
 #ifndef GEARBOX_HPP
 #define GEARBOX_HPP
 
+#include <DigitalInput.h>
 #include <PIDOutput.h>
 #include <PIDSource.h>
 #include <Solenoid.h>
@@ -21,7 +22,12 @@
 
 class GearBox : public PIDOutput, public PIDSource {
 public:
-    GearBox(int shifterChan, int motor1, int motor2 = -1, int motor3 = -1);
+    GearBox(int shifterChan,
+            int forwardLimitPin,
+            int reverseLimitPin,
+            int motor1,
+            int motor2 = -1,
+            int motor3 = -1);
 
     // Disables PID controller and sets the motor speeds manually
     void Set(float value);
@@ -74,6 +80,12 @@ private:
     double m_distancePerPulse = 1.0;
 
     std::unique_ptr<Solenoid> m_shifter;
+
+    // Prevents motor from rotating forward when switch is pressed
+    std::unique_ptr<DigitalInput> m_forwardLimit;
+
+    // Prevents motor from rotating in reverse when switch is pressed
+    std::unique_ptr<DigitalInput> m_reverseLimit;
 
     std::vector<std::unique_ptr<CANTalon>> m_motors;
 };

@@ -6,8 +6,8 @@
 #include "Shooter.hpp"
 
 Shooter::Shooter() {
-    m_leftShootGrbx = std::make_shared<GearBox>(-1, k_leftShooterID);
-    m_rightShootGrbx = std::make_shared<GearBox>(-1, k_rightShooterID);
+    m_leftShootGrbx = std::make_shared<GearBox>(-1, -1, -1, k_leftShooterID);
+    m_rightShootGrbx = std::make_shared<GearBox>(-1, -1, -1, k_rightShooterID);
 
     m_leftShootFilter = LinearDigitalFilter::MovingAverage(m_leftShootGrbx, 5);
     m_rightShootFilter =

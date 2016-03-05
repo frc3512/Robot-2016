@@ -5,12 +5,22 @@
 
 #include "GearBox.hpp"
 
-GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) {
+GearBox::GearBox(int shifterChan,
+                 int forwardLimitPin,
+                 int reverseLimitPin,
+                 int motor1,
+                 int motor2,
+                 int motor3) {
     if (shifterChan != -1) {
         m_shifter = std::make_unique<Solenoid>(shifterChan);
     }
-    else {
-        m_shifter = nullptr;
+
+    if (forwardLimitPin != -1) {
+        m_forwardLimit = std::make_unique<DigitalInput>(forwardLimitPin);
+    }
+
+    if (reverseLimitPin != -1) {
+        m_reverseLimit = std::make_unique<DigitalInput>(reverseLimitPin);
     }
 
     // Create motor controllers of specified template type
@@ -43,7 +53,17 @@ GearBox::GearBox(int shifterChan, int motor1, int motor2, int motor3) {
 }
 
 void GearBox::Set(float value) {
-    m_motors[0]->Set(value);
+    // If forward limit is pressed and motor is rotating forward, stop motor
+    if (m_forwardLimit->Get() && value > 0) {
+        m_motors[0]->Set(0);
+    }
+    // If reverse limit is pressed and motor is rotating in reverse, stop motor
+    else if (m_reverseLimit->Get() && value < 0) {
+        m_motors[0]->Set(0);
+    }
+    else {
+        m_motors[0]->Set(value);
+    }
 }
 
 int32_t GearBox::Get() const {
@@ -103,7 +123,17 @@ CANTalon* GearBox::GetMaster() const {
 }
 
 void GearBox::PIDWrite(float output) {
-    m_motors[0]->PIDWrite(output);
+    // If forward limit is pressed and motor is rotating forward, stop motor
+    if (m_forwardLimit->Get() && output > 0) {
+        m_motors[0]->PIDWrite(0);
+    }
+    // If reverse limit is pressed and motor is rotating in reverse, stop motor
+    else if (m_reverseLimit->Get() && output < 0) {
+        m_motors[0]->PIDWrite(0);
+    }
+    else {
+        m_motors[0]->PIDWrite(output);
+    }
 }
 
 double GearBox::PIDGet() {

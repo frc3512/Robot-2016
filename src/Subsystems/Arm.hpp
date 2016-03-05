@@ -34,6 +34,7 @@ public:
     bool AtGoal() const;
 
     int32_t GetArmHeightValue() const;
+    double GetArmSpeed() const;
 
     void SetManualCarriagePosition(int direction);
 
@@ -48,20 +49,19 @@ private:
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
 
-    GearBox m_leftArmActuator{-1, k_leftArmLiftID};
+    GearBox m_leftArmActuator{-1, k_armLeftBottomLimitPin, k_armLeftTopLimitPin,
+                              k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
-    GearBox m_carriagePositionMotor{-1, k_carriagePositionID};
+    GearBox m_carriagePositionMotor{-1, -1, -1, k_carriagePositionID};
     std::shared_ptr<PIDController> m_carriagePositionPID;
     std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
 
-    GearBox m_winchPositionMotor{-1, k_winchPositionID};
+    GearBox m_winchPositionMotor{-1, -1, -1, k_winchPositionID};
     std::shared_ptr<PIDController> m_winchPositionPID;
     std::shared_ptr<TrapezoidProfile> m_winchPositionProfile;
 
-    DigitalInput m_bottomLeftLimitSwitch{k_armLeftBottomLimitPin};
-    DigitalInput m_topLeftLimitSwitch{k_armLeftTopLimitPin};
     DigitalInput m_leftCarriageLimitSwitch{k_leftCarriageLimitPin};
 
     std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;

@@ -123,6 +123,9 @@ int32_t Arm::GetArmHeightValue() const {
     return m_leftArmActuator.Get();
 }
 
+double Arm::GetArmSpeed() const {
+    return m_leftArmActuator.GetSpeed();
+}
 void Arm::SetManualCarriagePosition(int direction) {
     // TODO: Check the limit switches before setting the direction.
     m_carriagePositionMotor.Set(direction);
