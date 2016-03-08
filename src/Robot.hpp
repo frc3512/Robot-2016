@@ -16,6 +16,7 @@
 #include "Subsystems/Shooter.hpp"
 #include "Subsystems/DriveTrain.hpp"
 #include "Subsystems/Arm.hpp"
+#include "ITG3200.hpp"
 
 class Robot : public SampleRobot {
 public:
@@ -44,6 +45,7 @@ private:
     Joystick armStick{k_armStickPort};
 
     ButtonTracker shootButtons{k_shootStickPort};
+    ButtonTracker armButtons{k_armStickPort};
 
     Timer autoTimer;
     Timer displayTimer;
@@ -53,6 +55,9 @@ private:
 
     // The LiveGrapher host
     GraphHost pidGraph{3513};
+
+    // Used for gyro
+    ITG3200 gyro{I2C::kOnboard};
 };
 
 #endif // ROBOT_HPP
