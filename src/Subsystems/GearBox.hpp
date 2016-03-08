@@ -59,6 +59,9 @@ public:
     // Returns motor reversal state of gearbox
     bool IsEncoderReversed() const;
 
+    // If true, motor is stopped when either limit switch reads high
+    void SetLimitOnHigh(bool limitOnHigh);
+
     // Shifts gearbox to another gear if available
     void SetGear(bool gear);
 
@@ -76,6 +79,7 @@ public:
 
 private:
     bool m_isEncoderReversed = false;
+    bool m_limitOnHigh = true;
 
     // Conversion factor for setpoints with respect to encoder readings
     double m_distancePerPulse = 1.0;
