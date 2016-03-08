@@ -73,12 +73,12 @@ Shooter::Shooter() {
     m_joystickEvent.RegisterButtonEvent("PressedShooterButton",
                                         k_shootStickPort, 1, true);
     m_dioEvent.RegisterInputEvent("BallLoaded",
-                                  k_shooterIntakeLimitPin,
+                                  k_shooterIntakeLimitChannel,
                                   true,
                                   false,
                                   m_shootSM);
     m_dioEvent.RegisterInputEvent("ShooterZeroed",
-                                  k_shooterBottomLimitPin,
+                                  k_shooterBottomLimitChannel,
                                   true,
                                   false,
                                   m_shootSM);
