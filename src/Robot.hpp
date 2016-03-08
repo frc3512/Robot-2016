@@ -9,6 +9,7 @@
 #include "ButtonTracker.hpp"
 #include "Constants.hpp"
 #include "DSDisplay.hpp"
+#include "ITG3200.hpp"
 #include "LiveGrapher/GraphHost.hpp"
 #include "Subsystems/Arm.hpp"
 #include "Subsystems/DriveTrain.hpp"
@@ -45,6 +46,7 @@ private:
     frc::Joystick armStick{k_armStickPort};
 
     ButtonTracker shootButtons{k_shootStickPort};
+    ButtonTracker armButtons{k_armStickPort};
 
     frc::Timer autoTimer;
     frc::Timer displayTimer;
@@ -57,4 +59,6 @@ private:
 
     // Camera
     // frc::CameraServer* camera = frc::CameraServer::GetInstance();
+
+    ITG3200 gyro{I2C::kOnboard};
 };
