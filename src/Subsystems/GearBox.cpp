@@ -54,13 +54,21 @@ GearBox::GearBox(int shifterChan,
 }
 
 void GearBox::Set(float value) {
-    // If forward limit is pressed and motor is rotating forward, stop motor
-    if (m_forwardLimit != nullptr && m_forwardLimit->Get() && value > 0) {
-        m_motors[0]->Set(0);
+    if (m_forwardLimit != nullptr) {
+        /* If stopping motor in same limit switch state that limit switch is in
+         * now and motor is rotating into limit switch
+         */
+        if (m_limitOnHigh == m_forwardLimit->Get() && value > 0) {
+            m_motors[0]->Set(0);
+        }
     }
-    // If reverse limit is pressed and motor is rotating in reverse, stop motor
-    else if (m_reverseLimit != nullptr && m_reverseLimit->Get() && value < 0) {
-        m_motors[0]->Set(0);
+    else if (m_reverseLimit != nullptr) {
+        /* If stopping motor in same limit switch state that limit switch is in
+         * now and motor is rotating into limit switch
+         */
+        if (m_limitOnHigh == m_reverseLimit->Get() && value < 0) {
+            m_motors[0]->Set(0);
+        }
     }
     else {
         m_motors[0]->Set(value);
@@ -104,6 +112,10 @@ bool GearBox::IsEncoderReversed() const {
     return m_isEncoderReversed;
 }
 
+void GearBox::SetLimitOnHigh(bool limitOnHigh) {
+    m_limitOnHigh = limitOnHigh;
+}
+
 void GearBox::SetGear(bool gear) {
     if (m_shifter != nullptr) {
         m_shifter->Set(gear);
@@ -124,13 +136,21 @@ CANTalon* GearBox::GetMaster() const {
 }
 
 void GearBox::PIDWrite(float output) {
-    // If forward limit is pressed and motor is rotating forward, stop motor
-    if (m_forwardLimit != nullptr && m_forwardLimit->Get() && output > 0) {
-        m_motors[0]->PIDWrite(0);
+    if (m_forwardLimit != nullptr) {
+        /* If stopping motor in same limit switch state that limit switch is in
+         * now and motor is rotating into limit switch
+         */
+        if (m_limitOnHigh == m_forwardLimit->Get() && output > 0) {
+            m_motors[0]->PIDWrite(0);
+        }
     }
-    // If reverse limit is pressed and motor is rotating in reverse, stop motor
-    else if (m_reverseLimit != nullptr && m_reverseLimit->Get() && output < 0) {
-        m_motors[0]->PIDWrite(0);
+    else if (m_reverseLimit != nullptr) {
+        /* If stopping motor in same limit switch state that limit switch is in
+         * now and motor is rotating into limit switch
+         */
+        if (m_limitOnHigh == m_reverseLimit->Get() && output < 0) {
+            m_motors[0]->PIDWrite(0);
+        }
     }
     else {
         m_motors[0]->PIDWrite(output);
