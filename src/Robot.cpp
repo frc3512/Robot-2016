@@ -81,7 +81,12 @@ void Robot::OperatorControl() {
             arm.SetManualCarriagePosition(armStick.GetPOV() * 0.1);
         }
 
+        if (armButtons.PressedButton(3)) {
+            gyro.Calibrate();
+        }
+
         shootButtons.Update();
+        armButtons.Update();
 
         shooter.UpdateState();
 
@@ -104,6 +109,12 @@ void Robot::Disabled() {
         shooter.UpdateState();
         DS_PrintOut();
         std::this_thread::sleep_for(10ms);
+
+        if (armButtons.PressedButton(3)) {
+            gyro.Calibrate();
+        }
+
+        armButtons.Update();
     }
 
     robotDrive.ReloadPID();
@@ -128,6 +139,8 @@ void Robot::DS_PrintOut() {
         // pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
         // pidGraph.GraphData(robotDrive.DiffPIDGet(), "Diff PID (DR)");
 
+        // pidGraph.GraphData(gyro.GetRateZ(), "Rate Of Z");
+
         pidGraph.ResetInterval();
     }
 
@@ -145,6 +158,7 @@ void Robot::DS_PrintOut() {
     std::cout << " Shooter Angle: " << shooter.GetShooterHeight() << std::endl;
     std::cout << " Shooter Angle PID " << shooter.m_shooterHeightPID->Get() <<
     std::endl;
+    std::cout << gyro.GetRateZ() << std::endl;
 }
 
 START_ROBOT_CLASS(Robot);
