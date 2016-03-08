@@ -7,11 +7,9 @@
 #define DIGITAL_INPUT_EVENT_GENERATOR_HPP
 
 #include <cstdint>
-#include <memory>
 #include <vector>
 
-#include <DigitalInput.h>
-
+#include "../DigitalInputHandler.hpp"
 #include "../SM/StateMachine.hpp"
 #include "EventGenerator.hpp"
 
@@ -51,7 +49,6 @@ private:
         bool onFallingEdge;
     };
 
-    static std::vector<std::unique_ptr<DigitalInput>> m_inputs;
     std::vector<DigitalInputEvent> m_events;
 
     std::vector<bool> m_oldStates;
