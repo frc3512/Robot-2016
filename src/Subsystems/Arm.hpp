@@ -6,10 +6,10 @@
 #ifndef ARM_HPP
 #define ARM_HPP
 
-#include <DigitalInput.h>
 #include <Timer.h>
 
 #include "../Constants.hpp"
+#include "../DigitalInputHandler.hpp"
 #include "../Events/DigitalInputEventGenerator.hpp"
 #include "../Events/JoystickEventGenerator.hpp"
 #include "../Events/TimerEventGenerator.hpp"
@@ -49,22 +49,20 @@ private:
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
 
-    GearBox m_leftArmActuator{-1, k_armLeftBottomLimitPin, k_armLeftTopLimitPin,
-                              k_leftArmLiftID};
+    GearBox m_leftArmActuator{-1, k_armLeftBottomLimitChannel,
+                              k_armLeftTopLimitChannel, k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
-    GearBox m_carriagePositionMotor{-1, -1, -1, k_carriagePositionID};
-    std::shared_ptr<PIDController> m_carriagePositionPID;
-    std::shared_ptr<TrapezoidProfile> m_carriagePositionProfile;
+    GearBox m_carriageGrbx{-1, -1, -1, k_carriageID};
+    std::shared_ptr<PIDController> m_carriagePID;
+    std::shared_ptr<TrapezoidProfile> m_carriageProfile;
 
-    GearBox m_winchPositionMotor{-1, -1, -1, k_winchPositionID};
-    std::shared_ptr<PIDController> m_winchPositionPID;
-    std::shared_ptr<TrapezoidProfile> m_winchPositionProfile;
+    GearBox m_winchGrbx{-1, -1, -1, k_winchID};
+    std::shared_ptr<PIDController> m_winchPID;
+    std::shared_ptr<TrapezoidProfile> m_winchProfile;
 
-    DigitalInput m_leftCarriageLimitSwitch{k_leftCarriageLimitPin};
-
-    std::shared_ptr<TrapezoidProfile> m_leftArmHeightProfile;
+    DigitalInput* m_leftCarriageLimit = nullptr;
 
     StateMachine m_armSM{"ArmSM"};
 };

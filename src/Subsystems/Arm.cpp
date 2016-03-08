@@ -18,6 +18,26 @@ Arm::Arm() {
     m_leftArmProfile = std::make_shared<TrapezoidProfile>(m_leftArmPID, 0.0,
                                                           0.0);
 
+    m_carriagePID = std::make_shared<PIDController>(0.f,
+                                                    0.f,
+                                                    0.f,
+                                                    0.f,
+                                                    0.f,
+                                                    &m_carriageGrbx,
+                                                    &m_carriageGrbx);
+    m_carriageProfile = std::make_shared<TrapezoidProfile>(m_carriagePID, 0.0,
+                                                           0.0);
+
+    m_winchPID = std::make_shared<PIDController>(0.f,
+                                                 0.f,
+                                                 0.f,
+                                                 0.f,
+                                                 0.f,
+                                                 &m_winchGrbx,
+                                                 &m_winchGrbx);
+    m_winchProfile = std::make_shared<TrapezoidProfile>(m_winchPID, 0.0, 0.0);
+
+    m_leftCarriageLimit = DigitalInputHandler::Get(k_leftCarriageLimitChannel);
 
     // Sets encoder type
     m_leftArmActuator.GetMaster()->SetFeedbackDevice(
@@ -31,10 +51,10 @@ Arm::Arm() {
     m_joystickEvent.RegisterButtonEvent("CarryingHeightButton", k_armStickPort,
                                         k_armCarryingButton,
                                         true); // TODO: change port number
-    m_dioEvent.RegisterInputEvent("LeftArmZeroed", k_armLeftBottomLimitPin,
+    m_dioEvent.RegisterInputEvent("LeftArmZeroed", k_armLeftBottomLimitChannel,
                                   true,
                                   false, m_armSM);
-    m_dioEvent.RegisterInputEvent("LeftArmUp", k_armLeftTopLimitPin,
+    m_dioEvent.RegisterInputEvent("LeftArmUp", k_armLeftTopLimitChannel,
                                   true,
                                   false, m_armSM);
 
@@ -128,7 +148,7 @@ double Arm::GetArmSpeed() const {
 }
 void Arm::SetManualCarriagePosition(int direction) {
     // TODO: Check the limit switches before setting the direction.
-    m_carriagePositionMotor.Set(direction);
+    m_carriageGrbx.Set(direction);
 }
 bool Arm::AtGoal() const {
     return m_leftArmProfile->AtGoal();
@@ -138,7 +158,7 @@ void Arm::ReloadPID() {
 }
 
 void Arm::SetManualWinchHeight(double speed) {
-    m_winchPositionMotor.Set(speed);
+    m_winchGrbx.Set(speed);
 }
 
 void Arm::ResetEncoders() {

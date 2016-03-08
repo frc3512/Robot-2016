@@ -6,12 +6,13 @@
 #ifndef GEARBOX_HPP
 #define GEARBOX_HPP
 
-#include <DigitalInput.h>
 #include <PIDOutput.h>
 #include <PIDSource.h>
 #include <Solenoid.h>
 
 #include "../WPILib/CANTalon.hpp"
+
+class DigitalInput;
 
 /* Notes:
  * This class uses only CANTalons.
@@ -82,10 +83,10 @@ private:
     std::unique_ptr<Solenoid> m_shifter;
 
     // Prevents motor from rotating forward when switch is pressed
-    std::unique_ptr<DigitalInput> m_forwardLimit;
+    DigitalInput* m_forwardLimit = nullptr;
 
     // Prevents motor from rotating in reverse when switch is pressed
-    std::unique_ptr<DigitalInput> m_reverseLimit;
+    DigitalInput* m_reverseLimit = nullptr;
 
     std::vector<std::unique_ptr<CANTalon>> m_motors;
 };

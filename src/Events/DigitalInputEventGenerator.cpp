@@ -5,21 +5,14 @@
 
 #include "DigitalInputEventGenerator.hpp"
 
-std::vector<std::unique_ptr<DigitalInput>> DigitalInputEventGenerator::m_inputs(
-    10);
-
 void DigitalInputEventGenerator::RegisterInputEvent(std::string eventName,
                                                     uint32_t channel,
                                                     bool onRisingEdge,
                                                     bool onFallingEdge,
                                                     EventAcceptor& acceptor) {
-    // Lazily construct digital input
-    if (m_inputs[channel] == nullptr) {
-        m_inputs[channel] = std::make_unique<DigitalInput>(channel);
-    }
-
-    m_events.push_back({std::move(eventName), m_inputs[channel].get(),
-                        onRisingEdge, onFallingEdge});
+    m_events.push_back({std::move(eventName),
+                        DigitalInputHandler::Get(channel), onRisingEdge,
+                        onFallingEdge});
     m_oldStates.emplace_back(false);
     m_newStates.emplace_back(false);
 }
