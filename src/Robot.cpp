@@ -20,6 +20,7 @@ Robot::Robot() {
 }
 
 void Robot::OperatorControl() {
+    robotDrive.ResetEncoders();
     while (IsEnabled() && IsOperatorControl()) {
         // Enables QuickTurn if button is pressed
         robotDrive.Drive(-driveStick1.GetY(), driveStick2.GetX(),
@@ -142,7 +143,8 @@ void Robot::DS_PrintOut() {
 
         dsDisplay.SendToDS();
     }
-
+    std::cout << "Left Rate: " << robotDrive.GetLeftRate() << " | " <<
+    "Right Rate: " << robotDrive.GetRightRate() << std::endl;
     dsDisplay.ReceiveFromDS();
 }
 

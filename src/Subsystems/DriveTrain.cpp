@@ -16,15 +16,15 @@ DriveTrain::DriveTrain() {
 
     m_rightGrbx.SetInverted(true);
 
-    m_leftGrbx.SetSensorDirection(true);
+    // m_leftGrbx.SetSensorDirection(true);
 
-    m_rightGrbx.SetSensorDirection(true);
+    // m_rightGrbx.SetSensorDirection(true);
 
     m_leftGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
     m_rightGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
 
-    m_leftGrbx.SetDistancePerPulse(72.0 / 2800.0);
-    m_rightGrbx.SetDistancePerPulse(72.0 / 2800.0);
+    m_leftGrbx.SetDistancePerPulse(36.0 / 575.0);
+    m_rightGrbx.SetDistancePerPulse(36.0 / 575.0);
 
     m_leftGrbx.Set(0.0);
     m_rightGrbx.Set(0.0);
@@ -41,6 +41,14 @@ DriveTrain::DriveTrain() {
                                                         2.0);
 
     ReloadPID();
+}
+
+int32_t DriveTrain::GetLeftRaw() const {
+    return m_leftGrbx.Get();
+}
+
+int32_t DriveTrain::GetRightRaw() const {
+    return m_rightGrbx.Get();
 }
 
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
