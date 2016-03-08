@@ -7,34 +7,62 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+/* Order of subsystem constants:
+ * > Motor IDs
+ * > Limit switches
+ * > Distance per pulse
+ * > PID
+ * > Other (i.e. miscellaneous constants)
+ */
+
 // DS port
 constexpr double k_dsPort = 1130;
 
-// Joystick and button port
+/*
+ * Joystick and buttons
+ */
+
+// Joystick ports
 constexpr int k_driveStick1Port = 0;
 constexpr int k_driveStick2Port = 1;
 constexpr int k_shootStickPort = 2;
 constexpr int k_armStickPort = 3;
 
-// Shooter gearbox ID
-constexpr int k_leftShooterID = 5;
-constexpr int k_rightShooterID = 3;
-constexpr int k_shooterHeightID = 1;
-constexpr int k_rollBallID = 11;
+// Joystick axis deadband range
+constexpr double k_joystickDeadband = 0.02;
 
-// Shooter limit switch channel
-constexpr int k_shooterIntakeLimitChannel = 2;
-constexpr int k_shooterBottomLimitChannel = 1;
+// Arm buttons
+constexpr int k_armZeroButton = 11;
+constexpr int k_armCarryingButton = 12;
 
-// Arm limit switch channel
-constexpr int k_rightCarriageLimitChannel = 7;
-constexpr int k_leftCarriageLimitChannel = 8;
+/*
+ * DriveTrain
+ */
 
-// Drivetrain gearbox ID
+// DriveTrain GearBox ID
 constexpr int k_leftDriveMasterID = 8;
 constexpr int k_leftDriveSlaveID = 10;
 constexpr int k_rightDriveMasterID = 4;
 constexpr int k_rightDriveSlaveID = 6;
+
+// DriveTrain distance per pulse
+constexpr double k_driveDpP = 36.0 / 575.0; // in/pulse
+
+// Left DriveTrain PID
+constexpr double k_leftDriveMaxSpeed = 15950; // in/sec
+constexpr double k_leftDriveP = 0.0;
+constexpr double k_leftDriveI = 0.0;
+constexpr double k_leftDriveD = 0.0;
+constexpr double k_leftDriveV = 1.0 / k_leftDriveMaxSpeed;
+constexpr double k_leftDriveA = 0.0;
+
+// Right DriveTrain PID
+constexpr double k_rightDriveMaxSpeed = 15600; // in/sec
+constexpr double k_rightDriveP = 0.0;
+constexpr double k_rightDriveI = 0.0;
+constexpr double k_rightDriveD = 0.0;
+constexpr double k_rightDriveV = 1.0 / k_rightDriveMaxSpeed;
+constexpr double k_rightDriveA = 0.0;
 
 // CheesyDrive constants
 constexpr double k_lowGearSensitive = 0.75;
@@ -43,26 +71,58 @@ constexpr double k_inertiaDampen = 2.5;
 constexpr double k_inertiaHighTurn = 3.0;
 constexpr double k_inertiaLowTurn = 3.0;
 
-// Left drivetrain PID values
-constexpr double k_leftDriveP = 5;
-constexpr double k_leftDriveI = 0;
-constexpr double k_leftDriveD = 2;
-constexpr double k_leftDriveV = 0;
-constexpr double k_leftDriveA = 0;
+/*
+ * Arm
+ */
 
-// Right drivetrain PID values
-constexpr double k_rightDriveP = 8;
-constexpr double k_rightDriveI = 0;
-constexpr double k_rightDriveD = 3;
-constexpr double k_rightDriveV = 0;
-constexpr double k_rightDriveA = 0;
+// Arm GearBox ID
+constexpr int k_leftArmLiftID = 7;
 
-// Arm Carriage and Winch ID's
+// Arm carriage and winch ID's
 constexpr int k_carriageID = 2;
 constexpr int k_winchID = 9;
 
-// Shooter constants
-constexpr double k_shooterWheelMaxSpeed = 800.0;
+// Arm limit switch channels
+constexpr int k_armLeftBottomLimitChannel = 3;
+constexpr int k_armLeftTopLimitChannel = 5;
+
+// Arm carriage limit switch channels
+constexpr int k_carriageLeftLimitChannel = 8;
+constexpr int k_carriageRightLimitChannel = 7;
+
+// Arm distance per pulse
+constexpr double k_armDpP = 30.0 / 133.0; // degrees/pulse
+
+// Arm height constants
+constexpr int k_armHeight1 = 1;
+constexpr int k_armHeight2 = 2;
+
+/*
+ * Shooter
+ */
+
+// Shooter GearBox ID's
+constexpr int k_leftShooterID = 5;
+constexpr int k_rightShooterID = 3;
+constexpr int k_shooterHeightID = 1;
+constexpr int k_rollBallID = 11;
+
+// Shooter limit switch channels
+constexpr int k_shooterIntakeLimitChannel = 2;
+constexpr int k_shooterBottomLimitChannel = 1;
+
+/* Shooter distance per pulse unit conversions:
+ * X ticks   1 revolution   60 sec
+ * ------- * ------------ * ------
+ *  1 sec     360 ticks     1 min
+ *
+ * Shooter has 1:1 gear ratio, so no conversion between driving and driven RPMs
+ * needed
+ */
+constexpr double k_shooterDpP = 60.0 / 360.0; // RPM/(pulse/sec)
+
+// Shooter speed
+constexpr double k_shooterWheelMaxSpeed = 800.0; // RPM
 
 // Left shooter wheel PID
 constexpr double k_leftShooterP = 0.001;
@@ -85,20 +145,5 @@ constexpr double k_heightShooterD = 0.0;
 constexpr double k_heightShooterV = 0.0;
 constexpr double k_heightShooterA = 0.0;
 constexpr double k_heightShooterF = 0.125;
-
-// Arm gearbox ID
-constexpr int k_leftArmLiftID = 7;
-
-// Arm Limit Switch Pin
-constexpr int k_armLeftBottomLimitChannel = 3;
-constexpr int k_armLeftTopLimitChannel = 5;
-
-// Arm height constants
-constexpr int k_armHeight1 = 1;
-constexpr int k_armHeight2 = 2;
-
-// Arm buttons
-constexpr int k_armZeroButton = 11;
-constexpr int k_armCarryingButton = 12;
 
 #endif // CONSTANTS_HPP

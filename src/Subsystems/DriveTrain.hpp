@@ -22,6 +22,9 @@ class DriveTrain : public SubsystemBase {
 public:
     DriveTrain();
 
+    int32_t GetLeftRaw() const;
+    int32_t GetRightRaw() const;
+
     /* Drives robot with given speed and turn values [-1..1].
      * This is a convenience function for use in Operator Control.
      */
@@ -56,10 +59,8 @@ public:
     bool AtGoal() const;
     void ResetProfile();
 
-    const static float maxWheelSpeed;
-
 private:
-    float m_deadband = 0.02f;
+    float m_deadband = k_joystickDeadband;
     float m_sensitivity;
 
     // Cheesy Drive variables

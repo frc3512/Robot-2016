@@ -49,12 +49,13 @@ private:
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
 
-    GearBox m_leftArmActuator{-1, k_armLeftBottomLimitChannel,
-                              k_armLeftTopLimitChannel, k_leftArmLiftID};
+    GearBox m_leftArmGrbx{-1, k_armLeftBottomLimitChannel,
+                          k_armLeftTopLimitChannel, k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
-    GearBox m_carriageGrbx{-1, -1, -1, k_carriageID};
+    GearBox m_carriageGrbx{-1, k_carriageLeftLimitChannel,
+                           k_carriageRightLimitChannel, k_carriageID};
     std::shared_ptr<PIDController> m_carriagePID;
     std::shared_ptr<TrapezoidProfile> m_carriageProfile;
 

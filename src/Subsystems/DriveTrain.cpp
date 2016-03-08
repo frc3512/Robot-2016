@@ -9,38 +9,44 @@
 
 #include "../WPILib/PIDController.hpp"
 
-const float DriveTrain::maxWheelSpeed = 80.0;
-
 DriveTrain::DriveTrain() {
     m_sensitivity = k_lowGearSensitive;
 
     m_rightGrbx.SetInverted(true);
 
-    m_leftGrbx.SetSensorDirection(true);
-
-    m_rightGrbx.SetSensorDirection(true);
+    // m_leftGrbx.SetSensorDirection(true);
+    // m_rightGrbx.SetSensorDirection(true);
 
     m_leftGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
     m_rightGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
 
-    m_leftGrbx.SetDistancePerPulse(72.0 / 2800.0);
-    m_rightGrbx.SetDistancePerPulse(72.0 / 2800.0);
+    m_leftGrbx.SetDistancePerPulse(k_driveDpP);
+    m_rightGrbx.SetDistancePerPulse(k_driveDpP);
 
     m_leftGrbx.Set(0.0);
     m_rightGrbx.Set(0.0);
 
     m_leftPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
                                                 &m_leftGrbx, &m_leftGrbx);
-    m_leftProfile = std::make_unique<TrapezoidProfile>(m_leftPID, maxWheelSpeed,
+    m_leftProfile = std::make_unique<TrapezoidProfile>(m_leftPID,
+                                                       k_leftDriveMaxSpeed,
                                                        2.0);
 
     m_rightPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
                                                  &m_rightGrbx, &m_rightGrbx);
     m_rightProfile = std::make_unique<TrapezoidProfile>(m_rightPID,
-                                                        maxWheelSpeed,
+                                                        k_rightDriveMaxSpeed,
                                                         2.0);
 
     ReloadPID();
+}
+
+int32_t DriveTrain::GetLeftRaw() const {
+    return m_leftGrbx.Get();
+}
+
+int32_t DriveTrain::GetRightRaw() const {
+    return m_rightGrbx.Get();
 }
 
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {

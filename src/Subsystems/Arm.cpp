@@ -8,13 +8,15 @@
 #include <iostream>
 
 Arm::Arm() {
+    m_leftArmGrbx.SetLimitOnHigh(false);
+
     m_leftArmPID = std::make_shared<PIDController>(0.f,
                                                    0.f,
                                                    0.f,
                                                    0.f,
                                                    0.f,
-                                                   &m_leftArmActuator,
-                                                   &m_leftArmActuator);
+                                                   &m_leftArmGrbx,
+                                                   &m_leftArmGrbx);
     m_leftArmProfile = std::make_shared<TrapezoidProfile>(m_leftArmPID, 0.0,
                                                           0.0);
 
@@ -40,17 +42,17 @@ Arm::Arm() {
     m_leftCarriageLimit = DigitalInputHandler::Get(k_leftCarriageLimitChannel);
 
     // Sets encoder type
-    m_leftArmActuator.GetMaster()->SetFeedbackDevice(
+    m_leftArmGrbx.GetMaster()->SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
-    m_leftArmActuator.SetSensorDirection(true);
-    m_leftArmActuator.SetDistancePerPulse(30.0f / 133.0f); // Angle per pulse
+    m_leftArmGrbx.SetSensorDirection(true);
+    m_leftArmGrbx.SetDistancePerPulse(k_armDpP);
 
     m_joystickEvent.RegisterButtonEvent("ZeroHeightButton", k_armStickPort,
                                         k_armZeroButton,
-                                        true); // TODO: change port number
+                                        true);
     m_joystickEvent.RegisterButtonEvent("CarryingHeightButton", k_armStickPort,
                                         k_armCarryingButton,
-                                        true); // TODO: change port number
+                                        true);
     m_dioEvent.RegisterInputEvent("LeftArmZeroed", k_armLeftBottomLimitChannel,
                                   true,
                                   false, m_armSM);
@@ -61,7 +63,7 @@ Arm::Arm() {
     // Idle
     auto state = std::make_unique<State>("Idle");
     state->Entry = [this] {
-        m_leftArmActuator.Set(0);
+        m_leftArmGrbx.Set(0);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "CarryingHeightButton") {
@@ -82,7 +84,7 @@ Arm::Arm() {
     state = std::make_unique<State>("CarryingHeight");
     state->Run = [this] {
         if (GetManualOverride()) {
-            m_leftArmActuator.Set(1);
+            m_leftArmGrbx.Set(1);
         }
     };
     state->CheckTransition = [this] (const std::string& event) {
@@ -99,11 +101,11 @@ Arm::Arm() {
     // Start arm lift
     state = std::make_unique<State>("ZeroHeight");
     state->Run = [this] {
-        m_leftArmActuator.Set(-1);
+        m_leftArmGrbx.Set(-1);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "LeftArmZeroed") {
-                                     m_leftArmActuator.ResetEncoder();
+                                     m_leftArmGrbx.ResetEncoder();
                                      return "Idle";
                                  }
                                  else {
@@ -129,25 +131,24 @@ void Arm::SetCarryingHeight(double speed) {
     }
     else {
         m_leftArmPID->Enable();
-        m_leftArmPID->SetSetpoint({ 0.0, speed / m_leftArmPID->GetV(), 0.0 }); // TODO: change all of these values
+        m_leftArmPID->SetSetpoint({0.0, speed / m_leftArmPID->GetV(), 0.0});
     }
 }
 
 void Arm::SetArmHeight(double height) {
     if (GetManualOverride()) {
-        m_leftArmActuator.Set(height);
+        m_leftArmGrbx.Set(height);
     }
 }
 
 int32_t Arm::GetArmHeightValue() const {
-    return m_leftArmActuator.Get();
+    return m_leftArmGrbx.Get();
 }
 
 double Arm::GetArmSpeed() const {
-    return m_leftArmActuator.GetSpeed();
+    return m_leftArmGrbx.GetSpeed();
 }
 void Arm::SetManualCarriagePosition(int direction) {
-    // TODO: Check the limit switches before setting the direction.
     m_carriageGrbx.Set(direction);
 }
 bool Arm::AtGoal() const {

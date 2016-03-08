@@ -53,7 +53,6 @@ private:
     DigitalInputEventGenerator m_dioEvent;
     TimerEventGenerator m_timerEvent{"ShootTimer", 3.0};
 
-    // TODO: some CAN IDs conflict
     std::shared_ptr<GearBox> m_leftShootGrbx;
     LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}
     };
