@@ -83,8 +83,8 @@ constexpr int k_carriageID = 2;
 constexpr int k_winchID = 9;
 
 // Arm limit switch channels
-constexpr int k_armLeftBottomLimitChannel = 3;
-constexpr int k_armLeftTopLimitChannel = 5;
+constexpr int k_leftArmBottomLimitChannel = 3;
+constexpr int k_leftArmTopLimitChannel = 5;
 
 // Arm carriage limit switch channels
 constexpr int k_carriageLeftLimitChannel = 8;

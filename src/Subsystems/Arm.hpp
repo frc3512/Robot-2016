@@ -49,8 +49,8 @@ private:
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
 
-    GearBox m_leftArmGrbx{-1, k_armLeftBottomLimitChannel,
-                          k_armLeftTopLimitChannel, k_leftArmLiftID};
+    GearBox m_leftArmGrbx{-1, k_leftArmBottomLimitChannel,
+                          k_leftArmTopLimitChannel, k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
     std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
@@ -63,7 +63,8 @@ private:
     std::shared_ptr<PIDController> m_winchPID;
     std::shared_ptr<TrapezoidProfile> m_winchProfile;
 
-    DigitalInput* m_leftCarriageLimit = nullptr;
+    DigitalInput* m_carriageLeftLimit = nullptr;
+    DigitalInput* m_carriageRightLimit = nullptr;
 
     StateMachine m_armSM{"ArmSM"};
 };

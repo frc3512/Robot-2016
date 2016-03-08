@@ -39,7 +39,8 @@ Arm::Arm() {
                                                  &m_winchGrbx);
     m_winchProfile = std::make_shared<TrapezoidProfile>(m_winchPID, 0.0, 0.0);
 
-    m_leftCarriageLimit = DigitalInputHandler::Get(k_leftCarriageLimitChannel);
+    m_carriageLeftLimit = DigitalInputHandler::Get(k_carriageLeftLimitChannel);
+    m_carriageRightLimit = DigitalInputHandler::Get(k_carriageRightLimitChannel);
 
     // Sets encoder type
     m_leftArmGrbx.GetMaster()->SetFeedbackDevice(
@@ -53,10 +54,10 @@ Arm::Arm() {
     m_joystickEvent.RegisterButtonEvent("CarryingHeightButton", k_armStickPort,
                                         k_armCarryingButton,
                                         true);
-    m_dioEvent.RegisterInputEvent("LeftArmZeroed", k_armLeftBottomLimitChannel,
+    m_dioEvent.RegisterInputEvent("LeftArmZeroed", k_leftArmBottomLimitChannel,
                                   true,
                                   false, m_armSM);
-    m_dioEvent.RegisterInputEvent("LeftArmUp", k_armLeftTopLimitChannel,
+    m_dioEvent.RegisterInputEvent("LeftArmUp", k_leftArmTopLimitChannel,
                                   true,
                                   false, m_armSM);
 
