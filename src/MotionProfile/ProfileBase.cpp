@@ -23,7 +23,7 @@ ProfileBase::~ProfileBase() {
 }
 
 bool ProfileBase::AtGoal() {
-    if (m_lastTime >= m_timeTotal) {
+    if (m_interrupt || m_lastTime >= m_timeTotal) {
         return true;
     }
 
