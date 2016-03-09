@@ -49,7 +49,7 @@ constexpr int k_rightDriveSlaveID = 6;
 constexpr double k_driveDpP = 36.0 / 575.0; // in/pulse
 
 // Left DriveTrain PID
-constexpr double k_leftDriveMaxSpeed = 15950; // in/sec
+constexpr double k_leftDriveMaxSpeed = 15.950; // in/sec
 constexpr double k_leftDriveP = 0.0;
 constexpr double k_leftDriveI = 0.0;
 constexpr double k_leftDriveD = 0.0;
@@ -57,7 +57,7 @@ constexpr double k_leftDriveV = 1.0 / k_leftDriveMaxSpeed;
 constexpr double k_leftDriveA = 0.0;
 
 // Right DriveTrain PID
-constexpr double k_rightDriveMaxSpeed = 15600; // in/sec
+constexpr double k_rightDriveMaxSpeed = 15.600; // in/sec
 constexpr double k_rightDriveP = 0.0;
 constexpr double k_rightDriveI = 0.0;
 constexpr double k_rightDriveD = 0.0;

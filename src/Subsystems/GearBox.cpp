@@ -84,7 +84,7 @@ float GearBox::GetPosition() const {
 }
 
 float GearBox::GetSpeed() const {
-    return m_motors[0]->GetSpeed() * m_distancePerPulse;
+    return m_motors[0]->GetSpeed() * m_distancePerPulse * 100.0;
 }
 
 void GearBox::SetDistancePerPulse(double distancePerPulse) {

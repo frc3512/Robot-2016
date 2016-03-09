@@ -30,13 +30,13 @@ DriveTrain::DriveTrain() {
                                                 &m_leftGrbx, &m_leftGrbx);
     m_leftProfile = std::make_unique<TrapezoidProfile>(m_leftPID,
                                                        k_leftDriveMaxSpeed,
-                                                       2.0);
+                                                       3.0);
 
     m_rightPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
                                                  &m_rightGrbx, &m_rightGrbx);
     m_rightProfile = std::make_unique<TrapezoidProfile>(m_rightPID,
                                                         k_rightDriveMaxSpeed,
-                                                        2.0);
+                                                        3.0);
 
     ReloadPID();
 }
@@ -227,13 +227,18 @@ double DriveTrain::GetRightRate() const {
 }
 
 PIDState DriveTrain::GetLeftSetpoint() const {
-    return m_leftPID->GetSetpoint();
+    //std::cout << m_leftPID->IsEnabled() << std::endl;
+    //std::cout << "LeftPID Get: " <<m_leftPID->Get() << std::endl;
+	return m_leftPID->GetSetpoint();
 }
 
 PIDState DriveTrain::GetRightSetpoint() const {
     return m_rightPID->GetSetpoint();
 }
 
+PIDState DriveTrain::GetLeftGoal() const {
+	return m_leftProfile->GetGoal();
+}
 void DriveTrain::SetGoal(PIDState goal) {
     m_leftProfile->SetGoal(goal);
     m_rightProfile->SetGoal(goal);

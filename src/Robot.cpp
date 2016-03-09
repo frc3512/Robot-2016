@@ -83,6 +83,8 @@ void Robot::Autonomous() {
     autoTimer.Reset();
     autoTimer.Start();
 
+
+
     robotDrive.ResetEncoders();
     dsDisplay.ExecAutonomous();
 }
@@ -142,7 +144,6 @@ void Robot::DS_PrintOut() {
 
         dsDisplay.SendToDS();
     }
-
     dsDisplay.ReceiveFromDS();
 }
 

@@ -40,7 +40,8 @@ Arm::Arm() {
     m_winchProfile = std::make_shared<TrapezoidProfile>(m_winchPID, 0.0, 0.0);
 
     m_carriageLeftLimit = DigitalInputHandler::Get(k_carriageLeftLimitChannel);
-    m_carriageRightLimit = DigitalInputHandler::Get(k_carriageRightLimitChannel);
+    m_carriageRightLimit =
+        DigitalInputHandler::Get(k_carriageRightLimitChannel);
 
     // Sets encoder type
     m_leftArmGrbx.GetMaster()->SetFeedbackDevice(

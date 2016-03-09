@@ -180,6 +180,7 @@ bool Shooter::GetManualOverride() const {
 
 void Shooter::SetShooterHeight(double height) {
     if (GetManualOverride()) {
+        m_shootHeightProfile->StopProfile();
         m_shooterHeightGrbx.Set(height);
     }
 

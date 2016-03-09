@@ -55,6 +55,8 @@ public:
     PIDState GetLeftSetpoint() const;
     PIDState GetRightSetpoint() const;
 
+    PIDState GetLeftGoal() const;
+
     void SetGoal(PIDState goal);
     bool AtGoal() const;
     void ResetProfile();
