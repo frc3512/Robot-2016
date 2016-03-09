@@ -6,6 +6,8 @@
 #ifndef GEARBOX_HPP
 #define GEARBOX_HPP
 
+#include <limits>
+
 #include <PIDOutput.h>
 #include <PIDSource.h>
 #include <Solenoid.h>
@@ -62,6 +64,9 @@ public:
     // If true, motor is stopped when either limit switch reads high
     void SetLimitOnHigh(bool limitOnHigh);
 
+    // Keeps gearbox within a certain position range
+    void SetSoftPositionLimits(double min, double max);
+
     // Shifts gearbox to another gear if available
     void SetGear(bool gear);
 
@@ -80,6 +85,9 @@ public:
 private:
     bool m_isEncoderReversed = false;
     bool m_limitOnHigh = true;
+
+    double m_min = std::numeric_limits<double>::min();
+    double m_max = std::numeric_limits<double>::max();
 
     // Conversion factor for setpoints with respect to encoder readings
     double m_distancePerPulse = 1.0;

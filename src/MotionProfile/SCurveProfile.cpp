@@ -21,19 +21,21 @@ SCurveProfile::SCurveProfile(std::shared_ptr<PIDController> pid,
 PIDState SCurveProfile::SetGoal(PIDState goal, PIDState curSource) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
-    m_sp = m_goal = goal;
-    m_sp.displacement -= curSource.displacement;
+    m_goal = goal;
 
-    m_sign = (m_sp.displacement < 0) ? -1.0 : 1.0;
+    // Set setpoint to current distance since setpoint hasn't moved yet
+    m_sp = curSource;
+
+    m_sign = (m_goal.displacement < 0) ? -1.0 : 1.0;
 
     // If profile can't accelerate up to max velocity before decelerating
     bool shortProfile = m_maxVelocity * (m_timeToMaxA + m_maxVelocity /
                                          m_acceleration) >
-                        m_sign * m_sp.displacement;
+                        m_sign * m_goal.displacement;
 
     if (shortProfile) {
         m_profileMaxVelocity = m_acceleration *
-                               (std::sqrt(m_sign * m_sp.displacement /
+                               (std::sqrt(m_sign * m_goal.displacement /
                                           m_acceleration - 0.75 *
                                           std::pow(m_timeToMaxA, 2)) - 0.5 *
                                 m_timeToMaxA);
@@ -49,15 +51,13 @@ PIDState SCurveProfile::SetGoal(PIDState goal, PIDState curSource) {
         m_t4 = m_t3;
     }
     else {
-        m_t4 = m_sign * m_sp.displacement / m_profileMaxVelocity;
+        m_t4 = m_sign * m_goal.displacement / m_profileMaxVelocity;
     }
     m_t5 = m_t4 + m_timeToMaxA;
     m_t6 = m_t4 + m_t2;
     m_t7 = m_t6 + m_timeToMaxA;
     m_timeTotal = m_t7;
 
-    // Set setpoint to current distance since setpoint hasn't moved yet
-    m_sp = curSource;
 
     StartProfile();
 

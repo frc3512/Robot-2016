@@ -31,7 +31,6 @@ public:
     void SetArmHeight(double height);
     void SetManualOverride(bool manual);
     bool GetManualOverride() const;
-    bool AtGoal() const;
 
     int32_t GetArmHeightValue() const;
     double GetArmSpeed() const;
@@ -52,16 +51,13 @@ private:
     GearBox m_leftArmGrbx{-1, k_leftArmBottomLimitChannel,
                           k_leftArmTopLimitChannel, k_leftArmLiftID};
     std::shared_ptr<PIDController> m_leftArmPID;
-    std::shared_ptr<TrapezoidProfile> m_leftArmProfile;
 
     GearBox m_carriageGrbx{-1, k_carriageLeftLimitChannel,
                            k_carriageRightLimitChannel, k_carriageID};
     std::shared_ptr<PIDController> m_carriagePID;
-    std::shared_ptr<TrapezoidProfile> m_carriageProfile;
 
     GearBox m_winchGrbx{-1, -1, -1, k_winchID};
     std::shared_ptr<PIDController> m_winchPID;
-    std::shared_ptr<TrapezoidProfile> m_winchProfile;
 
     DigitalInput* m_carriageLeftLimit = nullptr;
     DigitalInput* m_carriageRightLimit = nullptr;

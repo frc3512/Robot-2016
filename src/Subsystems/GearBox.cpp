@@ -40,6 +40,7 @@ GearBox::GearBox(int shifterChan,
             m_motors[i]->ConfigEncoderCodesPerRev(1);
             m_motors[i]->SetSensorDirection(m_isEncoderReversed);
             ResetEncoder();
+            // m_motors[i]->SetVoltageRampRate(k_voltRampRate);
             m_motors[i]->SelectProfileSlot(0);
             m_motors[i]->EnableControl();
         }
@@ -54,21 +55,31 @@ GearBox::GearBox(int shifterChan,
 }
 
 void GearBox::Set(float value) {
-    if (m_forwardLimit != nullptr) {
+    if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
+        value > 0) {
         /* If stopping motor in same limit switch state that limit switch is in
          * now and motor is rotating into limit switch
          */
-        if (m_limitOnHigh == m_forwardLimit->Get() && value > 0) {
-            m_motors[0]->Set(0);
-        }
+        m_motors[0]->Set(0);
     }
-    else if (m_reverseLimit != nullptr) {
+    else if (m_reverseLimit != nullptr &&
+             m_limitOnHigh == m_reverseLimit->Get() && value < 0) {
         /* If stopping motor in same limit switch state that limit switch is in
          * now and motor is rotating into limit switch
          */
-        if (m_limitOnHigh == m_reverseLimit->Get() && value < 0) {
-            m_motors[0]->Set(0);
-        }
+        m_motors[0]->Set(0);
+    }
+    else if (GetPosition() >= m_max && value > 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * into limit switch
+         */
+        m_motors[0]->Set(0);
+    }
+    else if (GetPosition() <= m_min && value < 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * into limit switch
+         */
+        m_motors[0]->Set(0);
     }
     else {
         m_motors[0]->Set(value);
@@ -84,7 +95,7 @@ float GearBox::GetPosition() const {
 }
 
 float GearBox::GetSpeed() const {
-    return m_motors[0]->GetSpeed() * m_distancePerPulse;
+    return m_motors[0]->GetSpeed() * m_distancePerPulse * 100.0;
 }
 
 void GearBox::SetDistancePerPulse(double distancePerPulse) {
@@ -116,6 +127,11 @@ void GearBox::SetLimitOnHigh(bool limitOnHigh) {
     m_limitOnHigh = limitOnHigh;
 }
 
+void GearBox::SetSoftPositionLimits(double min, double max) {
+    m_min = min;
+    m_max = max;
+}
+
 void GearBox::SetGear(bool gear) {
     if (m_shifter != nullptr) {
         m_shifter->Set(gear);
@@ -136,6 +152,36 @@ CANTalon* GearBox::GetMaster() const {
 }
 
 void GearBox::PIDWrite(float output) {
+    if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
+        output > 0) {
+        /* If stopping motor in same limit switch state that limit switch is in
+         * now and motor is rotating into limit switch
+         */
+        m_motors[0]->PIDWrite(0);
+    }
+    else if (m_reverseLimit != nullptr &&
+             m_limitOnHigh == m_reverseLimit->Get() && output < 0) {
+        /* If stopping motor in same limit switch state that limit switch is in
+         * now and motor is rotating into limit switch
+         */
+        m_motors[0]->PIDWrite(0);
+    }
+    else if (GetPosition() >= m_max && output > 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * into limit switch
+         */
+        m_motors[0]->PIDWrite(0);
+    }
+    else if (GetPosition() <= m_min && output < 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * into limit switch
+         */
+        m_motors[0]->PIDWrite(0);
+    }
+    else {
+        m_motors[0]->PIDWrite(output);
+    }
+
     if (m_forwardLimit != nullptr) {
         /* If stopping motor in same limit switch state that limit switch is in
          * now and motor is rotating into limit switch

@@ -17,8 +17,6 @@ Arm::Arm() {
                                                    0.f,
                                                    &m_leftArmGrbx,
                                                    &m_leftArmGrbx);
-    m_leftArmProfile = std::make_shared<TrapezoidProfile>(m_leftArmPID, 0.0,
-                                                          0.0);
 
     m_carriagePID = std::make_shared<PIDController>(0.f,
                                                     0.f,
@@ -27,8 +25,6 @@ Arm::Arm() {
                                                     0.f,
                                                     &m_carriageGrbx,
                                                     &m_carriageGrbx);
-    m_carriageProfile = std::make_shared<TrapezoidProfile>(m_carriagePID, 0.0,
-                                                           0.0);
 
     m_winchPID = std::make_shared<PIDController>(0.f,
                                                  0.f,
@@ -37,7 +33,6 @@ Arm::Arm() {
                                                  0.f,
                                                  &m_winchGrbx,
                                                  &m_winchGrbx);
-    m_winchProfile = std::make_shared<TrapezoidProfile>(m_winchPID, 0.0, 0.0);
 
     m_carriageLeftLimit = DigitalInputHandler::Get(k_carriageLeftLimitChannel);
     m_carriageRightLimit =
@@ -69,9 +64,7 @@ Arm::Arm() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "CarryingHeightButton") {
-                                     m_leftArmProfile->SetGoal({k_armHeight1,
-                                                                0.0, 0.0});
-                                     return "CarryingHeight";
+                                     return "Idle"; // TODO: CHANGE BACK TO SET GOAL
                                  }
                                  else if (event == "ZeroHeightButton") {
                                      return "ZeroHeight";
@@ -90,7 +83,7 @@ Arm::Arm() {
         }
     };
     state->CheckTransition = [this] (const std::string& event) {
-                                 if (AtGoal()) {
+                                 if (m_leftArmPID->OnTarget()) {
                                      return "Idle";
                                  }
                                  else {
@@ -152,9 +145,6 @@ double Arm::GetArmSpeed() const {
 }
 void Arm::SetManualCarriagePosition(int direction) {
     m_carriageGrbx.Set(direction);
-}
-bool Arm::AtGoal() const {
-    return m_leftArmProfile->AtGoal();
 }
 
 void Arm::ReloadPID() {

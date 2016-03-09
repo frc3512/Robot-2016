@@ -23,6 +23,8 @@ ProfileBase::~ProfileBase() {
 }
 
 bool ProfileBase::AtGoal() {
+    std::cout << "LAST TIME: " << m_lastTime << "TIME TOTAL: " << m_timeTotal <<
+        " INTERUPTS: " << m_interrupt << std::endl;
     if (m_interrupt || m_lastTime >= m_timeTotal) {
         return true;
     }
@@ -39,7 +41,6 @@ bool ProfileBase::AtGoal() {
                std::fabs(m_goal.velocity - m_sp.velocity) < 0.001 &&
                std::fabs(m_goal.acceleration - m_sp.acceleration) < 0.001;
     }
-
     return false;
 }
 
@@ -52,6 +53,7 @@ PIDState ProfileBase::GetSetpoint() const {
 }
 
 void ProfileBase::ResetProfile() {
+    StopProfile();
     m_goal = PIDState();
     m_sp = PIDState();
     m_pid->SetSetpoint(m_sp);
@@ -64,6 +66,12 @@ void ProfileBase::StopProfile() {
     if (!m_interrupt && m_task.joinable()) {
         m_interrupt = true;
         m_task.join();
+        m_interrupt = false;
+    }
+
+    // If PID is enabled, disable it
+    if (m_pid->IsEnabled()) {
+        m_pid->Disable();
     }
 }
 
