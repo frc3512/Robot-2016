@@ -7,6 +7,11 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+/* Used to flip directions of some motors on the practice robot with respect to
+ * the competition one
+ */
+#define PRACTICE_ROBOT
+
 /* Order of subsystem constants:
  * > Motor IDs
  * > Limit switches
@@ -48,21 +53,13 @@ constexpr int k_rightDriveSlaveID = 6;
 // DriveTrain distance per pulse
 constexpr double k_driveDpP = 36.0 / 575.0; // in/pulse
 
-// Left DriveTrain PID
-constexpr double k_leftDriveMaxSpeed = 15950; // in/sec
-constexpr double k_leftDriveP = 0.0;
-constexpr double k_leftDriveI = 0.0;
-constexpr double k_leftDriveD = 0.0;
-constexpr double k_leftDriveV = 1.0 / k_leftDriveMaxSpeed;
-constexpr double k_leftDriveA = 0.0;
-
-// Right DriveTrain PID
-constexpr double k_rightDriveMaxSpeed = 15600; // in/sec
-constexpr double k_rightDriveP = 0.0;
-constexpr double k_rightDriveI = 0.0;
-constexpr double k_rightDriveD = 0.0;
-constexpr double k_rightDriveV = 1.0 / k_rightDriveMaxSpeed;
-constexpr double k_rightDriveA = 0.0;
+// Differential DriveTrain PID
+constexpr double k_diffDriveMaxSpeed = 15.600; // in/sec
+constexpr double k_diffDriveP = 0.015;
+constexpr double k_diffDriveI = 0.007;
+constexpr double k_diffDriveD = 0.0;
+constexpr double k_diffDriveA = 0.0;
+constexpr double k_diffDriveV = 0.0;
 
 // CheesyDrive constants
 constexpr double k_lowGearSensitive = 0.75;
@@ -81,10 +78,11 @@ constexpr int k_leftArmLiftID = 7;
 // Arm carriage and winch ID's
 constexpr int k_carriageID = 2;
 constexpr int k_winchID = 9;
+constexpr int k_armIntakeID = 11; // TODO: CHANGE
 
 // Arm limit switch channels
-constexpr int k_leftArmBottomLimitChannel = 3;
-constexpr int k_leftArmTopLimitChannel = 5;
+constexpr int k_leftArmBottomLimitChannel = -1;
+constexpr int k_leftArmTopLimitChannel = -1;
 
 // Arm carriage limit switch channels
 constexpr int k_carriageLeftLimitChannel = 8;
@@ -105,7 +103,7 @@ constexpr int k_armHeight2 = 2;
 constexpr int k_leftShooterID = 5;
 constexpr int k_rightShooterID = 3;
 constexpr int k_shooterHeightID = 1;
-constexpr int k_rollBallID = 11;
+constexpr int k_rollBallID = 2;
 
 // Shooter limit switch channels
 constexpr int k_shooterIntakeLimitChannel = 2;
@@ -139,11 +137,13 @@ constexpr double k_rightShooterV = 1.0 / k_shooterWheelMaxSpeed;
 constexpr double k_rightShooterA = 0.0;
 
 // Shooter height PID
-constexpr double k_heightShooterP = 0.0;
+constexpr double k_heightShooterP = 0.001;
 constexpr double k_heightShooterI = 0.0;
 constexpr double k_heightShooterD = 0.0;
 constexpr double k_heightShooterV = 0.0;
 constexpr double k_heightShooterA = 0.0;
 constexpr double k_heightShooterF = 0.125;
 
+// Drivetrain Voltage Ramp Rate
+constexpr double k_voltRampRate = 240;
 #endif // CONSTANTS_HPP

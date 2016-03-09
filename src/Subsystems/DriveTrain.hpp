@@ -9,9 +9,11 @@
 #include <memory>
 
 #include "../Constants.hpp"
+#include "../Differential.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../SM/StateMachine.hpp"
 #include "../Utility.hpp"
+#include "../WPILib/PIDController.hpp"
 #include "GearBox.hpp"
 #include "SubsystemBase.hpp"
 
@@ -39,6 +41,8 @@ public:
     // Set encoder distances to 0
     void ResetEncoders();
 
+    void DiffDrive(float output);
+
     // Directly set wheel speeds [0..1] (see GearBox::SetManual(float))
     void SetLeftManual(float value);
     void SetRightManual(float value);
@@ -51,9 +55,16 @@ public:
     double GetLeftRate() const;
     double GetRightRate() const;
 
+    double DiffPIDGet();
+
+    void EnablePID();
+    void DisablePID();
+
     // Returns encoder PID loop setpoints
     PIDState GetLeftSetpoint() const;
     PIDState GetRightSetpoint() const;
+
+    PIDState GetLeftGoal() const;
 
     void SetGoal(PIDState goal);
     bool AtGoal() const;
@@ -63,6 +74,7 @@ private:
     float m_deadband = k_joystickDeadband;
     float m_sensitivity;
 
+
     // Cheesy Drive variables
     float m_oldTurn = 0.f;
     float m_quickStopAccumulator = 0.f;
@@ -70,10 +82,10 @@ private:
 
     GearBox m_leftGrbx{-1, -1, -1, k_leftDriveMasterID, k_leftDriveSlaveID};
     GearBox m_rightGrbx{-1, -1, -1, k_rightDriveMasterID, k_rightDriveSlaveID};
-    std::shared_ptr<PIDController> m_leftPID;
-    std::unique_ptr<TrapezoidProfile> m_leftProfile;
-    std::shared_ptr<PIDController> m_rightPID;
-    std::unique_ptr<TrapezoidProfile> m_rightProfile;
+
+    Differential m_diff{&m_leftGrbx, &m_rightGrbx};
+    PIDController m_diffPID{ k_diffDriveP, k_diffDriveI, k_diffDriveD,
+                             k_diffDriveV, k_diffDriveA, &m_diff, &m_diff};
 };
 
 #endif // DRIVE_TRAIN_HPP

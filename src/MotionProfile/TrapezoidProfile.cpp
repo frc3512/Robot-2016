@@ -20,8 +20,8 @@ TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDController> pid,
 PIDState TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
     std::lock_guard<std::recursive_mutex> lock(m_varMutex);
 
-    m_sp = m_goal = goal;
-    m_sp.displacement -= curSource.displacement;
+    m_goal = goal;
+    m_sp = curSource;
 
     m_sign = (m_sp.displacement < 0) ? -1.0 : 1.0;
     m_timeToMaxVelocity = m_velocity / m_acceleration;
@@ -76,7 +76,7 @@ PIDState TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
 
     // Set setpoint to current distance since setpoint hasn't moved yet
     m_sp = curSource;
-
+    std::cout << "TRAP PROFILE TT: " << m_timeTotal << std::endl;
     StartProfile();
 
     return curSource;
