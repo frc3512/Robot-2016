@@ -29,8 +29,8 @@ public:
     void SetManualOverride(bool manual);
     bool GetManualOverride() const;
 
-    int32_t GetShootHeightValue() const;
-
+    double GetShooterHeightValue() const;
+    PIDState GetShooterHeightSetpoint() const;
     void SetShooterSpeed(double speed);
 
     void SetShooterHeight(double height);
@@ -56,18 +56,16 @@ private:
     std::shared_ptr<GearBox> m_leftShootGrbx;
     LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}
     };
-    std::shared_ptr<PIDController> m_leftShootPID;
 
     std::shared_ptr<GearBox> m_rightShootGrbx;
     LinearDigitalFilter m_rightShootFilter{nullptr, {}, {}
     };
-    std::shared_ptr<PIDController> m_rightShootPID;
 
     GearBox m_shooterHeightGrbx{-1, -1, -1, k_shooterHeightID};
     std::shared_ptr<LeverPIDController> m_shooterHeightPID;
-    std::shared_ptr<TrapezoidProfile> m_shootHeightProfile;
 
     GearBox m_rollBallGrbx{-1, -1, -1, k_rollBallID};
+    GearBox m_armIntakeGrbx{-1, -1, -1, k_armIntakeID};
 
     StateMachine m_shootSM{"ShootSM"};
 };

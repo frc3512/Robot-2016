@@ -12,7 +12,7 @@ using namespace std::chrono_literals;
 
 Robot::Robot() {
     dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
-    dsDisplay.AddAutoMethod("Profile Auton", &Robot::AutoMotionProfile, this);
+    dsDisplay.AddAutoMethod("Drive Forward", &Robot::AutoDriveForward, this);
 
     pidGraph.SetSendInterval(5ms);
 
@@ -25,9 +25,9 @@ void Robot::OperatorControl() {
         robotDrive.Drive(-driveStick1.GetY(), driveStick2.GetX(),
                          driveStick2.GetRawButton(2));
 
-        if (shootButtons.PressedButton(3)) {
-            shooter.SetManualOverride(!shooter.GetManualOverride());
-        }
+//        if (shootButtons.PressedButton(3)) {
+//            shooter.SetManualOverride(!shooter.GetManualOverride());
+//        }
 
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
         shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
@@ -83,6 +83,8 @@ void Robot::Autonomous() {
     autoTimer.Reset();
     autoTimer.Start();
 
+
+
     robotDrive.ResetEncoders();
     dsDisplay.ExecAutonomous();
 }
@@ -107,8 +109,6 @@ void Robot::Test() {
         // shooter.SetShooterSpeed(0.5);
         shooter.SetShooterHeight(shootStick.GetY());
 
-        std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue()
-                  << std::endl;
 
         DS_PrintOut();
         std::this_thread::sleep_for(10ms);
@@ -120,15 +120,18 @@ void Robot::DS_PrintOut() {
         pidGraph.GraphData(shooter.GetLeftRPM(), "Left RPM");
         pidGraph.GraphData(shooter.GetRightRPM(), "Right RPM");
 
-        pidGraph.GraphData(shooter.GetLeftSetpoint().velocity, "Left SP");
         pidGraph.GraphData(
-            robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
+            shooter.GetShooterHeightSetpoint().displacement, "ShtHei SP");
+        pidGraph.GraphData(shooter.GetShooterHeightValue(), "Sht Height POS");
+        // pidGraph.GraphData(
+        //    robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
-        pidGraph.GraphData(robotDrive.GetLeftSetpoint().displacement,
-                           "Left SP (DR)");
+        // pidGraph.GraphData(robotDrive.GetLeftSetpoint().displacement,
+        //                   "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
-        pidGraph.GraphData(robotDrive.GetRightSetpoint().displacement,
-                           "Right SP (DR)");
+        // pidGraph.GraphData(robotDrive.GetRightSetpoint().displacement,
+        //                   "Right SP (DR)");
+        pidGraph.GraphData(robotDrive.DiffPIDGet(), "Diff PID (DR)");
 
         pidGraph.ResetInterval();
     }
@@ -142,7 +145,6 @@ void Robot::DS_PrintOut() {
 
         dsDisplay.SendToDS();
     }
-
     dsDisplay.ReceiveFromDS();
 }
 

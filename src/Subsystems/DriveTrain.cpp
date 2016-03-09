@@ -14,8 +14,12 @@ DriveTrain::DriveTrain() {
 
     m_rightGrbx.SetInverted(true);
 
-    // m_leftGrbx.SetSensorDirection(true);
-    // m_rightGrbx.SetSensorDirection(true);
+#ifdef PRACTICE_ROBOT
+    m_leftGrbx.SetSensorDirection(true);
+#else
+    m_leftGrbx.SetSensorDirection(true);
+    m_rightGrbx.SetSensorDirection(true);
+#endif
 
     m_leftGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
     m_rightGrbx.GetMaster()->SetFeedbackDevice(CANTalon::QuadEncoder);
@@ -26,17 +30,8 @@ DriveTrain::DriveTrain() {
     m_leftGrbx.Set(0.0);
     m_rightGrbx.Set(0.0);
 
-    m_leftPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
-                                                &m_leftGrbx, &m_leftGrbx);
-    m_leftProfile = std::make_unique<TrapezoidProfile>(m_leftPID,
-                                                       k_leftDriveMaxSpeed,
-                                                       2.0);
-
-    m_rightPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
-                                                 &m_rightGrbx, &m_rightGrbx);
-    m_rightProfile = std::make_unique<TrapezoidProfile>(m_rightPID,
-                                                        k_rightDriveMaxSpeed,
-                                                        2.0);
+    // m_diffPID.SetOutputRange(-0.05,-0.05);
+    m_diffPID.SetSetpoint(PIDState(0.0, 0.0, 0.0));
 
     ReloadPID();
 }
@@ -176,30 +171,15 @@ void DriveTrain::SetDeadband(float band) {
 }
 
 void DriveTrain::ReloadPID() {
-    float p = 0.f;
-    float i = 0.f;
-    float d = 0.f;
-    float v = 0.f;
-    float a = 0.f;
-
-    p = k_leftDriveP;
-    i = k_leftDriveI;
-    d = k_leftDriveD;
-    v = k_leftDriveV;
-    a = k_leftDriveA;
-    m_leftPID->SetPID(p, i, d, v, a);
-
-    p = k_rightDriveP;
-    i = k_rightDriveI;
-    d = k_rightDriveD;
-    v = k_rightDriveV;
-    a = k_rightDriveA;
-    m_rightPID->SetPID(p, i, d, v, a);
 }
 
 void DriveTrain::ResetEncoders() {
     m_leftGrbx.ResetEncoder();
     m_rightGrbx.ResetEncoder();
+}
+
+void DriveTrain::DiffDrive(float output) {
+    m_diff.SetForward(output);
 }
 
 void DriveTrain::SetLeftManual(float value) {
@@ -226,24 +206,42 @@ double DriveTrain::GetRightRate() const {
     return m_rightGrbx.GetSpeed();
 }
 
-PIDState DriveTrain::GetLeftSetpoint() const {
-    return m_leftPID->GetSetpoint();
+double DriveTrain::DiffPIDGet() {
+    return m_diff.PIDGet();
 }
 
-PIDState DriveTrain::GetRightSetpoint() const {
-    return m_rightPID->GetSetpoint();
+void DriveTrain::EnablePID() {
+    m_diffPID.Enable();
 }
 
-void DriveTrain::SetGoal(PIDState goal) {
-    m_leftProfile->SetGoal(goal);
-    m_rightProfile->SetGoal(goal);
+void DriveTrain::DisablePID() {
+    m_diffPID.Disable();
 }
-
-bool DriveTrain::AtGoal() const {
-    return m_leftProfile->AtGoal() && m_rightProfile->AtGoal();
-}
-
-void DriveTrain::ResetProfile() {
-    m_leftProfile->ResetProfile();
-    m_rightProfile->ResetProfile();
-}
+/*
+ *  PIDState DriveTrain::GetLeftSetpoint() const {
+ *   //std::cout << m_leftPID->IsEnabled() << std::endl;
+ *   //std::cout << "LeftPID Get: " <<m_leftPID->Get() << std::endl;
+ *   return m_leftPID->GetSetpoint();
+ *  }
+ *
+ *  PIDState DriveTrain::GetRightSetpoint() const {
+ *   return m_rightPID->GetSetpoint();
+ *  }
+ *
+ *  PIDState DriveTrain::GetLeftGoal() const {
+ *   return m_leftProfile->GetGoal();
+ *  }
+ *  void DriveTrain::SetGoal(PIDState goal) {
+ *   m_leftProfile->SetGoal(goal);
+ *   m_rightProfile->SetGoal(goal);
+ *  }
+ *
+ *  bool DriveTrain::AtGoal() const {
+ *   return m_leftProfile->AtGoal() && m_rightProfile->AtGoal();
+ *  }
+ *
+ *  void DriveTrain::ResetProfile() {
+ *   m_leftProfile->ResetProfile();
+ *   m_rightProfile->ResetProfile();
+ *  }
+ */

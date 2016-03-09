@@ -27,6 +27,7 @@ public:
 
     void AutoNoop();
     void AutoMotionProfile();
+    void AutoDriveForward();
 
     void DS_PrintOut();
 

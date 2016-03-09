@@ -6,6 +6,7 @@
 #include "../Robot.hpp"
 
 void Robot::AutoNoop() {
+    std::cout << "NOOP AUTON" << std::endl;
     while (IsAutonomous() && IsEnabled()) {
         DS_PrintOut();
 
