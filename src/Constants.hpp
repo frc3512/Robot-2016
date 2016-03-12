@@ -30,7 +30,7 @@ constexpr double k_dsPort = 1130;
 // Joystick ports
 constexpr int k_driveStick1Port = 0;
 constexpr int k_driveStick2Port = 1;
-//constexpr int k_shootStickPort = 2;
+// constexpr int k_shootStickPort = 2;
 constexpr int k_armStickPort = 2;
 
 // Joystick axis deadband range
