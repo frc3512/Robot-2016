@@ -12,7 +12,16 @@ using namespace std::chrono_literals;
 
 Robot::Robot() {
     dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
-    dsDisplay.AddAutoMethod("Drive Forward", &Robot::AutoDriveForward, this);
+    dsDisplay.AddAutoMethod("2 Sec Drive Forward",
+                            &Robot::Sec2AutoDriveFwd,
+                            this);
+    dsDisplay.AddAutoMethod("3 Sec Drive Forward",
+                            &Robot::Sec3AutoDriveFwd,
+                            this);
+    dsDisplay.AddAutoMethod("3 Sec / 75% Sp Drive Forward",
+                            &Robot::Sec3Sp75AutoDriveFwd,
+                            this);
+
 
     pidGraph.SetSendInterval(5ms);
 
@@ -25,12 +34,12 @@ void Robot::OperatorControl() {
         robotDrive.Drive(-driveStick1.GetY(), driveStick2.GetX(),
                          driveStick2.GetRawButton(2));
 
-//        if (shootButtons.PressedButton(3)) {
-//            shooter.SetManualOverride(!shooter.GetManualOverride());
-//        }
+        if (shootButtons.PressedButton(3)) {
+            // shooter.SetManualOverride(!shooter.GetManualOverride());
+        }
 
-        shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
-        shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
+        // shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
+        // shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
 
         if (armStick.GetPOV() == 0) {
             arm.SetManualWinchHeight(1);
@@ -54,21 +63,6 @@ void Robot::OperatorControl() {
             arm.SetManualCarriagePosition(armStick.GetPOV() * 0.1);
         }
 
-        /*
-         *  std::cout << "SHOOTER HEIGHT: " << shooter.GetShootHeightValue() <<
-         *   std::endl;
-         *  std::cout << "HEIGHT THROTTLE: " << JoystickRescale(armStick.GetThrottle(), 1.f) << std::endl;
-         *
-         *
-         *  std::cout << "LEFT SHOOTER WHEEL: " << shooter.GetLeftRPM() <<
-         *   std::endl;
-         *  std::cout << "RIGHT SHOOTER WHEEL: " << shooter.GetRightRPM() <<
-         *   std::endl;
-         *  std::cout << "LEFT DRIVE: " << robotDrive.GetLeftDisplacement() <<
-         *   std::endl;
-         *  std::cout << "RIGHT DRIVE: " << robotDrive.GetRightDisplacement() <<
-         *   std::endl;
-         */
         shootButtons.Update();
 
         shooter.UpdateState();
@@ -82,8 +76,6 @@ void Robot::OperatorControl() {
 void Robot::Autonomous() {
     autoTimer.Reset();
     autoTimer.Start();
-
-
 
     robotDrive.ResetEncoders();
     dsDisplay.ExecAutonomous();
@@ -101,15 +93,6 @@ void Robot::Disabled() {
 void Robot::Test() {
     shooter.SetManualOverride(false);
     while (IsEnabled() && IsTest()) {
-        std::cout << "PRACTICE MODE" << std::endl;
-
-        shooter.SetShooterSpeed((shootStick.GetThrottle() + 1.0) / 2.0);
-
-
-        // shooter.SetShooterSpeed(0.5);
-        shooter.SetShooterHeight(shootStick.GetY());
-
-
         DS_PrintOut();
         std::this_thread::sleep_for(10ms);
     }
@@ -123,14 +106,8 @@ void Robot::DS_PrintOut() {
         pidGraph.GraphData(
             shooter.GetShooterHeightSetpoint().displacement, "ShtHei SP");
         pidGraph.GraphData(shooter.GetShooterHeightValue(), "Sht Height POS");
-        // pidGraph.GraphData(
-        //    robotDrive.GetLeftSetpoint().displacement, "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
-        // pidGraph.GraphData(robotDrive.GetLeftSetpoint().displacement,
-        //                   "Left SP (DR)");
         pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
-        // pidGraph.GraphData(robotDrive.GetRightSetpoint().displacement,
-        //                   "Right SP (DR)");
         pidGraph.GraphData(robotDrive.DiffPIDGet(), "Diff PID (DR)");
 
         pidGraph.ResetInterval();

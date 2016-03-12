@@ -27,7 +27,9 @@ public:
 
     void AutoNoop();
     void AutoMotionProfile();
-    void AutoDriveForward();
+    void Sec2AutoDriveFwd();
+    void Sec3AutoDriveFwd();
+    void Sec3Sp75AutoDriveFwd();
 
     void DS_PrintOut();
 
@@ -38,7 +40,7 @@ private:
 
     Joystick driveStick1{k_driveStick1Port};
     Joystick driveStick2{k_driveStick2Port};
-    Joystick shootStick{k_shootStickPort};
+    // Joystick shootStick{k_shootStickPort};
     Joystick armStick{k_armStickPort};
 
     ButtonTracker shootButtons{k_shootStickPort};

@@ -55,6 +55,7 @@ GearBox::GearBox(int shifterChan,
 }
 
 void GearBox::Set(float value) {
+#if 0
     if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
         value > 0) {
         /* If stopping motor in same limit switch state that limit switch is in
@@ -84,6 +85,8 @@ void GearBox::Set(float value) {
     else {
         m_motors[0]->Set(value);
     }
+#endif
+    m_motors[0]->Set(value); // TODO: Remove once #endif above is removed
 }
 
 int32_t GearBox::Get() const {

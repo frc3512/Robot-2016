@@ -9,7 +9,7 @@
 
 Arm::Arm() {
     m_leftArmGrbx.SetLimitOnHigh(false);
-
+    // m_leftArmGrbx.SetSoftPositionLimits(k_armMin , k_armMax);
     m_leftArmPID = std::make_shared<PIDController>(0.f,
                                                    0.f,
                                                    0.f,
@@ -47,9 +47,9 @@ Arm::Arm() {
     m_joystickEvent.RegisterButtonEvent("ZeroHeightButton", k_armStickPort,
                                         k_armZeroButton,
                                         true);
-    m_joystickEvent.RegisterButtonEvent("CarryingHeightButton", k_armStickPort,
-                                        k_armCarryingButton,
-                                        true);
+    /*m_joystickEvent.RegisterButtonEvent("CarryingHeightButton", k_armStickPort,
+     *                                   k_armCarryingButton,
+     *                                   true);*/
     m_dioEvent.RegisterInputEvent("LeftArmZeroed", k_leftArmBottomLimitChannel,
                                   true,
                                   false, m_armSM);
@@ -64,7 +64,11 @@ Arm::Arm() {
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "CarryingHeightButton") {
-                                     return "Idle"; // TODO: CHANGE BACK TO SET GOAL
+                                     return "Idle";
+                                 }
+                                 if (event == "LeftArmZeroed") {
+                                     m_leftArmGrbx.ResetEncoder();
+                                     return "";
                                  }
                                  else if (event == "ZeroHeightButton") {
                                      return "ZeroHeight";
@@ -136,8 +140,12 @@ void Arm::SetArmHeight(double height) {
     }
 }
 
-int32_t Arm::GetArmHeightValue() const {
+int32_t Arm::GetArmHeightRaw() const {
     return m_leftArmGrbx.Get();
+}
+
+double Arm::GetArmHeight() const {
+    return m_leftArmGrbx.GetPosition();
 }
 
 double Arm::GetArmSpeed() const {
