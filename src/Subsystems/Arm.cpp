@@ -9,7 +9,7 @@
 
 Arm::Arm() {
     m_leftArmGrbx.SetLimitOnHigh(false);
-
+    // m_leftArmGrbx.SetSoftPositionLimits(k_armMin , k_armMax);
     m_leftArmPID = std::make_shared<PIDController>(0.f,
                                                    0.f,
                                                    0.f,
@@ -63,8 +63,12 @@ Arm::Arm() {
         m_leftArmGrbx.Set(0);
     };
     state->CheckTransition = [this] (const std::string& event) {
-                                 if (event == "CarryingHeightButton") {
-                                     return "Idle"; // TODO: CHANGE BACK TO SET GOAL
+                                 // if (event == "CarryingHeightButton") {
+                                 //    return "Idle"; // TODO: CHANGE BACK TO SET GOAL
+                                 // }
+                                 if (event == "LeftArmZeroed") {
+                                     m_leftArmGrbx.ResetEncoder();
+                                     return "";
                                  }
                                  else if (event == "ZeroHeightButton") {
                                      return "ZeroHeight";
@@ -136,8 +140,8 @@ void Arm::SetArmHeight(double height) {
     }
 }
 
-int32_t Arm::GetArmHeightValue() const {
-    return m_leftArmGrbx.Get();
+double Arm::GetArmHeightValue() const {
+    return m_leftArmGrbx.GetPosition();
 }
 
 double Arm::GetArmSpeed() const {

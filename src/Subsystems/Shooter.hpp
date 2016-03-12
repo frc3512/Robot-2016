@@ -57,6 +57,7 @@ private:
     LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}
     };
 
+
     std::shared_ptr<GearBox> m_rightShootGrbx;
     LinearDigitalFilter m_rightShootFilter{nullptr, {}, {}
     };

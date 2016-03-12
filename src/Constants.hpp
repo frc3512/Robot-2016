@@ -30,8 +30,8 @@ constexpr double k_dsPort = 1130;
 // Joystick ports
 constexpr int k_driveStick1Port = 0;
 constexpr int k_driveStick2Port = 1;
-constexpr int k_shootStickPort = 2;
-constexpr int k_armStickPort = 3;
+//constexpr int k_shootStickPort = 2;
+constexpr int k_armStickPort = 2;
 
 // Joystick axis deadband range
 constexpr double k_joystickDeadband = 0.02;
@@ -81,7 +81,7 @@ constexpr int k_winchID = 9;
 constexpr int k_armIntakeID = 11; // TODO: CHANGE
 
 // Arm limit switch channels
-constexpr int k_leftArmBottomLimitChannel = -1;
+constexpr int k_leftArmBottomLimitChannel = 0;
 constexpr int k_leftArmTopLimitChannel = -1;
 
 // Arm carriage limit switch channels
@@ -94,6 +94,10 @@ constexpr double k_armDpP = 30.0 / 133.0; // degrees/pulse
 // Arm height constants
 constexpr int k_armHeight1 = 1;
 constexpr int k_armHeight2 = 2;
+
+// Arm height
+constexpr int k_armMin = 0;
+constexpr int k_armMax = 80;
 
 /*
  * Shooter

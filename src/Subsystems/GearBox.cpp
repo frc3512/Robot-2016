@@ -55,35 +55,38 @@ GearBox::GearBox(int shifterChan,
 }
 
 void GearBox::Set(float value) {
-    if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
-        value > 0) {
-        /* If stopping motor in same limit switch state that limit switch is in
-         * now and motor is rotating into limit switch
-         */
-        m_motors[0]->Set(0);
-    }
-    else if (m_reverseLimit != nullptr &&
-             m_limitOnHigh == m_reverseLimit->Get() && value < 0) {
-        /* If stopping motor in same limit switch state that limit switch is in
-         * now and motor is rotating into limit switch
-         */
-        m_motors[0]->Set(0);
-    }
-    else if (GetPosition() >= m_max && value > 0) {
-        /* If the current position is past the soft limit and motor is rotating
-         * into limit switch
-         */
-        m_motors[0]->Set(0);
-    }
-    else if (GetPosition() <= m_min && value < 0) {
-        /* If the current position is past the soft limit and motor is rotating
-         * into limit switch
-         */
-        m_motors[0]->Set(0);
-    }
-    else {
-        m_motors[0]->Set(value);
-    }
+#if 0
+	if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
+	        value > 0) {
+	        /* If stopping motor in same limit switch state that limit switch is in
+	         * now and motor is rotating into limit switch
+	         */
+	        m_motors[0]->Set(0);
+	    }
+	    else if (m_reverseLimit != nullptr &&
+	             m_limitOnHigh == m_reverseLimit->Get() && value < 0) {
+	        /* If stopping motor in same limit switch state that limit switch is in
+	         * now and motor is rotating into limit switch
+	         */
+	        m_motors[0]->Set(0);
+	    }
+	    else if (GetPosition() >= m_max && value > 0) {
+	        /* If the current position is past the soft limit and motor is rotating
+	         * into limit switch
+	         */
+	        m_motors[0]->Set(0);
+	    }
+	    else if (GetPosition() <= m_min && value < 0) {
+	        /* If the current position is past the soft limit and motor is rotating
+	         * into limit switch
+	         */
+	        m_motors[0]->Set(0);
+	    }
+	    else {
+	    	m_motors[0]->Set(value);
+	    }
+#endif
+	    m_motors[0]->Set(value); // TODO: Remove once endif above is removed
 }
 
 int32_t GearBox::Get() const {

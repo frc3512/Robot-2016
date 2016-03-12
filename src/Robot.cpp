@@ -12,7 +12,10 @@ using namespace std::chrono_literals;
 
 Robot::Robot() {
     dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
-    dsDisplay.AddAutoMethod("Drive Forward", &Robot::AutoDriveForward, this);
+    dsDisplay.AddAutoMethod("2 Sec Drive Forward", &Robot::Sec2AutoDriveFwd, this);
+    dsDisplay.AddAutoMethod("3 Sec Drive Forward", &Robot::Sec3AutoDriveFwd, this);
+    dsDisplay.AddAutoMethod("3 Sec / 75% Sp Drive Forward", &Robot::Sec3Sp75AutoDriveFwd, this);
+
 
     pidGraph.SetSendInterval(5ms);
 
@@ -29,8 +32,8 @@ void Robot::OperatorControl() {
 //            shooter.SetManualOverride(!shooter.GetManualOverride());
 //        }
 
-        shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
-        shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
+        // shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
+        // shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
 
         if (armStick.GetPOV() == 0) {
             arm.SetManualWinchHeight(1);
@@ -69,7 +72,7 @@ void Robot::OperatorControl() {
          *  std::cout << "RIGHT DRIVE: " << robotDrive.GetRightDisplacement() <<
          *   std::endl;
          */
-        shootButtons.Update();
+        //shootButtons.Update(); // TODO: UNCOMMENT
 
         shooter.UpdateState();
 
@@ -103,11 +106,11 @@ void Robot::Test() {
     while (IsEnabled() && IsTest()) {
         std::cout << "PRACTICE MODE" << std::endl;
 
-        shooter.SetShooterSpeed((shootStick.GetThrottle() + 1.0) / 2.0);
+        // shooter.SetShooterSpeed((shootStick.GetThrottle() + 1.0) / 2.0);
 
 
         // shooter.SetShooterSpeed(0.5);
-        shooter.SetShooterHeight(shootStick.GetY());
+        // shooter.SetShooterHeight(shootStick.GetY());
 
 
         DS_PrintOut();
@@ -146,6 +149,7 @@ void Robot::DS_PrintOut() {
         dsDisplay.SendToDS();
     }
     dsDisplay.ReceiveFromDS();
+    std::cout << "ARM HEIGHT: " << arm.GetArmHeightValue() << std::endl;
 }
 
 START_ROBOT_CLASS(Robot);

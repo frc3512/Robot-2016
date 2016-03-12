@@ -6,18 +6,19 @@
 
 #include "../Robot.hpp"
 
-void Robot::AutoDriveForward() {
+void Robot::Sec3Sp75AutoDriveFwd() {
     Timer timer;
     timer.Start();
 
     robotDrive.ResetEncoders();
     robotDrive.EnablePID();
     shooter.SetManualOverride(false);
-    shooter.SetShooterHeight(30);
-    robotDrive.DiffDrive(0.1);
+    // shooter.SetShooterHeight(30);
+    // robotDrive.DiffDrive(0.1);
 
-    while (!timer.HasPeriodPassed(2.0) && IsAutonomous() && IsEnabled()) {
+    while (!timer.HasPeriodPassed(3.0) && IsAutonomous() && IsEnabled()) {
         DS_PrintOut();
+        robotDrive.Drive(0.75, 0, false);
         std::this_thread::sleep_for(10ms);
     }
 

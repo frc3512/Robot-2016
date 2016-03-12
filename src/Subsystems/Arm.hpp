@@ -32,7 +32,7 @@ public:
     void SetManualOverride(bool manual);
     bool GetManualOverride() const;
 
-    int32_t GetArmHeightValue() const;
+    double GetArmHeightValue() const;
     double GetArmSpeed() const;
 
     void SetManualCarriagePosition(int direction);
