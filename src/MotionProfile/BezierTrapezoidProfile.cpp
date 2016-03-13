@@ -27,19 +27,12 @@ PIDState BezierTrapezoidProfile::GetRightSetpoint() const {
     return m_rightSetpoint;
 }
 
-PIDState BezierTrapezoidProfile::SetCurveGoal(const BezierCurve& curve,
-                                              PIDState curSource) {
+void BezierTrapezoidProfile::SetCurveGoal(const BezierCurve& curve,
+                                          PIDState curSource) {
     m_curve = curve;
 
     PIDState state = {m_curve.GetArcLength(0, 1), 0.0, 0.0};
-    return TrapezoidProfile::SetGoal(state, curSource);
-}
-
-void BezierTrapezoidProfile::ResetProfile() {
-    TrapezoidProfile::ResetProfile();
-
-    m_leftSetpoint = PIDState();
-    m_rightSetpoint = PIDState();
+    TrapezoidProfile::SetGoal(state, curSource);
 }
 
 void BezierTrapezoidProfile::SetWidth(double width) {
@@ -51,7 +44,7 @@ PIDState BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
 
     double period = curTime - m_lastTime;
 
-    m_varMutex.lock();
+    std::lock_guard<priority_mutex> lock(m_mutex);
 
     if (curTime < m_timeToMaxVelocity) {
         // Accelerate up
@@ -94,23 +87,13 @@ PIDState BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
         m_rightSetpoint.velocity = GetRightVelocity(curTime, v);
     }
 
-    m_sp.acceleration *= m_sign;
-    m_leftSetpoint.acceleration *= m_sign;
-    m_rightSetpoint.acceleration *= m_sign;
-
-    m_sp.velocity *= m_sign;
-    m_leftSetpoint.velocity *= m_sign;
-    m_rightSetpoint.velocity *= m_sign;
-
     m_sp.displacement += m_sp.velocity * period;
-    m_leftSetpoint.displacement += m_leftSetpoint.velocity * period;
-    m_rightSetpoint.displacement += m_rightSetpoint.velocity * period;
-
-    m_varMutex.unlock();
+    m_leftSetpoint.displacement += m_sign * m_leftSetpoint.velocity * period;
+    m_rightSetpoint.displacement += m_sign * m_rightSetpoint.velocity * period;
 
     m_lastTime = curTime;
 
-    StartProfile();
+    Start();
 
     return m_sp;
 }

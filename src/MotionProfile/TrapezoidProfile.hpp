@@ -31,7 +31,7 @@ public:
     /* goal is a distance to which to travel
      * curSource is the current position
      */
-    virtual PIDState SetGoal(PIDState goal, PIDState curSource = PIDState());
+    virtual void SetGoal(PIDState goal, PIDState curSource = PIDState());
 
     void SetMaxVelocity(double v);
     double GetMaxVelocity() const;

@@ -18,15 +18,21 @@ SCurveProfile::SCurveProfile(std::shared_ptr<PIDController> pid,
     SetTimeToMaxA(timeToMaxA);
 }
 
-PIDState SCurveProfile::SetGoal(PIDState goal, PIDState curSource) {
-    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
+void SCurveProfile::SetGoal(PIDState goal, PIDState curSource) {
+    std::lock_guard<priority_mutex> lock(m_mutex);
 
-    m_goal = goal;
+    // Subtract current source for profile calculations
+    m_goal = goal - curSource;
 
     // Set setpoint to current distance since setpoint hasn't moved yet
     m_sp = curSource;
 
-    m_sign = (m_goal.displacement < 0) ? -1.0 : 1.0;
+    if (m_goal.displacement < 0.0) {
+        m_sign = -1.0;
+    }
+    else {
+        m_sign = 1.0;
+    }
 
     // If profile can't accelerate up to max velocity before decelerating
     bool shortProfile = m_maxVelocity * (m_timeToMaxA + m_maxVelocity /
@@ -58,10 +64,10 @@ PIDState SCurveProfile::SetGoal(PIDState goal, PIDState curSource) {
     m_t7 = m_t6 + m_timeToMaxA;
     m_timeTotal = m_t7;
 
+    // Restore desired goal
+    m_goal = goal;
 
-    StartProfile();
-
-    return curSource;
+    Start();
 }
 
 void SCurveProfile::SetMaxVelocity(double v) {
@@ -83,7 +89,7 @@ void SCurveProfile::SetTimeToMaxA(double timeToMaxA) {
 }
 
 PIDState SCurveProfile::UpdateSetpoint(double curTime) {
-    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
+    std::lock_guard<priority_mutex> lock(m_mutex);
 
     if (curTime < m_timeToMaxA) {
         // Ramp up acceleration
@@ -120,12 +126,10 @@ PIDState SCurveProfile::UpdateSetpoint(double curTime) {
     else if (curTime < m_t7) {
         // Ramp up acceleration
         m_sp.acceleration = m_jerk * (m_t6 - curTime);
-        m_sp.velocity = 0.5 * m_jerk * pow(m_t6 - curTime, 2);
+        m_sp.velocity = 0.5 * m_jerk * std::pow(m_t6 - curTime, 2);
     }
 
-    m_sp.acceleration *= m_sign;
-    m_sp.velocity *= m_sign;
-    m_sp.displacement += m_sp.velocity * (curTime - m_lastTime);
+    m_sp.displacement += m_sign * m_sp.velocity * (curTime - m_lastTime);
 
     m_lastTime = curTime;
     return m_sp;

@@ -39,13 +39,9 @@ public:
 
     /* goal is a Bézier curve for robot to follow
      * curSource is the current position
-     *
-     * returns starting setpoint
      */
-    PIDState SetCurveGoal(const BezierCurve& curve,
-                          PIDState curSource = PIDState());
-
-    void ResetProfile();
+    void SetCurveGoal(const BezierCurve& curve,
+                      PIDState curSource = PIDState());
 
     // Sets distance between two sides of drive train
     void SetWidth(double width);

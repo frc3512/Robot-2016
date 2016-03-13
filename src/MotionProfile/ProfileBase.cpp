@@ -14,17 +14,14 @@ using namespace std::chrono_literals;
 
 ProfileBase::ProfileBase(std::shared_ptr<PIDController> pid) {
     m_pid = pid;
-    ResetProfile();
     m_timer.Start();
 }
 
 ProfileBase::~ProfileBase() {
-    StopProfile();
+    Stop();
 }
 
 bool ProfileBase::AtGoal() {
-    std::cout << "LAST TIME: " << m_lastTime << "TIME TOTAL: " << m_timeTotal <<
-        " INTERUPTS: " << m_interrupt << std::endl;
     if (m_interrupt || m_lastTime >= m_timeTotal) {
         return true;
     }
@@ -37,11 +34,8 @@ bool ProfileBase::AtGoal() {
                std::fabs(m_goal.acceleration - m_sp.acceleration) < 0.001;
     }
     else {
-        return std::fabs(m_goal.displacement - m_sp.displacement) < 0.001 &&
-               std::fabs(m_goal.velocity - m_sp.velocity) < 0.001 &&
-               std::fabs(m_goal.acceleration - m_sp.acceleration) < 0.001;
+        return m_goal == m_sp;
     }
-    return false;
 }
 
 PIDState ProfileBase::GetGoal() const {
@@ -52,17 +46,7 @@ PIDState ProfileBase::GetSetpoint() const {
     return m_sp;
 }
 
-void ProfileBase::ResetProfile() {
-    StopProfile();
-    m_goal = PIDState();
-    m_sp = PIDState();
-    m_pid->SetSetpoint(m_sp);
-
-    m_lastTime = 0.0;
-    m_timeTotal = 0.0;
-}
-
-void ProfileBase::StopProfile() {
+void ProfileBase::Stop() {
     if (!m_interrupt && m_task.joinable()) {
         m_interrupt = true;
         m_task.join();
@@ -75,10 +59,11 @@ void ProfileBase::StopProfile() {
     }
 }
 
-void ProfileBase::StartProfile() {
+void ProfileBase::Start() {
     // Stop currently running profile
-    StopProfile();
+    Stop();
 
+    m_lastTime = 0.0;
     m_timer.Reset();
 
     // If PID is disabled, enable it

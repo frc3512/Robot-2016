@@ -6,10 +6,11 @@
 #ifndef PROFILE_BASE_HPP
 #define PROFILE_BASE_HPP
 
+#include <limits>
 #include <memory>
-#include <mutex>
 
 #include "../WPILib/PIDState.hpp"
+#include <HAL/cpp/priority_mutex.h>
 #include <Task.h>
 #include <Timer.h>
 
@@ -20,23 +21,21 @@ public:
     ProfileBase(std::shared_ptr<PIDController> pid);
     virtual ~ProfileBase();
 
-    // Should return initial setpoint for start of profile
-    virtual PIDState SetGoal(PIDState goal, PIDState curSource) = 0;
+    virtual void SetGoal(PIDState goal, PIDState curSource) = 0;
     virtual bool AtGoal();
 
     PIDState GetGoal() const;
     PIDState GetSetpoint() const;
 
-    virtual void ResetProfile();
-    void StopProfile();
+    void Stop();
 
 protected:
-    void StartProfile();
+    void Start();
 
     virtual PIDState UpdateSetpoint(double curTime) = 0;
 
     // Use this to make UpdateSetpoint() and SetGoal() thread-safe
-    std::recursive_mutex m_varMutex;
+    priority_mutex m_mutex;
 
     std::shared_ptr<PIDController> m_pid;
 
@@ -48,8 +47,8 @@ protected:
 
     PIDState m_goal;
     PIDState m_sp; // Current SetPoint
-    double m_lastTime;
-    double m_timeTotal;
+    double m_lastTime = 0.0;
+    double m_timeTotal = std::numeric_limits<double>::infinity();
 };
 
 #endif // PROFILE_BASE_HPP

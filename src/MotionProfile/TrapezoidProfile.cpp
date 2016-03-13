@@ -17,13 +17,21 @@ TrapezoidProfile::TrapezoidProfile(std::shared_ptr<PIDController> pid,
     SetTimeToMaxV(timeToMaxV);
 }
 
-PIDState TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
-    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
+void TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
+    std::lock_guard<priority_mutex> lock(m_mutex);
 
-    m_goal = goal;
+    // Subtract current source for profile calculations
+    m_goal = goal - curSource;
+
+    // Set setpoint to current distance since setpoint hasn't moved yet
     m_sp = curSource;
 
-    m_sign = (m_sp.displacement < 0) ? -1.0 : 1.0;
+    if (m_goal.displacement < 0.0) {
+        m_sign = -1.0;
+    }
+    else {
+        m_sign = 1.0;
+    }
     m_timeToMaxVelocity = m_velocity / m_acceleration;
 
     /* d is distance traveled when accelerating to/from max velocity
@@ -42,7 +50,7 @@ PIDState TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
      *   = (m_setpoint - m_velocity * m_timeToMaxVelocity) / m_velocity
      *   = m_setpoint/m_velocity - m_timeToMaxVelocity
      */
-    double timeAtMaxV = m_sign * m_sp.displacement / m_velocity -
+    double timeAtMaxV = m_sign * m_goal.displacement / m_velocity -
                         m_timeToMaxVelocity;
 
     /* if ( 1/2 * a * t^2 > m_setpoint / 2 ) // if distance travelled before
@@ -55,14 +63,14 @@ PIDState TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
      * if ( v * v/a > m_setpoint )
      * if ( v * m_timeToMaxVelocity > m_setpoint )
      */
-    if (m_velocity * m_timeToMaxVelocity > m_sign * m_sp.displacement) {
+    if (m_velocity * m_timeToMaxVelocity > m_sign * m_goal.displacement) {
         /* Solve for t:
          * 1/2 * a * t^2 = m_setpoint/2
          * a * t^2 = m_setpoint
          * t^2 = m_setpoint / a
          * t = sqrt( m_setpoint / a )
          */
-        m_timeToMaxVelocity = std::sqrt(m_sign * m_sp.displacement /
+        m_timeToMaxVelocity = std::sqrt(m_sign * m_goal.displacement /
                                         m_acceleration);
         m_timeFromMaxVelocity = m_timeToMaxVelocity;
         m_timeTotal = 2 * m_timeToMaxVelocity;
@@ -74,12 +82,10 @@ PIDState TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
         m_profileMaxVelocity = m_velocity;
     }
 
-    // Set setpoint to current distance since setpoint hasn't moved yet
-    m_sp = curSource;
-    std::cout << "TRAP PROFILE TT: " << m_timeTotal << std::endl;
-    StartProfile();
+    // Restore desired goal
+    m_goal = goal;
 
-    return curSource;
+    Start();
 }
 
 void TrapezoidProfile::SetMaxVelocity(double v) {
@@ -95,7 +101,7 @@ void TrapezoidProfile::SetTimeToMaxV(double timeToMaxV) {
 }
 
 PIDState TrapezoidProfile::UpdateSetpoint(double curTime) {
-    std::lock_guard<std::recursive_mutex> lock(m_varMutex);
+    std::lock_guard<priority_mutex> lock(m_mutex);
 
     if (curTime < m_timeToMaxVelocity) {
         // Accelerate up
@@ -111,12 +117,10 @@ PIDState TrapezoidProfile::UpdateSetpoint(double curTime) {
         // Accelerate down
         double decelTime = curTime - m_timeFromMaxVelocity;
         m_sp.acceleration = -m_acceleration;
-        m_sp.velocity = m_profileMaxVelocity - m_sp.acceleration * decelTime;
+        m_sp.velocity = m_profileMaxVelocity + m_sp.acceleration * decelTime;
     }
 
-    m_sp.acceleration *= m_sign;
-    m_sp.velocity *= m_sign;
-    m_sp.displacement += m_sp.velocity * (curTime - m_lastTime);
+    m_sp.displacement += m_sign * m_sp.velocity * (curTime - m_lastTime);
 
     m_lastTime = curTime;
     return m_sp;
