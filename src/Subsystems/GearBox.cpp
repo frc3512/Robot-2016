@@ -54,7 +54,7 @@ GearBox::GearBox(int shifterChan,
     }
 }
 
-void GearBox::Set(float value) {
+void GearBox::Set(double value) {
 #if 0
     if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
         value > 0) {
@@ -89,15 +89,15 @@ void GearBox::Set(float value) {
     m_motors[0]->Set(value); // TODO: Remove once #endif above is removed
 }
 
-int32_t GearBox::Get() const {
+double GearBox::Get() const {
     return m_motors[0]->GetPosition();
 }
 
-float GearBox::GetPosition() const {
+double GearBox::GetPosition() const {
     return m_motors[0]->GetPosition() * m_distancePerPulse;
 }
 
-float GearBox::GetSpeed() const {
+double GearBox::GetSpeed() const {
     return m_motors[0]->GetSpeed() * m_distancePerPulse * 100.0;
 }
 
@@ -161,6 +161,7 @@ void GearBox::PIDWrite(float output) {
          * now and motor is rotating into limit switch
          */
         m_motors[0]->PIDWrite(0);
+        std::cout << "forwardLimit" << std::endl;
     }
     else if (m_reverseLimit != nullptr &&
              m_limitOnHigh == m_reverseLimit->Get() && output < 0) {
@@ -168,38 +169,21 @@ void GearBox::PIDWrite(float output) {
          * now and motor is rotating into limit switch
          */
         m_motors[0]->PIDWrite(0);
+        std::cout << "reverseLimit" << std::endl;
     }
     else if (GetPosition() >= m_max && output > 0) {
         /* If the current position is past the soft limit and motor is rotating
          * into limit switch
          */
         m_motors[0]->PIDWrite(0);
+        std::cout << "max" << std::endl;
     }
     else if (GetPosition() <= m_min && output < 0) {
         /* If the current position is past the soft limit and motor is rotating
          * into limit switch
          */
         m_motors[0]->PIDWrite(0);
-    }
-    else {
-        m_motors[0]->PIDWrite(output);
-    }
-
-    if (m_forwardLimit != nullptr) {
-        /* If stopping motor in same limit switch state that limit switch is in
-         * now and motor is rotating into limit switch
-         */
-        if (m_limitOnHigh == m_forwardLimit->Get() && output > 0) {
-            m_motors[0]->PIDWrite(0);
-        }
-    }
-    else if (m_reverseLimit != nullptr) {
-        /* If stopping motor in same limit switch state that limit switch is in
-         * now and motor is rotating into limit switch
-         */
-        if (m_limitOnHigh == m_reverseLimit->Get() && output < 0) {
-            m_motors[0]->PIDWrite(0);
-        }
+        std::cout << "min" << std::endl;
     }
     else {
         m_motors[0]->PIDWrite(output);
@@ -208,9 +192,9 @@ void GearBox::PIDWrite(float output) {
 
 double GearBox::PIDGet() {
     if (GetPIDSourceType() == PIDSourceType::kRate) {
-        return m_motors[0]->GetSpeed() * m_distancePerPulse;
+        return GetSpeed();
     }
     else {
-        return m_motors[0]->GetPosition() * m_distancePerPulse;
+        return GetPosition();
     }
 }
