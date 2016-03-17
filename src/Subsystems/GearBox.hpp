@@ -33,18 +33,20 @@ public:
             int motor3 = -1);
 
     // Disables PID controller and sets the motor speeds manually
-    void Set(float value);
+    void Set(double value);
 
     // Returns current count on encoder
-    int32_t Get() const;
+    double Get() const;
 
     // Returns current position of master CANTalon
-    float GetPosition() const;
+    double GetPosition() const;
 
     // Returns current speed of master CANTalon
-    float GetSpeed() const;
+    double GetSpeed() const;
 
     void SetDistancePerPulse(double distancePerPulse);
+
+    void SetFeedbackDevice(CANTalon::FeedbackDevice device);
 
     // Resets encoder distance to 0
     void ResetEncoder();
@@ -91,6 +93,9 @@ private:
 
     // Conversion factor for setpoints with respect to encoder readings
     double m_distancePerPulse = 1.0;
+
+    // Feedback device
+    CANTalon::FeedbackDevice m_feedbackDevice = CANTalon::QuadEncoder;
 
     std::unique_ptr<Solenoid> m_shifter;
 

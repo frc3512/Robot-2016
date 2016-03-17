@@ -150,7 +150,12 @@ void PIDController::Calculate() {
                 double potentialPGain = (m_totalError + m_error) * m_P;
                 if (potentialPGain < m_maximumOutput) {
                     if (potentialPGain > m_minimumOutput) {
-                        m_totalError += m_error;
+                        if (m_error < 10.0) {
+                            m_totalError += m_error;
+                        }
+                        else {
+                            m_totalError = 0.0;
+                        }
                     }
                     else {
                         m_totalError = m_minimumOutput / m_P;
@@ -169,7 +174,12 @@ void PIDController::Calculate() {
                 double potentialIGain = (m_totalError + m_error) * m_I;
                 if (potentialIGain < m_maximumOutput) {
                     if (potentialIGain > m_minimumOutput) {
-                        m_totalError += m_error;
+                        if (m_error < 10.0) {
+                            m_totalError += m_error;
+                        }
+                        else {
+                            m_totalError = 0.0;
+                        }
                     }
                     else {
                         m_totalError = m_minimumOutput / m_I;

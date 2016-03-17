@@ -14,7 +14,7 @@ LeverPIDController::LeverPIDController(float p,
                                        PIDSource* source,
                                        PIDOutput* output,
                                        float period) :
-    PIDController(0.f, 0.f, 0.f, 0.f, 0.f,
+    PIDController(p, i, d, v, a,
                   source,
                   output,
                   period) {
@@ -23,7 +23,9 @@ LeverPIDController::LeverPIDController(float p,
 
 double LeverPIDController::CalculateFeedForward() {
     return GetV() * GetSetpoint().velocity + GetA() *
-           GetSetpoint().acceleration + GetF();
+           GetSetpoint().acceleration + GetF() *
+           std::cos((m_pidInput->PIDGet() - 10.0) / (60.0 - 10.0) * M_PI /
+                    2.0);
 }
 
 void LeverPIDController::SetF(double f) {

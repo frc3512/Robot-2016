@@ -21,23 +21,28 @@ Shooter::Shooter() {
                                              k_heightShooterA,
                                              k_heightShooterF,
                                              &m_shooterHeightGrbx,
-                                             &m_shooterHeightGrbx);
+                                             &m_shooterHeightGrbx,
+                                             0.02);
 
     m_rightShootGrbx->SetSensorDirection(true);
     m_leftShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
 
-    m_leftShootGrbx->SetDistancePerPulse(k_shooterDpP);
-    m_rightShootGrbx->SetDistancePerPulse(k_shooterDpP);
+    // m_leftShootGrbx->SetDistancePerPulse(k_shooterDpP);
+    // m_rightShootGrbx->SetDistancePerPulse(k_shooterDpP);
+    m_shooterHeightGrbx.SetDistancePerPulse(k_shooterHeightDpP);
 
     // Sets encoder type
-    m_leftShootGrbx->GetMaster()->SetFeedbackDevice(
+    m_leftShootGrbx->SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
-    m_rightShootGrbx->GetMaster()->SetFeedbackDevice(
+    m_rightShootGrbx->SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
-    m_shooterHeightGrbx.GetMaster()->SetFeedbackDevice(
+    m_shooterHeightGrbx.SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
 
+    m_shooterHeightPID->Enable();
+
+    m_joystickTimer.Start();
 
     m_joystickEvent.RegisterButtonEvent("PressedIntakeButton",
                                         k_shootStickPort, 2, true);
@@ -143,8 +148,12 @@ Shooter::Shooter() {
     m_shootSM.EnableDebug(true);
 }
 
-double Shooter::GetShooterHeightValue() const {
+double Shooter::GetShooterHeight() const {
     return m_shooterHeightGrbx.GetPosition();
+}
+
+double Shooter::GetShooterHeightRaw() const {
+    return m_shooterHeightGrbx.Get();
 }
 
 PIDState Shooter::GetShooterHeightSetpoint() const {
@@ -159,22 +168,46 @@ void Shooter::UpdateState() {
     m_joystickEvent.Poll(m_shootSM);
     m_joystickEvent.Update();
     m_timerEvent.Poll(m_shootSM);
+    m_dioEvent.Poll(m_shootSM);
+    m_dioEvent.Update();
 }
 
 bool Shooter::GetManualOverride() const {
     return m_manual;
 }
 
-void Shooter::SetShooterHeight(double height) {
-    if (GetManualOverride()) {
-        m_shooterHeightGrbx.Set(height);
+void Shooter::SetShooterHeight(double height, bool increment) {
+    if (m_shooterHeight.displacement >= k_shooterHeightMax && height > 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * in that direction
+         */
+        m_shooterHeight.velocity = 0.0;
     }
-
+    else if (m_shooterHeight.displacement <= k_shooterHeightMin && height < 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * in that direction
+         */
+        m_shooterHeight.velocity = 0.0;
+    }
     else {
-        if (m_shooterHeightPID->GetSetpoint().displacement != height) {
-            m_shooterHeightPID->SetSetpoint({height, 0.0, 0.0});
+        if (increment == true) {
+            m_shooterHeight.velocity = height * k_shooterHeightMaxSpeed;
+            m_shooterHeight.displacement += m_shooterHeight.velocity *
+                                            m_joystickTimer.Get();
+        }
+        else {
+            m_shooterHeight.displacement = height;
+            m_shooterHeight.velocity = 0.0;
         }
     }
+
+    m_joystickTimer.Reset();
+
+    if (m_shooterHeightPID->GetSetpoint() != m_shooterHeight) {
+        m_shooterHeightPID->SetSetpoint(m_shooterHeight);
+    }
+
+    // m_shooterHeightGrbx.Set(height);
 }
 
 void Shooter::SetShooterSpeed(double speed) {
