@@ -32,15 +32,28 @@ Robot::Robot() {
 void Robot::OperatorControl() {
     while (IsEnabled() && IsOperatorControl()) {
         // Enables QuickTurn if button is pressed
-        robotDrive.Drive(-driveStick1.GetY(), driveStick2.GetX(),
-                         driveStick2.GetRawButton(2));
-
-        if (shootButtons.PressedButton(3)) {
-            // shooter.SetManualOverride(!shooter.GetManualOverride());
+        // If trigger is pressed, move at half speed
+        if (driveStick1.GetTrigger()) {
+            robotDrive.Drive((-driveStick1.GetY() * 0.5),
+                             (driveStick2.GetX() * 0.5),
+                             driveStick2.GetRawButton(2));
+        }
+        else {
+            robotDrive.Drive(-driveStick1.GetY(), driveStick2.GetX(),
+                             driveStick2.GetRawButton(2));
         }
 
-        // shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
-        // shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
+        shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
+        shooter.SetShooterHeight(ApplyDeadband(shootStick.GetY(),
+                                               k_joystickDeadband), true);                    // TODO: Change back to GetY and shootStick
+
+        if (shootButtons.PressedButton(3)) {
+            shooter.SetShooterHeight(18.0, false);
+        }
+
+        if (shootButtons.PressedButton(4)) {
+            shooter.SetShooterHeight(52.0, false);
+        }
 
         if (armStick.GetPOV() == 0) {
             arm.SetManualWinchHeight(1);
@@ -84,6 +97,7 @@ void Robot::Autonomous() {
 
 void Robot::Disabled() {
     while (IsDisabled()) {
+    	shooter.UpdateState();
         DS_PrintOut();
         std::this_thread::sleep_for(10ms);
     }
@@ -101,15 +115,14 @@ void Robot::Test() {
 
 void Robot::DS_PrintOut() {
     if (pidGraph.HasIntervalPassed()) {
-        pidGraph.GraphData(shooter.GetLeftRPM(), "Left RPM");
-        pidGraph.GraphData(shooter.GetRightRPM(), "Right RPM");
-
         pidGraph.GraphData(
             shooter.GetShooterHeightSetpoint().displacement, "ShtHei SP");
-        pidGraph.GraphData(shooter.GetShooterHeightValue(), "Sht Height POS");
-        pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
-        pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
-        pidGraph.GraphData(robotDrive.DiffPIDGet(), "Diff PID (DR)");
+        pidGraph.GraphData(shooter.GetShooterHeight(), "Sht Height POS");
+        pidGraph.GraphData(
+            shooter.m_shooterHeightGrbx.GetSpeed(), "Sht Hght Spd");
+        // pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
+        // pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
+        // pidGraph.GraphData(robotDrive.DiffPIDGet(), "Diff PID (DR)");
 
         pidGraph.ResetInterval();
     }
@@ -124,6 +137,10 @@ void Robot::DS_PrintOut() {
         dsDisplay.SendToDS();
     }
     dsDisplay.ReceiveFromDS();
+
+    std::cout << "Throttle Value: " << JoystickRescale(
+        armStick.GetThrottle(),
+        1.f) << " Shooter Angle: " << shooter.GetShooterHeight() << std::endl;
 }
 
 START_ROBOT_CLASS(Robot);
