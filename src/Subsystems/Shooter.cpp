@@ -29,6 +29,7 @@ Shooter::Shooter() {
 
     m_leftShootGrbx->SetDistancePerPulse(k_shooterDpP);
     m_rightShootGrbx->SetDistancePerPulse(k_shooterDpP);
+    m_shooterHeightGrbx.SetDistancePerPulse(k_shooterHeightDpP);
 
     // Sets encoder type
     m_leftShootGrbx->GetMaster()->SetFeedbackDevice(
@@ -38,6 +39,9 @@ Shooter::Shooter() {
     m_shooterHeightGrbx.GetMaster()->SetFeedbackDevice(
         CANTalon::CtreMagEncoder_Relative);
 
+    m_shooterHeightPID->Enable();
+
+    m_joystickTimer.Start();
 
     m_joystickEvent.RegisterButtonEvent("PressedIntakeButton",
                                         k_shootStickPort, 2, true);
@@ -72,7 +76,7 @@ Shooter::Shooter() {
                                      return "SpinningUpMotors";
                                  }
                                  else if (event == "ShooterZeroed") {
-                                     m_shooterHeightGrbx.ResetEncoder();
+                                     // m_shooterHeightGrbx.ResetEncoder();
                                      return "";
                                  }
                                  else {
@@ -143,8 +147,12 @@ Shooter::Shooter() {
     m_shootSM.EnableDebug(true);
 }
 
-double Shooter::GetShooterHeightValue() const {
+double Shooter::GetShooterHeight() const {
     return m_shooterHeightGrbx.GetPosition();
+}
+
+double Shooter::GetShooterHeightRaw() const {
+    return m_shooterHeightGrbx.Get();
 }
 
 PIDState Shooter::GetShooterHeightSetpoint() const {
@@ -166,14 +174,28 @@ bool Shooter::GetManualOverride() const {
 }
 
 void Shooter::SetShooterHeight(double height) {
-    if (GetManualOverride()) {
-        m_shooterHeightGrbx.Set(height);
+    if (m_shooterHeight.displacement >= k_shooterHeightMax && height > 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * in that direction
+         */
+        m_shooterHeight.velocity = 0.0;
+    }
+    else if (m_shooterHeight.displacement <= k_shooterHeightMin && height < 0) {
+        /* If the current position is past the soft limit and motor is rotating
+         * in that direction
+         */
+        m_shooterHeight.velocity = 0.0;
+    }
+    else {
+        m_shooterHeight.velocity = height * k_shooterHeightMaxSpeed;
+        m_shooterHeight.displacement += m_shooterHeight.velocity *
+                                        m_joystickTimer.Get();
     }
 
-    else {
-        if (m_shooterHeightPID->GetSetpoint().displacement != height) {
-            m_shooterHeightPID->SetSetpoint({height, 0.0, 0.0});
-        }
+    m_joystickTimer.Reset();
+
+    if (m_shooterHeightPID->GetSetpoint() != m_shooterHeight) {
+        m_shooterHeightPID->SetSetpoint(m_shooterHeight);
     }
 }
 

@@ -35,11 +35,12 @@ void Robot::OperatorControl() {
                          driveStick2.GetRawButton(2));
 
         if (shootButtons.PressedButton(3)) {
-            // shooter.SetManualOverride(!shooter.GetManualOverride());
+            shooter.SetManualOverride(!shooter.GetManualOverride());
         }
 
-        // shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
-        // shooter.SetShooterHeight(shootStick.GetY()); // TODO: Change back to GetY and shootStick
+        shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
+        shooter.SetShooterHeight(ApplyDeadband(shootStick.GetY(),
+                                               k_joystickDeadband));                    // TODO: Change back to GetY and shootStick
 
         if (armStick.GetPOV() == 0) {
             arm.SetManualWinchHeight(1);
@@ -100,15 +101,14 @@ void Robot::Test() {
 
 void Robot::DS_PrintOut() {
     if (pidGraph.HasIntervalPassed()) {
-        pidGraph.GraphData(shooter.GetLeftRPM(), "Left RPM");
-        pidGraph.GraphData(shooter.GetRightRPM(), "Right RPM");
-
         pidGraph.GraphData(
             shooter.GetShooterHeightSetpoint().displacement, "ShtHei SP");
-        pidGraph.GraphData(shooter.GetShooterHeightValue(), "Sht Height POS");
-        pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
-        pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
-        pidGraph.GraphData(robotDrive.DiffPIDGet(), "Diff PID (DR)");
+        pidGraph.GraphData(shooter.GetShooterHeight(), "Sht Height POS");
+        pidGraph.GraphData(
+            shooter.m_shooterHeightGrbx.GetSpeed(), "Sht Hght Spd");
+        // pidGraph.GraphData(robotDrive.GetLeftDisplacement(), "Left PV (DR)");
+        // pidGraph.GraphData(robotDrive.GetRightDisplacement(), "Right PV (DR)");
+        // pidGraph.GraphData(robotDrive.DiffPIDGet(), "Diff PID (DR)");
 
         pidGraph.ResetInterval();
     }

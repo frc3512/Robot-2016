@@ -29,7 +29,8 @@ public:
     void SetManualOverride(bool manual);
     bool GetManualOverride() const;
 
-    double GetShooterHeightValue() const;
+    double GetShooterHeight() const;
+    double GetShooterHeightRaw() const;
     PIDState GetShooterHeightSetpoint() const;
     void SetShooterSpeed(double speed);
 
@@ -46,8 +47,11 @@ public:
 
 private:
     // TODO: change this to false once the velocity feed forwards are non-zero
-    bool m_manual = true;
+    bool m_manual = false;
     double m_manualShooterSpeed = 0.0;
+    PIDState m_shooterHeight;
+
+    Timer m_joystickTimer;
 
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
@@ -68,6 +72,8 @@ private:
     GearBox m_armIntakeGrbx{-1, -1, -1, k_armIntakeID};
 
     StateMachine m_shootSM{"ShootSM"};
+
+    friend class Robot;
 };
 
 #endif // ELEVATOR_HPP

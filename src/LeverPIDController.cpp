@@ -14,7 +14,7 @@ LeverPIDController::LeverPIDController(float p,
                                        PIDSource* source,
                                        PIDOutput* output,
                                        float period) :
-    PIDController(0.f, 0.f, 0.f, 0.f, 0.f,
+    PIDController(p, i, d, v, a,
                   source,
                   output,
                   period) {
