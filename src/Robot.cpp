@@ -22,6 +22,7 @@ Robot::Robot() {
                             &Robot::Sec3Sp75AutoDriveFwd,
                             this);
 
+    camera->StartAutomaticCapture();
 
     pidGraph.SetSendInterval(5ms);
 

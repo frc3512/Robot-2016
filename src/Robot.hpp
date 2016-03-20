@@ -6,6 +6,7 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
+#include <CameraServer.h>
 #include <SampleRobot.h>
 #include <Joystick.h>
 
@@ -53,6 +54,9 @@ private:
 
     // The LiveGrapher host
     GraphHost pidGraph{3513};
+
+    // Camera
+    CameraServer* camera = CameraServer::GetInstance();
 };
 
 #endif // ROBOT_HPP
