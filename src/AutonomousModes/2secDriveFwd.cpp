@@ -13,7 +13,7 @@ void Robot::Sec2AutoDriveFwd() {
     robotDrive.ResetEncoders();
     robotDrive.EnablePID();
     shooter.SetManualOverride(false);
-    // shooter.SetShooterHeight(30);
+    shooter.SetShooterHeight(51, false);
     // robotDrive.DiffDrive(0.1);
 
     while (!timer.HasPeriodPassed(2.0) && IsAutonomous() && IsEnabled()) {

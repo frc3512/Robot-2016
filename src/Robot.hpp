@@ -56,7 +56,7 @@ private:
     GraphHost pidGraph{3513};
 
     // Camera
-    CameraServer* camera = CameraServer::GetInstance();
+    // CameraServer* camera = CameraServer::GetInstance();
 };
 
 #endif // ROBOT_HPP

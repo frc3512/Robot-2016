@@ -24,7 +24,7 @@ Shooter::Shooter() {
                                              &m_shooterHeightGrbx,
                                              0.02);
 
-    m_rightShootGrbx->SetSensorDirection(true);
+    m_shooterHeightGrbx.SetSensorDirection(true);
     m_leftShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
 
@@ -67,7 +67,7 @@ Shooter::Shooter() {
         m_leftShootGrbx->Set(0);
         m_rightShootGrbx->Set(0);
         m_rollBallGrbx.Set(0);
-        // m_armIntakeGrbx.Set(0);
+        m_armIntakeGrbx.Set(0);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "PressedIntakeButton") {
@@ -90,7 +90,7 @@ Shooter::Shooter() {
     state = std::make_unique<State>("StartIntake");
     state->Run = [this] {
         m_rollBallGrbx.Set(-1);
-        // m_armIntakeGrbx.Set(-1);
+        m_armIntakeGrbx.Set(-1);
         m_leftShootGrbx->Set(-1);
         m_rightShootGrbx->Set(-1);
     };

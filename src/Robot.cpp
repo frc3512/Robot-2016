@@ -22,7 +22,7 @@ Robot::Robot() {
                             &Robot::Sec3Sp75AutoDriveFwd,
                             this);
 
-    camera->StartAutomaticCapture();
+    // camera->StartAutomaticCapture();
 
     pidGraph.SetSendInterval(5ms);
 
@@ -34,8 +34,8 @@ void Robot::OperatorControl() {
         // Enables QuickTurn if button is pressed
         // If trigger is pressed, move at half speed
         if (driveStick1.GetTrigger()) {
-            robotDrive.Drive((-driveStick1.GetY() * 0.5),
-                             (driveStick2.GetX() * 0.5),
+            robotDrive.Drive(-driveStick1.GetY() * 0.5,
+                             driveStick2.GetX() * 0.5,
                              driveStick2.GetRawButton(2));
         }
         else {
@@ -53,6 +53,10 @@ void Robot::OperatorControl() {
 
         if (shootButtons.PressedButton(4)) {
             shooter.SetShooterHeight(52.0, false);
+        }
+
+        if (shootButtons.PressedButton(5)) {
+            shooter.ResetEncoders();
         }
 
         if (armStick.GetPOV() == 0) {
@@ -138,9 +142,9 @@ void Robot::DS_PrintOut() {
     }
     dsDisplay.ReceiveFromDS();
 
-    std::cout << "Throttle Value: " << JoystickRescale(
-        armStick.GetThrottle(),
-        1.f) << " Shooter Angle: " << shooter.GetShooterHeight() << std::endl;
+    std::cout << " Shooter Angle: " << shooter.GetShooterHeight() << std::endl;
+    std::cout << " Shooter Angle PID " << shooter.m_shooterHeightPID->Get() <<
+    std::endl;
 }
 
 START_ROBOT_CLASS(Robot);

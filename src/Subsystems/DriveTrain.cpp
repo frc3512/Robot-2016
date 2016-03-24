@@ -12,7 +12,7 @@
 DriveTrain::DriveTrain() {
     m_sensitivity = k_lowGearSensitive;
 
-    m_rightGrbx.SetInverted(true);
+    m_leftGrbx.SetInverted(true);
 
 #ifdef PRACTICE_ROBOT
     m_leftGrbx.SetSensorDirection(true);
@@ -46,6 +46,8 @@ int32_t DriveTrain::GetRightRaw() const {
 
 void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     // Modified Cheesy Drive; base code courtesy of FRC Team 254
+
+    throttle *= -1;
 
     // Limit values to [-1 .. 1]
     throttle = Limit(throttle, 1.f);

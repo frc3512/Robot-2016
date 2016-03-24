@@ -106,8 +106,8 @@ constexpr int k_armMax = 80;
 // Shooter GearBox ID's
 constexpr int k_leftShooterID = 5;
 constexpr int k_rightShooterID = 3;
-constexpr int k_shooterHeightID = 1;
-constexpr int k_rollBallID = 2; // TODO: was 11
+constexpr int k_shooterHeightID = 2;
+constexpr int k_rollBallID = 1; // TODO: was 11
 
 // Shooter limit switch channels
 constexpr int k_shooterIntakeLimitChannel = 2;
