@@ -43,4 +43,6 @@ private:
 
     std::vector<std::pair<char, char>> m_targets;
     bool m_hasNewData;
+
+    static constexpr int k_numTargets = 1;
 };

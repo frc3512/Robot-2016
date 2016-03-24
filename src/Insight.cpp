@@ -16,7 +16,7 @@ std::string Insight::ReceiveFromDS() {
                          m_recvPort) == sf::Socket::Done) {
         if (std::strncmp(m_recvBuffer, "ctrl\r\n", 6) == 0) {
             m_targets.clear();
-            for (unsigned int i = 0; i < 3; i++) {
+            for (unsigned int i = 0; i < k_numTargets; i++) {
                 if (m_recvBuffer[8 + i * 2] != 0 ||
                     m_recvBuffer[9 + i * 2] != 0) {
                     m_targets.emplace_back(m_recvBuffer[8 + i * 2],
