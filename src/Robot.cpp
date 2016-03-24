@@ -12,8 +12,8 @@ using namespace std::chrono_literals;
 
 Robot::Robot() {
     dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
-    dsDisplay.AddAutoMethod("2 Sec Drive Forward",
-                            &Robot::Sec2AutoDriveFwd,
+    dsDisplay.AddAutoMethod("1.75 Sec Drive Forward",
+                            &Robot::Sec175AutoDriveFwd,
                             this);
     dsDisplay.AddAutoMethod("3 Sec Drive Forward",
                             &Robot::Sec3AutoDriveFwd,
@@ -45,7 +45,7 @@ void Robot::OperatorControl() {
 
         shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
         shooter.SetShooterHeight(ApplyDeadband(shootStick.GetY(),
-                                               k_joystickDeadband), true);                    // TODO: Change back to GetY and shootStick
+                                               k_joystickDeadband), true);
 
         if (shootButtons.PressedButton(3)) {
             shooter.SetShooterHeight(18.0, false);

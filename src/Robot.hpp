@@ -28,7 +28,7 @@ public:
 
     void AutoNoop();
     void AutoMotionProfile();
-    void Sec2AutoDriveFwd();
+    void Sec175AutoDriveFwd();
     void Sec3AutoDriveFwd();
     void Sec3Sp75AutoDriveFwd();
 

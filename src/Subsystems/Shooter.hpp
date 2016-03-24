@@ -10,11 +10,11 @@
 #include <Relay.h>
 
 #include "../Constants.hpp"
-#include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../Events/JoystickEventGenerator.hpp"
 #include "../Events/DigitalInputEventGenerator.hpp"
 #include "../Events/TimerEventGenerator.hpp"
 #include "../LeverPIDController.hpp"
+#include "../MotionProfile/TrapezoidProfile.hpp"
 #include "../SM/StateMachine.hpp"
 #include "GearBox.hpp"
 #include "SubsystemBase.hpp"
@@ -67,6 +67,7 @@ private:
 
     GearBox m_shooterHeightGrbx{-1, -1, -1, k_shooterHeightID};
     std::shared_ptr<LeverPIDController> m_shooterHeightPID;
+    std::shared_ptr<TrapezoidProfile> m_shooterHeightProfile;
 
     GearBox m_rollBallGrbx{-1, -1, -1, k_rollBallID};
     GearBox m_armIntakeGrbx{-1, -1, -1, k_armIntakeID};

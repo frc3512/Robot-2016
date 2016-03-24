@@ -10,11 +10,7 @@ void Robot::Sec3Sp75AutoDriveFwd() {
     Timer timer;
     timer.Start();
 
-    robotDrive.ResetEncoders();
-    robotDrive.EnablePID();
-    shooter.SetManualOverride(false);
-    // shooter.SetShooterHeight(30);
-    // robotDrive.DiffDrive(0.1);
+    shooter.SetShooterHeight(52, false);
 
     while (!timer.HasPeriodPassed(3.0) && IsAutonomous() && IsEnabled()) {
         DS_PrintOut();
@@ -22,8 +18,6 @@ void Robot::Sec3Sp75AutoDriveFwd() {
         std::this_thread::sleep_for(10ms);
     }
 
-    shooter.SetManualOverride(true);
-    robotDrive.DisablePID();
     robotDrive.Drive(0.0, 0.0, false);
 
     while (IsAutonomous() && IsEnabled()) {

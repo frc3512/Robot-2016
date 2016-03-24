@@ -78,7 +78,7 @@ constexpr int k_leftArmLiftID = 7;
 // Arm carriage and winch ID's
 constexpr int k_carriageID = 20; // Remove
 constexpr int k_winchID = 9;
-constexpr int k_armIntakeID = 40; // TODO: CHANGE
+constexpr int k_armIntakeID = 11; // TODO: CHANGE
 
 // Arm limit switch channels
 constexpr int k_leftArmBottomLimitChannel = 0;
@@ -148,6 +148,8 @@ constexpr double k_heightShooterD = 0.0375;
 constexpr double k_heightShooterV = 1.0 / k_shooterHeightMaxSpeed;
 constexpr double k_heightShooterA = 0.0;
 constexpr double k_heightShooterF = 0.155;
+
+constexpr double k_shooterTimeMaxV = 3.0;
 
 constexpr double k_shooterHeightDpP = 360;
 constexpr double k_shooterHeightMax = 65.0; // Degrees

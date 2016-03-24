@@ -25,6 +25,13 @@ Shooter::Shooter() {
                                              0.02);
 
     m_shooterHeightGrbx.SetSensorDirection(true);
+	m_rightShootGrbx->SetSensorDirection(true);
+
+	m_shooterHeightProfile = std::make_shared<TrapezoidProfile>(
+        m_shooterHeightPID,
+        k_shooterHeightMaxSpeed,
+        k_shooterTimeMaxV);
+
     m_leftShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
     m_rightShootGrbx->SetPIDSourceType(PIDSourceType::kRate);
 
@@ -89,7 +96,7 @@ Shooter::Shooter() {
     // Intake
     state = std::make_unique<State>("StartIntake");
     state->Run = [this] {
-        m_rollBallGrbx.Set(-1);
+        // m_rollBallGrbx.Set(-1);
         m_armIntakeGrbx.Set(-1);
         m_leftShootGrbx->Set(-1);
         m_rightShootGrbx->Set(-1);
@@ -113,8 +120,8 @@ Shooter::Shooter() {
         m_timerEvent.Reset();
     };
     state->Run = [this] {
-        m_leftShootGrbx->Set(m_manualShooterSpeed);
-        m_rightShootGrbx->Set(m_manualShooterSpeed);
+        m_leftShootGrbx->Set(1);
+        m_rightShootGrbx->Set(1);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "ShootTimer") {
@@ -133,8 +140,8 @@ Shooter::Shooter() {
     };
     state->Run = [this] {
         m_rollBallGrbx.Set(1);
-        m_leftShootGrbx->Set(m_manualShooterSpeed);
-        m_rightShootGrbx->Set(m_manualShooterSpeed);
+        m_leftShootGrbx->Set(1);
+        m_rightShootGrbx->Set(1);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "ShootTimer") {
@@ -177,35 +184,33 @@ bool Shooter::GetManualOverride() const {
 }
 
 void Shooter::SetShooterHeight(double height, bool increment) {
-    if (m_shooterHeight.displacement >= k_shooterHeightMax && height > 0) {
+    if ((m_shooterHeight.displacement >= k_shooterHeightMax && height > 0) ||
+        (m_shooterHeight.displacement <= k_shooterHeightMin && height < 0)) {
         /* If the current position is past the soft limit and motor is rotating
          * in that direction
          */
         m_shooterHeight.velocity = 0.0;
-    }
-    else if (m_shooterHeight.displacement <= k_shooterHeightMin && height < 0) {
-        /* If the current position is past the soft limit and motor is rotating
-         * in that direction
-         */
-        m_shooterHeight.velocity = 0.0;
+        if (m_shooterHeightPID->GetSetpoint() != m_shooterHeight) {
+            m_shooterHeightPID->SetSetpoint(m_shooterHeight);
+        }
     }
     else {
         if (increment == true) {
             m_shooterHeight.velocity = height * k_shooterHeightMaxSpeed;
             m_shooterHeight.displacement += m_shooterHeight.velocity *
                                             m_joystickTimer.Get();
+            if (m_shooterHeightPID->GetSetpoint() != m_shooterHeight) {
+                m_shooterHeightPID->SetSetpoint(m_shooterHeight);
+            }
         }
         else {
-            m_shooterHeight.displacement = height;
-            m_shooterHeight.velocity = 0.0;
+            m_shooterHeightPID->SetSetpoint(PIDState(height, 0, 0));
+            /*m_shooterHeightProfile->SetGoal(PIDState(height, 0, 0),
+             *                               PIDState(GetShooterHeight(), 0, 0));*/
         }
     }
 
     m_joystickTimer.Reset();
-
-    if (m_shooterHeightPID->GetSetpoint() != m_shooterHeight) {
-        m_shooterHeightPID->SetSetpoint(m_shooterHeight);
-    }
 
     // m_shooterHeightGrbx.Set(height);
 }
