@@ -44,6 +44,8 @@ private:
 
     std::vector<std::pair<char, char>> m_targets;
     bool m_hasNewData;
+
+    constexpr int k_numTargets = 1;
 };
 
 #endif // INSIGHT_HPP
