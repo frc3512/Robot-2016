@@ -120,8 +120,8 @@ Shooter::Shooter() {
         m_timerEvent.Reset();
     };
     state->Run = [this] {
-        m_leftShootGrbx->Set(1);
-        m_rightShootGrbx->Set(1);
+        m_leftShootGrbx->Set(0.75);
+        m_rightShootGrbx->Set(0.75);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "ShootTimer") {
@@ -140,8 +140,8 @@ Shooter::Shooter() {
     };
     state->Run = [this] {
         m_rollBallGrbx.Set(1);
-        m_leftShootGrbx->Set(1);
-        m_rightShootGrbx->Set(1);
+        m_leftShootGrbx->Set(0.75);
+        m_rightShootGrbx->Set(0.75);
     };
     state->CheckTransition = [this] (const std::string& event) {
                                  if (event == "ShootTimer") {
