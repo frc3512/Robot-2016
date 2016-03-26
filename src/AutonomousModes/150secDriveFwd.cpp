@@ -5,17 +5,28 @@
 // =============================================================================
 
 #include "../Robot.hpp"
+#include "../DigitalInputHandler.hpp"
 
-void Robot::Sec175AutoDriveFwd() {
+void Robot::Sec150AutoDriveFwd() {
     Timer timer;
     timer.Start();
+    shooter.SetShooterHeight(60, false);
 
-
-    shooter.SetShooterHeight(52, false);
-
-    while (!timer.HasPeriodPassed(1.75) && IsAutonomous() && IsEnabled()) {
+    while (!timer.HasPeriodPassed(2.0) && IsAutonomous() && IsEnabled()) {
+        DS_PrintOut();
+        if (timer.Get() < 1.0 &&
+            DigitalInputHandler::Get(k_leftArmBottomLimitChannel)->Get()) {
+            arm.SetArmHeight(1.0);
+        }
+        else {
+            arm.SetArmHeight(0.0);
+        }
+        std::this_thread::sleep_for(10ms);
+    }
+    while (!timer.HasPeriodPassed(1.50) && IsAutonomous() && IsEnabled()) {
         DS_PrintOut();
         robotDrive.Drive(1, 0, false);
+
         std::this_thread::sleep_for(10ms);
     }
 

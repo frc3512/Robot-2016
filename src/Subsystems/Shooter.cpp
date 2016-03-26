@@ -25,9 +25,9 @@ Shooter::Shooter() {
                                              0.02);
 
     m_shooterHeightGrbx.SetSensorDirection(true);
-	m_rightShootGrbx->SetSensorDirection(true);
+    m_rightShootGrbx->SetSensorDirection(true);
 
-	m_shooterHeightProfile = std::make_shared<TrapezoidProfile>(
+    m_shooterHeightProfile = std::make_shared<TrapezoidProfile>(
         m_shooterHeightPID,
         k_shooterHeightMaxSpeed,
         k_shooterTimeMaxV);

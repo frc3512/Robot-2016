@@ -12,14 +12,8 @@ using namespace std::chrono_literals;
 
 Robot::Robot() {
     dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
-    dsDisplay.AddAutoMethod("1.75 Sec Drive Forward",
-                            &Robot::Sec175AutoDriveFwd,
-                            this);
-    dsDisplay.AddAutoMethod("3 Sec Drive Forward",
-                            &Robot::Sec3AutoDriveFwd,
-                            this);
-    dsDisplay.AddAutoMethod("3 Sec / 75% Sp Drive Forward",
-                            &Robot::Sec3Sp75AutoDriveFwd,
+    dsDisplay.AddAutoMethod("1.50 Sec Drive Forward",
+                            &Robot::Sec150AutoDriveFwd,
                             this);
 
     // camera->StartAutomaticCapture();
@@ -144,7 +138,7 @@ void Robot::DS_PrintOut() {
 
     std::cout << " Shooter Angle: " << shooter.GetShooterHeight() << std::endl;
     std::cout << " Shooter Angle PID " << shooter.m_shooterHeightPID->Get() <<
-    std::endl;
+        std::endl;
 }
 
 START_ROBOT_CLASS(Robot);
