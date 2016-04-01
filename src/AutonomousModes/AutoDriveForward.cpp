@@ -1,5 +1,4 @@
 // =============================================================================
-// File Name: AutoDriveForward.cpp
 // Description: Drives forward
 // Author: FRC Team 3512, Spartatroniks
 // =============================================================================
@@ -7,12 +6,12 @@
 #include "../Robot.hpp"
 #include "../DigitalInputHandler.hpp"
 
-void Robot::Sec150AutoDriveFwd() {
+void Robot::AutoDriveForward() {
     Timer timer;
     timer.Start();
     shooter.SetShooterHeight(60, false);
 
-    while (!timer.HasPeriodPassed(2.0) && IsAutonomous() && IsEnabled()) {
+    while (!timer.HasPeriodPassed(10.0) && IsAutonomous() && IsEnabled()) {
         DS_PrintOut();
         if (timer.Get() < 1.0 &&
             DigitalInputHandler::Get(k_leftArmBottomLimitChannel)->Get()) {

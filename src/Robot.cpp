@@ -11,10 +11,13 @@ using namespace std::chrono_literals;
 #include "Utility.hpp"
 
 Robot::Robot() {
-    dsDisplay.AddAutoMethod("Noop Auton", &Robot::AutoNoop, this);
-    dsDisplay.AddAutoMethod("1.50 Sec Drive Forward",
-                            &Robot::Sec150AutoDriveFwd,
+    dsDisplay.AddAutoMethod("No-op", &Robot::AutoNoop, this);
+    dsDisplay.AddAutoMethod("Drive Forward",
+                            &Robot::AutoDriveForward,
                             this);
+    dsDisplay.AddAutoMethod("Rough Terrain", &Robot::AutoRoughTerrain, this);
+    // dsDisplay.AddAutoMethod("Low bar", &Robot::AutoLowBar, this);
+    // dsDisplay.AddAutoMethod("Portcullis", &Robot::AutoPortcullis, this);
 
     // camera->StartAutomaticCapture();
 
@@ -106,6 +109,13 @@ void Robot::Disabled() {
 void Robot::Test() {
     shooter.SetManualOverride(false);
     while (IsEnabled() && IsTest()) {
+        if (DigitalInputHandler::Get(k_leftArmBottomLimitChannel)->Get()) {
+            arm.SetArmHeight(0.1);
+        }
+        else {
+            arm.SetArmHeight(0.0);
+        }
+
         DS_PrintOut();
         std::this_thread::sleep_for(10ms);
     }
@@ -137,8 +147,8 @@ void Robot::DS_PrintOut() {
     dsDisplay.ReceiveFromDS();
 
     std::cout << " Shooter Angle: " << shooter.GetShooterHeight() << std::endl;
-    std::cout << " Shooter Angle PID " << shooter.m_shooterHeightPID->Get() <<
-        std::endl;
+    std::cout << " limit: " << DigitalInputHandler::Get(
+        k_leftArmBottomLimitChannel)->Get() << std::endl;
 }
 
 START_ROBOT_CLASS(Robot);

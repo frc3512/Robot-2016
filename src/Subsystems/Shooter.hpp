@@ -55,7 +55,7 @@ private:
 
     JoystickEventGenerator m_joystickEvent;
     DigitalInputEventGenerator m_dioEvent;
-    TimerEventGenerator m_timerEvent{"ShootTimer", 0.75};
+    TimerEventGenerator m_timerEvent{"ShootTimer", 1.0};
 
     std::shared_ptr<GearBox> m_leftShootGrbx;
     LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}
