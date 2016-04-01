@@ -29,6 +29,9 @@ public:
     void AutoNoop();
     void AutoMotionProfile();
     void Sec150AutoDriveFwd();
+    void RoughTerrainAuto();
+    void LowBarAuto();
+    void PortcullisAuto();
 
     void DS_PrintOut();
 
