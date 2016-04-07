@@ -23,6 +23,7 @@
 #include <endian.h>
 #include <fcntl.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <signal.h>
 
 #endif
@@ -218,6 +219,11 @@ void GraphHost::socket_threadmain() {
             int fd = socket_accept(listenfd);
 
             if (fd != -1) {
+                // Disable Nagle's algorithm
+                int yes = 1;
+                setsockopt(fd, IPPROTO_TCP, TCP_NODELAY,
+                           reinterpret_cast<char*>(&yes), sizeof(yes));
+
                 m_mutex.lock();
                 // Add it to the list, this makes it a bit non-thread-safe
                 m_connList.emplace_back(std::make_unique<SocketConnection>(fd,
