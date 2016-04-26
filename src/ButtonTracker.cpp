@@ -20,21 +20,21 @@ void ButtonTracker::Update() {
     m_newStates = DriverStation::GetInstance().GetStickButtons(m_port);
 }
 
-bool ButtonTracker::PressedButton(uint32_t button) {
+bool ButtonTracker::PressedButton(uint32_t button) const {
     return GetButtonState(m_oldStates, button) == false &&
            GetButtonState(m_newStates, button) == true;
 }
 
-bool ButtonTracker::ReleasedButton(uint32_t button) {
+bool ButtonTracker::ReleasedButton(uint32_t button) const {
     return GetButtonState(m_oldStates, button) == true &&
            GetButtonState(m_newStates, button) == false;
 }
 
-bool ButtonTracker::HeldButton(uint32_t button) {
+bool ButtonTracker::HeldButton(uint32_t button) const {
     return GetButtonState(m_oldStates, button) == true &&
            GetButtonState(m_newStates, button) == true;
 }
 
-bool ButtonTracker::GetButtonState(short& buttonStates, uint32_t& button) {
+bool ButtonTracker::GetButtonState(short buttonStates, uint32_t button) {
     return ((1 << (button - 1)) & buttonStates) != 0;
 }

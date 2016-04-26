@@ -33,19 +33,19 @@ public:
     void Update();
 
     // Returns 'true' if button wasn't pressed but is now
-    bool PressedButton(uint32_t button);
+    bool PressedButton(uint32_t button) const;
 
     // Returns 'true' if button was pressed but isn't now
-    bool ReleasedButton(uint32_t button);
+    bool ReleasedButton(uint32_t button) const;
 
     // Return 'true' if button was pressed and is now
-    bool HeldButton(uint32_t button);
+    bool HeldButton(uint32_t button) const;
 
 protected:
     uint32_t m_port;
 
 private:
-    static bool GetButtonState(short& buttonStates, uint32_t& button);
+    static bool GetButtonState(short buttonStates, uint32_t button);
 
     short m_oldStates = 0;
     short m_newStates = 0;
