@@ -13,7 +13,7 @@
 #include "ButtonTracker.hpp"
 #include "Constants.hpp"
 #include "DSDisplay.hpp"
-#include "LiveGrapherHost/GraphHost.hpp"
+#include "LiveGrapher/GraphHost.hpp"
 #include "Subsystems/Shooter.hpp"
 #include "Subsystems/DriveTrain.hpp"
 #include "Subsystems/Arm.hpp"
