@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides trapezoidal acceleration control
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 /* Constant acceleration until target (max) velocity is reached, sets
  * acceleration to zero for a calculated time, then decelerates at a constant
@@ -18,6 +15,9 @@
 
 class PIDController;
 
+/**
+ * Provides trapezoidal acceleration control
+ */
 class SCurveProfile : public ProfileBase {
 public:
     SCurveProfile(std::shared_ptr<PIDController> pid, double maxV, double maxA,
@@ -53,4 +53,4 @@ protected:
     virtual PIDState UpdateSetpoint(double curTime);
 };
 
-#endif // SCURVE_PROFILE_HPP
+#endif  // SCURVE_PROFILE_HPP

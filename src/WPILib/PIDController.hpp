@@ -1,10 +1,9 @@
-/*----------------------------------------------------------------------------
- * Copyright (c) FIRST 2008-2016. All Rights Reserved.
- * Open Source Software - may be modified and shared by FRC teams. The code
- * must be accompanied by the FIRST BSD license file in the root directory of
- * the project.
- *----------------------------------------------------------------------------
- */
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008-2016. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 #pragma once
 
@@ -32,12 +31,8 @@ class PIDController : public LiveWindowSendable,
                       public PIDInterface,
                       public ITableListener {
 public:
-    PIDController(float p,
-                  float i,
-                  float d,
-                  PIDSource* source,
-                  PIDOutput* output,
-                  float period = 0.05);
+    PIDController(float p, float i, float d, PIDSource* source,
+                  PIDOutput* output, float period = 0.05);
     PIDController(float p, float i, float d, float v, float a,
                   PIDSource* source, PIDOutput* output, float period = 0.05);
     virtual ~PIDController();
@@ -87,25 +82,26 @@ protected:
     virtual double CalculateFeedForward();
 
 private:
-    double m_P;            // factor for "proportional" control
-    double m_I;            // factor for "integral" control
-    double m_D;            // factor for "derivative" control
-    double m_V;            // factor for "velocity feed forward" control
-    double m_A;            // factor for "acceleration feed forward" control
-    float m_maximumOutput = 1.0; // |maximum output|
-    float m_minimumOutput = -1.0; // |minimum output|
-    float m_maximumInput = 0; // maximum input - limit setpoint to this
-    float m_minimumInput = 0; // minimum input - limit setpoint to this
-    bool m_continuous = false;    // do the endpoints wrap around? eg. Absolute encoder
-    bool m_enabled = false; // is the pid controller enabled
-    float m_prevError = 0; // the prior error (used to compute velocity)
-    double m_totalError = 0; // the sum of the errors for use in the integral calc
+    double m_P;  // factor for "proportional" control
+    double m_I;  // factor for "integral" control
+    double m_D;  // factor for "derivative" control
+    double m_V;  // factor for "velocity feed forward" control
+    double m_A;  // factor for "acceleration feed forward" control
+    float m_maximumOutput = 1.0;   // |maximum output|
+    float m_minimumOutput = -1.0;  // |minimum output|
+    float m_maximumInput = 0;      // maximum input - limit setpoint to this
+    float m_minimumInput = 0;      // minimum input - limit setpoint to this
+    bool m_continuous =
+        false;  // do the endpoints wrap around? eg. Absolute encoder
+    bool m_enabled = false;  // is the pid controller enabled
+    float m_prevError = 0;   // the prior error (used to compute velocity)
+    double m_totalError =
+        0;  // the sum of the errors for use in the integral calc
     enum {
         kAbsoluteTolerance,
         kPercentTolerance,
         kNoTolerance
-    }
-    m_toleranceType = kNoTolerance;
+    } m_toleranceType = kNoTolerance;
 
     // the percentage or absolute error that is considered on target.
     float m_tolerance = 0.05;

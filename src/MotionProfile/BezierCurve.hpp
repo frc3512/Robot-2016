@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides a way to more easily generate and manage Bézier curves
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef BEZIER_CURVE_HPP
 #define BEZIER_CURVE_HPP
@@ -15,12 +12,13 @@ struct Point {
     double y;
 };
 
+/**
+ * Provides a way to more easily generate and manage Bézier curves
+ */
 class BezierCurve {
 public:
     BezierCurve() = default;
-    BezierCurve(const Point& pt1,
-                const Point& pt2,
-                const Point& pt3,
+    BezierCurve(const Point& pt1, const Point& pt2, const Point& pt3,
                 const Point& pt4);
 
     void AddPoint(double x, double y);
@@ -42,4 +40,4 @@ private:
     std::vector<Point> m_pts;
 };
 
-#endif // BEZIER_CURVE_HPP
+#endif  // BEZIER_CURVE_HPP

@@ -1,8 +1,4 @@
-// =============================================================================
-// Description: Provides trapezoidal velocity control and follows a given Bézier
-//             curve
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 /* Implementation of trapezoid motion profile translated to C++; base Java code
  * courtesy of FRC Team 254; modifications for Bézier curve by FRC Team 3512.
@@ -24,6 +20,9 @@
 
 class PIDController;
 
+/**
+ * Provides trapezoidal velocity control and follows a given Bézier curve
+ */
 class BezierTrapezoidProfile : public TrapezoidProfile {
 public:
     BezierTrapezoidProfile(std::shared_ptr<PIDController> pid, double maxV,
@@ -69,4 +68,4 @@ private:
     double GetRightVelocity(double t, double v) const;
 };
 
-#endif // BEZIER_TRAPEZOID_PROFILE_HPP
+#endif  // BEZIER_TRAPEZOID_PROFILE_HPP

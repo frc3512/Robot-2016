@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Receives IP address from remote host then sends HUD data there
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "DSDisplay.hpp"
 
@@ -10,14 +7,12 @@
 #include <functional>
 #include <iostream>
 
-DSDisplay& DSDisplay::GetInstance(unsigned short dsPort) {
+DSDisplay& DSDisplay::GetInstance(uint16_t dsPort) {
     static DSDisplay dsDisplay(dsPort);
     return dsDisplay;
 }
 
-void DSDisplay::Clear() {
-    m_packet.clear();
-}
+void DSDisplay::Clear() { m_packet.clear(); }
 
 void DSDisplay::SendToDS() {
     if (m_dsIP != sf::IpAddress::None) {
@@ -29,8 +24,7 @@ void DSDisplay::SendToDS() {
 }
 
 const std::string DSDisplay::ReceiveFromDS() {
-    if (m_socket.receive(m_recvBuffer, 256, m_recvAmount,
-                         m_recvIP,
+    if (m_socket.receive(m_recvBuffer, 256, m_recvAmount, m_recvIP,
                          m_recvPort) == sf::Socket::Done) {
         if (std::strncmp(m_recvBuffer, "connect\r\n", 9) == 0) {
             m_dsIP = m_recvIP;
@@ -87,8 +81,7 @@ const std::string DSDisplay::ReceiveFromDS() {
             SendToDS();
 
             return "connect\r\n";
-        }
-        else if (std::strncmp(m_recvBuffer, "autonSelect\r\n", 13) == 0) {
+        } else if (std::strncmp(m_recvBuffer, "autonSelect\r\n", 13) == 0) {
             // Next byte after command is selection choice
             m_curAutonMode = m_recvBuffer[13];
 
@@ -106,10 +99,9 @@ const std::string DSDisplay::ReceiveFromDS() {
                        autonModeFile);
 
                 fclose(autonModeFile);
-            }
-            else {
-                std::cout <<
-                    "DSDisplay: autonSelect: failed to open autonMode.txt\n";
+            } else {
+                std::cout
+                    << "DSDisplay: autonSelect: failed to open autonMode.txt\n";
             }
 
             SendToDS();
@@ -121,11 +113,11 @@ const std::string DSDisplay::ReceiveFromDS() {
     return "NONE";
 }
 
-DSDisplay::DSDisplay(unsigned short portNumber) : m_dsPort(portNumber) {
+DSDisplay::DSDisplay(uint16_t portNumber) : m_dsPort(portNumber) {
     m_socket.bind(portNumber);
     m_socket.setBlocking(false);
 
-    // Retrieve stored autonomous index
+// Retrieve stored autonomous index
 #if 0
     std::ifstream autonModeFile("/home/lvuser/autonMode.txt",
                                 std::fstream::trunc);
@@ -134,8 +126,7 @@ DSDisplay::DSDisplay(unsigned short portNumber) : m_dsPort(portNumber) {
         autonModeFile.read(temp, 4);
 
         autonModeFile >> m_curAutonMode;
-    }
-    else {
+    } else {
         m_curAutonMode = 0;
     }
 #endif
@@ -147,29 +138,23 @@ DSDisplay::DSDisplay(unsigned short portNumber) : m_dsPort(portNumber) {
 
         if (std::strcmp(temp, "auto") == 0) {
             fread(&m_curAutonMode, 1, sizeof(m_curAutonMode), autonModeFile);
-        }
-        else {
+        } else {
             m_curAutonMode = 0;
         }
 
         fclose(autonModeFile);
-    }
-    else {
+    } else {
         m_curAutonMode = 0;
     }
 }
 
-void DSDisplay::DeleteAllMethods() {
-    m_autonModes.DeleteAllMethods();
-}
+void DSDisplay::DeleteAllMethods() { m_autonModes.DeleteAllMethods(); }
 
 void DSDisplay::ExecAutonomous() {
     m_autonModes.ExecAutonomous(m_curAutonMode);
 }
 
-char DSDisplay::GetAutonID() const {
-    return m_curAutonMode;
-}
+char DSDisplay::GetAutonID() const { return m_curAutonMode; }
 
 void DSDisplay::AddData(std::string ID, StatusLight data) {
     // If packet is empty, add "display\r\n" header to packet
@@ -193,8 +178,7 @@ void DSDisplay::AddData(std::string ID, bool data) {
 
     if (data == true) {
         m_packet << static_cast<int8_t>(DSDisplay::active);
-    }
-    else {
+    } else {
         m_packet << static_cast<int8_t>(DSDisplay::inactive);
     }
 }

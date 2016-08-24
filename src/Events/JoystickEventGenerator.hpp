@@ -1,12 +1,10 @@
-// =============================================================================
-// Description: Pass event to a handler if a joystick button was pressed
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef JOYSTICK_EVENT_GENERATOR_HPP
 #define JOYSTICK_EVENT_GENERATOR_HPP
 
-#include <cstdint>
+#include <stdint.h>
+
 #include <array>
 #include <string>
 #include <vector>
@@ -16,6 +14,9 @@
 #include "../SM/StateMachine.hpp"
 #include "EventGenerator.hpp"
 
+/**
+ * Pass event to a handler if a joystick button was pressed
+ */
 class JoystickEventGenerator : public EventGenerator {
 public:
     JoystickEventGenerator();
@@ -51,4 +52,4 @@ private:
     bool GetButtonState(uint32_t buttonStates, uint32_t button);
 };
 
-#endif // JOYSTICK_EVENT_GENERATOR_HPP
+#endif  // JOYSTICK_EVENT_GENERATOR_HPP

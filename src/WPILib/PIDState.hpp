@@ -1,13 +1,13 @@
-// =============================================================================
-// Description: Data type for PID controller state
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef PID_STATE_HPP
 #define PID_STATE_HPP
 
 #include <cmath>
 
+/**
+ * Data type for PID controller state
+ */
 struct PIDState {
     PIDState() = default;
     PIDState(double displacement, double velocity, double acceleration) {
@@ -50,13 +50,11 @@ struct PIDState {
                std::fabs(acceleration - rhs.acceleration) < 0.001;
     }
 
-    bool operator!=(const PIDState& rhs) const {
-        return !(*this == rhs);
-    }
+    bool operator!=(const PIDState& rhs) const { return !(*this == rhs); }
 
     double displacement = 0.0;
     double velocity = 0.0;
     double acceleration = 0.0;
 };
 
-#endif // PID_STATE_HPP
+#endif  // PID_STATE_HPP

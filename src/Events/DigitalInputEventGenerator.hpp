@@ -1,12 +1,10 @@
-// =============================================================================
-// Description: Pass event to a handler if a digital input changed state
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef DIGITAL_INPUT_EVENT_GENERATOR_HPP
 #define DIGITAL_INPUT_EVENT_GENERATOR_HPP
 
-#include <cstdint>
+#include <stdint.h>
+
 #include <vector>
 
 #include "../DigitalInputHandler.hpp"
@@ -20,6 +18,9 @@ struct InterruptParam {
     std::string eventName;
 };
 
+/**
+ * Pass event to a handler if a digital input changed state
+ */
 class DigitalInputEventGenerator : public EventGenerator {
 public:
     /* Registers a digital input to be checked for either a rising or falling
@@ -55,4 +56,4 @@ private:
     std::vector<bool> m_newStates;
 };
 
-#endif // DIGITAL_INPUT_EVENT_GENERATOR_HPP
+#endif  // DIGITAL_INPUT_EVENT_GENERATOR_HPP

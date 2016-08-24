@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Pass event to a handler if a joystick button was pressed
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "JoystickEventGenerator.hpp"
 
@@ -15,8 +12,7 @@ JoystickEventGenerator::JoystickEventGenerator() {
 }
 
 void JoystickEventGenerator::RegisterButtonEvent(std::string eventName,
-                                                 uint32_t port,
-                                                 uint32_t button,
+                                                 uint32_t port, uint32_t button,
                                                  bool onRisingEdge) {
     m_events.push_back({std::move(eventName), port, button, onRisingEdge});
 }
@@ -26,21 +22,18 @@ void JoystickEventGenerator::Poll(EventAcceptor& acceptor) {
         // If checking for rising edge
         if (event.onRisingEdge) {
             // If button wasn't pressed before and is now
-            if (GetButtonState(m_oldStates[event.port],
-                               event.button) == false &&
-                GetButtonState(m_newStates[event.port],
-                               event.button) == true) {
+            if (GetButtonState(m_oldStates[event.port], event.button) ==
+                    false &&
+                GetButtonState(m_newStates[event.port], event.button) == true) {
                 // Force a deep copy to keep the original event name intact
                 std::string temp = event.name;
                 acceptor.HandleEvent(temp);
             }
-        }
-        else {
+        } else {
             // If button was pressed before and isn't now
-            if (GetButtonState(m_oldStates[event.port],
-                               event.button) == true &&
-                GetButtonState(m_newStates[event.port],
-                               event.button) == false) {
+            if (GetButtonState(m_oldStates[event.port], event.button) == true &&
+                GetButtonState(m_newStates[event.port], event.button) ==
+                    false) {
                 // Force a deep copy to keep the original event name intact
                 std::string temp = event.name;
                 acceptor.HandleEvent(temp);

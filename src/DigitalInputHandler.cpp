@@ -1,8 +1,4 @@
-// =============================================================================
-// Description: Provides an interface for sharing digital inputs between
-//              subsystems and the event framework
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "DigitalInputHandler.hpp"
 

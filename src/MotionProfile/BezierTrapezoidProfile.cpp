@@ -1,8 +1,4 @@
-// =============================================================================
-// Description: Provides trapezoidal velocity control and follows a given Bézier
-//             curve
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "BezierTrapezoidProfile.hpp"
 
@@ -11,10 +7,8 @@
 #include "../WPILib/PIDController.hpp"
 
 BezierTrapezoidProfile::BezierTrapezoidProfile(
-    std::shared_ptr<PIDController> pid,
-    double maxV,
-    double timeToMaxV) :
-    TrapezoidProfile(std::move(pid), maxV, timeToMaxV) {
+    std::shared_ptr<PIDController> pid, double maxV, double timeToMaxV)
+    : TrapezoidProfile(std::move(pid), maxV, timeToMaxV) {
     SetMaxVelocity(maxV);
     SetTimeToMaxV(timeToMaxV);
 }
@@ -35,9 +29,7 @@ void BezierTrapezoidProfile::SetCurveGoal(const BezierCurve& curve,
     TrapezoidProfile::SetGoal(state, curSource);
 }
 
-void BezierTrapezoidProfile::SetWidth(double width) {
-    m_width = width;
-}
+void BezierTrapezoidProfile::SetWidth(double width) { m_width = width; }
 
 PIDState BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
     // TODO: Verify correct acceleration is used along curve
@@ -52,27 +44,25 @@ PIDState BezierTrapezoidProfile::UpdateSetpoint(double curTime) {
         m_sp.velocity = m_acceleration * curTime;
 
         m_leftSetpoint.acceleration = m_acceleration;
-        m_leftSetpoint.velocity = GetLeftVelocity(curTime,
-                                                  m_acceleration * curTime);
+        m_leftSetpoint.velocity =
+            GetLeftVelocity(curTime, m_acceleration * curTime);
 
         m_rightSetpoint.acceleration = m_acceleration;
-        m_rightSetpoint.velocity = GetRightVelocity(curTime,
-                                                    m_acceleration * curTime);
-    }
-    else if (curTime < m_timeFromMaxVelocity) {
+        m_rightSetpoint.velocity =
+            GetRightVelocity(curTime, m_acceleration * curTime);
+    } else if (curTime < m_timeFromMaxVelocity) {
         // Maintain max velocity
         m_sp.acceleration = 0.0;
         m_sp.velocity = m_profileMaxVelocity;
 
         m_leftSetpoint.acceleration = 0.0;
-        m_leftSetpoint.velocity = GetLeftVelocity(curTime,
-                                                  m_profileMaxVelocity);
+        m_leftSetpoint.velocity =
+            GetLeftVelocity(curTime, m_profileMaxVelocity);
 
         m_rightSetpoint.acceleration = 0.0;
-        m_rightSetpoint.velocity = GetRightVelocity(curTime,
-                                                    m_profileMaxVelocity);
-    }
-    else if (curTime < m_timeTotal) {
+        m_rightSetpoint.velocity =
+            GetRightVelocity(curTime, m_profileMaxVelocity);
+    } else if (curTime < m_timeTotal) {
         // Accelerate down
         double decelTime = curTime - m_timeFromMaxVelocity;
         double v = m_profileMaxVelocity - m_acceleration * decelTime;

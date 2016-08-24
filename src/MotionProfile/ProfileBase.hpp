@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Base class for all types of motion profile controllers
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef PROFILE_BASE_HPP
 #define PROFILE_BASE_HPP
@@ -9,13 +6,17 @@
 #include <limits>
 #include <memory>
 
-#include "../WPILib/PIDState.hpp"
 #include <HAL/cpp/priority_mutex.h>
 #include <Task.h>
 #include <Timer.h>
 
+#include "../WPILib/PIDState.hpp"
+
 class PIDController;
 
+/**
+ * Base class for all types of motion profile controllers
+ */
 class ProfileBase {
 public:
     ProfileBase(std::shared_ptr<PIDController> pid);
@@ -46,9 +47,9 @@ protected:
     std::atomic<bool> m_interrupt{false};
 
     PIDState m_goal;
-    PIDState m_sp; // Current SetPoint
+    PIDState m_sp;  // Current SetPoint
     double m_lastTime = 0.0;
     double m_timeTotal = std::numeric_limits<double>::infinity();
 };
 
-#endif // PROFILE_BASE_HPP
+#endif  // PROFILE_BASE_HPP

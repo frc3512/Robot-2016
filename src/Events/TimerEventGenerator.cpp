@@ -1,12 +1,8 @@
-// =============================================================================
-// Description: Pass event to a handler if a timer expired
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "TimerEventGenerator.hpp"
 
-TimerEventGenerator::TimerEventGenerator(std::string eventName,
-                                         double period,
+TimerEventGenerator::TimerEventGenerator(std::string eventName, double period,
                                          bool oneShot) {
     m_period = period;
     m_eventName = eventName;
@@ -36,9 +32,7 @@ void TimerEventGenerator::Reset() {
     m_timer.Reset();
 }
 
-bool TimerEventGenerator::IsOneShot() const {
-    return m_oneShot;
-}
+bool TimerEventGenerator::IsOneShot() const { return m_oneShot; }
 
 double TimerEventGenerator::GetTimePassedSinceLastEvent() const {
     return m_timer.Get();

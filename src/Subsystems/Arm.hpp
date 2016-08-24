@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides an interface for the robot's arm
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef ARM_HPP
 #define ARM_HPP
@@ -20,6 +17,9 @@
 class PIDController;
 class TrapezoidProfile;
 
+/**
+ * Provides an interface for the robot's arm
+ */
 class Arm : public SubsystemBase {
 public:
     Arm();
@@ -66,4 +66,4 @@ private:
     StateMachine m_armSM{"ArmSM"};
 };
 
-#endif // ARM_HPP
+#endif  // ARM_HPP

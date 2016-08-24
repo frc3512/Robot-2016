@@ -1,10 +1,9 @@
-// =============================================================================
-// Description: Provides generic utility functions
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
+
+// Provides generic utility functions
 
 // Zeroes value if it's inside deadband range, and rescales values outside of it
 float ApplyDeadband(float value, float deadband);
@@ -14,11 +13,9 @@ template <class T>
 T Limit(T value, T limit) {
     if (value > limit) {
         return limit;
-    }
-    else if (value < -limit) {
+    } else if (value < -limit) {
         return -limit;
-    }
-    else {
+    } else {
         return value;
     }
 }
@@ -28,4 +25,4 @@ T Limit(T value, T limit) {
  */
 float JoystickRescale(float value, float rangeMax);
 
-#endif // UTILITY_HPP
+#endif  // UTILITY_HPP

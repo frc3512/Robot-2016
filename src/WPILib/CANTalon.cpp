@@ -1,10 +1,9 @@
-/*----------------------------------------------------------------------------
- * Copyright (c) FIRST 2014-2016. All Rights Reserved.
- * Open Source Software - may be modified and shared by FRC teams. The code
- * must be accompanied by the FIRST BSD license file in the root directory of
- * the project.
- *----------------------------------------------------------------------------
- */
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2014-2016. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 #include <sstream>
 
@@ -79,8 +78,7 @@ CANTalon::~CANTalon() {
 void CANTalon::PIDWrite(float output) {
     if (GetControlMode() == kPercentVbus) {
         Set(output);
-    }
-    else {
+    } else {
         wpi_setWPIErrorWithContext(IncompatibleMode,
                                    "PID only supported in PercentVbus mode");
     }
@@ -91,9 +89,7 @@ void CANTalon::PIDWrite(float output) {
  *
  * @return The current sensor value of the Talon.
  */
-double CANTalon::PIDGet() {
-    return Get();
-}
+double CANTalon::PIDGet() { return Get(); }
 
 /**
  * Gets the current status of the Talon (usually a sensor value).
@@ -108,21 +104,21 @@ double CANTalon::PIDGet() {
 float CANTalon::Get() const {
     int value;
     switch (m_controlMode) {
-    case kVoltage:
-        return GetOutputVoltage();
-    case kCurrent:
-        return GetOutputCurrent();
-    case kSpeed:
-        m_impl->GetSensorVelocity(value);
-        return ScaleNativeUnitsToRpm(m_feedbackDevice, value);
-    case kPosition:
-        m_impl->GetSensorPosition(value);
-        return ScaleNativeUnitsToRotations(m_feedbackDevice, value);
-    case kPercentVbus:
-    case kFollower:
-    default:
-        m_impl->GetAppliedThrottle(value);
-        return (float) value / 1023.0;
+        case kVoltage:
+            return GetOutputVoltage();
+        case kCurrent:
+            return GetOutputCurrent();
+        case kSpeed:
+            m_impl->GetSensorVelocity(value);
+            return ScaleNativeUnitsToRpm(m_feedbackDevice, value);
+        case kPosition:
+            m_impl->GetSensorPosition(value);
+            return ScaleNativeUnitsToRotations(m_feedbackDevice, value);
+        case kPercentVbus:
+        case kFollower:
+        default:
+            m_impl->GetAppliedThrottle(value);
+            return (float)value / 1023.0;
     }
 }
 
@@ -148,47 +144,40 @@ void CANTalon::Set(float value, uint8_t syncGroup) {
         m_setPoint.displacement = value; /* cache set point for GetSetpoint() */
         CTR_Code status = CTR_OKAY;
         switch (m_controlMode) {
-        case CANSpeedController::kPercentVbus: {
-            m_impl->Set(m_isInverted ? -value : value);
-            status = CTR_OKAY;
-        }
-        break;
-        case CANSpeedController::kFollower: {
-            status = m_impl->SetDemand((int) value);
-        }
-        break;
-        case CANSpeedController::kVoltage: {
-            // Voltage is an 8.8 fixed point number.
-            int volts = int((m_isInverted ? -value : value) * 256);
-            status = m_impl->SetDemand(volts);
-        }
-        break;
-        case CANSpeedController::kSpeed:
-            /* if the caller has provided scaling info, apply it */
-            status =
-                m_impl->SetDemand(ScaleVelocityToNativeUnits(m_feedbackDevice,
-                                                             m_isInverted ? -
-                                                             value : value));
-            break;
-        case CANSpeedController::kPosition:
-            status =
-                m_impl->SetDemand(ScaleRotationsToNativeUnits(m_feedbackDevice,
-                                                              value));
-            break;
-        case CANSpeedController::kCurrent: {
-            double milliamperes = (m_isInverted ? -value : value) * 1000.0; /* mA*/
-            status = m_impl->SetDemand(milliamperes);
-        }
-        break;
-        case CANSpeedController::kMotionProfile: {
-            status = m_impl->SetDemand((int) value);
-        }
-        break;
-        default:
-            wpi_setWPIErrorWithContext(
-                IncompatibleMode,
-                "The CAN Talon does not support this control mode.");
-            break;
+            case CANSpeedController::kPercentVbus: {
+                m_impl->Set(m_isInverted ? -value : value);
+                status = CTR_OKAY;
+            } break;
+            case CANSpeedController::kFollower: {
+                status = m_impl->SetDemand((int)value);
+            } break;
+            case CANSpeedController::kVoltage: {
+                // Voltage is an 8.8 fixed point number.
+                int volts = int((m_isInverted ? -value : value) * 256);
+                status = m_impl->SetDemand(volts);
+            } break;
+            case CANSpeedController::kSpeed:
+                /* if the caller has provided scaling info, apply it */
+                status = m_impl->SetDemand(ScaleVelocityToNativeUnits(
+                    m_feedbackDevice, m_isInverted ? -value : value));
+                break;
+            case CANSpeedController::kPosition:
+                status = m_impl->SetDemand(
+                    ScaleRotationsToNativeUnits(m_feedbackDevice, value));
+                break;
+            case CANSpeedController::kCurrent: {
+                double milliamperes =
+                    (m_isInverted ? -value : value) * 1000.0; /* mA*/
+                status = m_impl->SetDemand(milliamperes);
+            } break;
+            case CANSpeedController::kMotionProfile: {
+                status = m_impl->SetDemand((int)value);
+            } break;
+            default:
+                wpi_setWPIErrorWithContext(
+                    IncompatibleMode,
+                    "The CAN Talon does not support this control mode.");
+                break;
         }
         if (status != CTR_OKAY) {
             wpi_setErrorWithContext(status, getHALErrorMessage(status));
@@ -205,9 +194,7 @@ void CANTalon::Set(float value, uint8_t syncGroup) {
 /**
  * Sets the setpoint to value. Equivalent to Set().
  */
-void CANTalon::SetSetpoint(PIDState value) {
-    Set(value.displacement);
-}
+void CANTalon::SetSetpoint(PIDState value) { Set(value.displacement); }
 
 /**
  * Resets the integral term and disables the controller.
@@ -223,7 +210,7 @@ void CANTalon::Reset() {
  * for more information).
  */
 void CANTalon::Disable() {
-    m_impl->SetModeSelect((int) CANTalon::kDisabled);
+    m_impl->SetModeSelect((int)CANTalon::kDisabled);
     m_controlEnabled = false;
 }
 
@@ -238,23 +225,17 @@ void CANTalon::EnableControl() {
 /**
  * Enables control of the Talon, allowing the motor to move.
  */
-void CANTalon::Enable() {
-    EnableControl();
-}
+void CANTalon::Enable() { EnableControl(); }
 
 /**
  * @return Whether the Talon is currently enabled.
  */
-bool CANTalon::IsControlEnabled() const {
-    return m_controlEnabled;
-}
+bool CANTalon::IsControlEnabled() const { return m_controlEnabled; }
 
 /**
  * @return Whether the Talon is currently enabled.
  */
-bool CANTalon::IsEnabled() const {
-    return IsControlEnabled();
-}
+bool CANTalon::IsEnabled() const { return IsControlEnabled(); }
 
 /**
  * @param p Proportional constant to use in PID loop.
@@ -295,7 +276,8 @@ void CANTalon::SetD(double d) {
 /**
  * Set the velocity feedforward value of the currently selected profile.
  *
- * @param v Velocity feedforward constant for the currently selected PID profile.
+ * @param v Velocity feedforward constant for the currently selected PID
+ * profile.
  * @see SelectProfileSlot to choose between the two sets of gains.
  */
 void CANTalon::SetV(double v) {
@@ -307,7 +289,8 @@ void CANTalon::SetV(double v) {
 /**
  * Set the acceleration feedforward value of the currently selected profile.
  *
- * @param a Acceleration feedforward constant for the currently selected PID profile.
+ * @param a Acceleration feedforward constant for the currently selected PID
+ * profile.
  * @see SelectProfileSlot to choose between the two sets of gains.
  */
 void CANTalon::SetA(double a) {
@@ -371,10 +354,11 @@ void CANTalon::SetPID(double p, double i, double d, double v, double a) {
  * Select the feedback device to use in closed-loop
  */
 void CANTalon::SetFeedbackDevice(FeedbackDevice feedbackDevice) {
-    /* save the selection so that future setters/getters know which scalars to apply */
+    /* save the selection so that future setters/getters know which scalars to
+     * apply */
     m_feedbackDevice = feedbackDevice;
     /* pass feedback to actual CAN frame */
-    CTR_Code status = m_impl->SetFeedbackDeviceSelect((int) feedbackDevice);
+    CTR_Code status = m_impl->SetFeedbackDeviceSelect((int)feedbackDevice);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
@@ -383,7 +367,7 @@ void CANTalon::SetFeedbackDevice(FeedbackDevice feedbackDevice) {
  * Select the feedback device to use in closed-loop
  */
 void CANTalon::SetStatusFrameRateMs(StatusFrameRate stateFrame, int periodMs) {
-    CTR_Code status = m_impl->SetStatusFrameRate((int) stateFrame, periodMs);
+    CTR_Code status = m_impl->SetStatusFrameRate((int)stateFrame, periodMs);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
@@ -397,7 +381,7 @@ void CANTalon::SetStatusFrameRateMs(StatusFrameRate stateFrame, int periodMs) {
  */
 double CANTalon::GetP() const {
     CanTalonSRX::param_t param = m_profile ? CanTalonSRX::eProfileParamSlot1_P
-                                 : CanTalonSRX::eProfileParamSlot0_P;
+                                           : CanTalonSRX::eProfileParamSlot0_P;
     // Update the info in m_impl.
     CTR_Code status = m_impl->RequestParam(param);
     if (status != CTR_OKAY) {
@@ -418,7 +402,7 @@ double CANTalon::GetP() const {
  */
 double CANTalon::GetI() const {
     CanTalonSRX::param_t param = m_profile ? CanTalonSRX::eProfileParamSlot1_I
-                                 : CanTalonSRX::eProfileParamSlot0_I;
+                                           : CanTalonSRX::eProfileParamSlot0_I;
     // Update the info in m_impl.
     CTR_Code status = m_impl->RequestParam(param);
     if (status != CTR_OKAY) {
@@ -440,7 +424,7 @@ double CANTalon::GetI() const {
  */
 double CANTalon::GetD() const {
     CanTalonSRX::param_t param = m_profile ? CanTalonSRX::eProfileParamSlot1_D
-                                 : CanTalonSRX::eProfileParamSlot0_D;
+                                           : CanTalonSRX::eProfileParamSlot0_D;
     // Update the info in m_impl.
     CTR_Code status = m_impl->RequestParam(param);
     if (status != CTR_OKAY) {
@@ -461,7 +445,7 @@ double CANTalon::GetD() const {
  */
 double CANTalon::GetV() const {
     CanTalonSRX::param_t param = m_profile ? CanTalonSRX::eProfileParamSlot1_F
-                                 : CanTalonSRX::eProfileParamSlot0_F;
+                                           : CanTalonSRX::eProfileParamSlot0_F;
     // Update the info in m_impl.
     CTR_Code status = m_impl->RequestParam(param);
     if (status != CTR_OKAY) {
@@ -489,8 +473,8 @@ double CANTalon::GetA() const {
  */
 int CANTalon::GetIzone() const {
     CanTalonSRX::param_t param = m_profile
-                                 ? CanTalonSRX::eProfileParamSlot1_IZone
-                                 : CanTalonSRX::eProfileParamSlot0_IZone;
+                                     ? CanTalonSRX::eProfileParamSlot1_IZone
+                                     : CanTalonSRX::eProfileParamSlot0_IZone;
     // Update the info in m_impl.
     CTR_Code status = m_impl->RequestParam(param);
     if (status != CTR_OKAY) {
@@ -509,9 +493,7 @@ int CANTalon::GetIzone() const {
 /**
  * @return the current setpoint; ie, whatever was last passed to Set().
  */
-PIDState CANTalon::GetSetpoint() const {
-    return m_setPoint;
-}
+PIDState CANTalon::GetSetpoint() const { return m_setPoint; }
 
 /**
  * Returns the voltage coming in from the battery.
@@ -642,7 +624,8 @@ int CANTalon::GetClosedLoopError() const {
 }
 /**
  * Set the allowable closed loop error.
- * @param allowableCloseLoopError allowable closed loop error for selected profile.
+ * @param allowableCloseLoopError allowable closed loop error for selected
+ * profile.
  *       mA for Curent closed loop.
  *       Talon Native Units for position and velocity.
  */
@@ -651,8 +634,7 @@ void CANTalon::SetAllowableClosedLoopErr(uint32_t allowableCloseLoopError) {
     CanTalonSRX::param_t param;
     if (m_profile == 1) {
         param = CanTalonSRX::eProfileParamSlot1_AllowableClosedLoopErr;
-    }
-    else {
+    } else {
         param = CanTalonSRX::eProfileParamSlot0_AllowableClosedLoopErr;
     }
     /* send allowable close loop er in native units */
@@ -717,9 +699,7 @@ void CANTalon::SetAnalogPosition(int newPosition) {
  *
  * @returns The ADC (0 - 1023) on analog pin of the Talon.
  */
-int CANTalon::GetAnalogInRaw() const {
-    return GetAnalogIn() & 0x3FF;
-}
+int CANTalon::GetAnalogInRaw() const { return GetAnalogIn() & 0x3FF; }
 /**
  * Get the position of whatever is in the analog pin of the Talon, regardless of
  * whether it is actually being used for feedback.
@@ -818,35 +798,34 @@ CANTalon::FeedbackDeviceStatus CANTalon::IsSensorPresent(
     int param;
     /* detecting sensor health depends on which sensor caller cares about */
     switch (feedbackDevice) {
-    case QuadEncoder:
-    case AnalogPot:
-    case AnalogEncoder:
-    case EncRising:
-    case EncFalling:
-        /* no real good way to tell if these sensor
-         *  are actually present so return status unknown. */
-        break;
-    case PulseWidth:
-    case CtreMagEncoder_Relative:
-    case CtreMagEncoder_Absolute:
-        /* all of these require pulse width signal to be present. */
-        CTR_Code status = m_impl->IsPulseWidthSensorPresent(param);
-        if (status != CTR_OKAY) {
-            /* we're not getting status info, signal unknown status */
-        }
-        else {
-            /* param is updated */
-            if (param) {
-                /* pulse signal is present, sensor must be working since it always
-                 *  generates a pulse waveform.*/
-                retval = FeedbackStatusPresent;
+        case QuadEncoder:
+        case AnalogPot:
+        case AnalogEncoder:
+        case EncRising:
+        case EncFalling:
+            /* no real good way to tell if these sensor
+             *  are actually present so return status unknown. */
+            break;
+        case PulseWidth:
+        case CtreMagEncoder_Relative:
+        case CtreMagEncoder_Absolute:
+            /* all of these require pulse width signal to be present. */
+            CTR_Code status = m_impl->IsPulseWidthSensorPresent(param);
+            if (status != CTR_OKAY) {
+                /* we're not getting status info, signal unknown status */
+            } else {
+                /* param is updated */
+                if (param) {
+                    /* pulse signal is present, sensor must be working since it
+                     * always
+                     *  generates a pulse waveform.*/
+                    retval = FeedbackStatusPresent;
+                } else {
+                    /* no pulse present, sensor disconnected */
+                    retval = FeedbackStatusNotPresent;
+                }
             }
-            else {
-                /* no pulse present, sensor disconnected */
-                retval = FeedbackStatusNotPresent;
-            }
-        }
-        break;
+            break;
     }
     return retval;
 }
@@ -949,7 +928,8 @@ bool CANTalon::GetForwardLimitOK() const {
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
-    /* If either fault is asserted, signal caller we are disabled (with false?) */
+    /* If either fault is asserted, signal caller we are disabled (with false?)
+     */
     return (softLim | limSwit) ? false : true;
 }
 
@@ -968,7 +948,8 @@ bool CANTalon::GetReverseLimitOK() const {
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
-    /* If either fault is asserted, signal caller we are disabled (with false?) */
+    /* If either fault is asserted, signal caller we are disabled (with false?)
+     */
     return (softLim | limSwit) ? false : true;
 }
 
@@ -1105,10 +1086,11 @@ void CANTalon::ClearStickyFaults() {
  */
 void CANTalon::SetVoltageRampRate(double rampRate) {
     /* Caller is expressing ramp as Voltage per sec, assuming 12V is full.
-     *       Talon's throttle ramp is in dThrot/d10ms.  1023 is full fwd, -1023 is
+     *       Talon's throttle ramp is in dThrot/d10ms.  1023 is full fwd, -1023
+     * is
      *  full rev. */
     double rampRatedThrotPer10ms = (rampRate * 1023.0 / 12.0) / 100;
-    CTR_Code status = m_impl->SetRampThrottle((int) rampRatedThrotPer10ms);
+    CTR_Code status = m_impl->SetRampThrottle((int)rampRatedThrotPer10ms);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
@@ -1194,20 +1176,20 @@ void CANTalon::ClearIaccum() {
 void CANTalon::ConfigNeutralMode(NeutralMode mode) {
     CTR_Code status = CTR_OKAY;
     switch (mode) {
-    default:
-    case kNeutralMode_Jumper: /* use default setting in flash based on
-                               *  webdash/BrakeCal button selection */
-        status = m_impl->SetOverrideBrakeType(
-            CanTalonSRX::kBrakeOverride_UseDefaultsFromFlash);
-        break;
-    case kNeutralMode_Brake:
-        status = m_impl->SetOverrideBrakeType(
-            CanTalonSRX::kBrakeOverride_OverrideBrake);
-        break;
-    case kNeutralMode_Coast:
-        status = m_impl->SetOverrideBrakeType(
-            CanTalonSRX::kBrakeOverride_OverrideCoast);
-        break;
+        default:
+        case kNeutralMode_Jumper: /* use default setting in flash based on
+                                   *  webdash/BrakeCal button selection */
+            status = m_impl->SetOverrideBrakeType(
+                CanTalonSRX::kBrakeOverride_UseDefaultsFromFlash);
+            break;
+        case kNeutralMode_Brake:
+            status = m_impl->SetOverrideBrakeType(
+                CanTalonSRX::kBrakeOverride_OverrideBrake);
+            break;
+        case kNeutralMode_Coast:
+            status = m_impl->SetOverrideBrakeType(
+                CanTalonSRX::kBrakeOverride_OverrideCoast);
+            break;
     }
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
@@ -1231,12 +1213,16 @@ int CANTalon::GetBrakeEnableDuringNeutral() const {
  * @param codesPerRev The number of counts per revolution.
  */
 void CANTalon::ConfigEncoderCodesPerRev(uint16_t codesPerRev) {
-    /* first save the scalar so that all getters/setter work as the user expects */
+    /* first save the scalar so that all getters/setter work as the user expects
+     */
     m_codesPerRev = codesPerRev;
-    /* next send the scalar to the Talon over CAN.  This is so that the Talon can report
-    *  it to whoever needs it, like the webdash.  Don't bother checking the return,
-    *  this is only for instrumentation and is not necessary for Talon functionality. */
-    (void) m_impl->SetParam(CanTalonSRX::eNumberEncoderCPR, m_codesPerRev);
+    /* next send the scalar to the Talon over CAN.  This is so that the Talon
+    * can report
+    *  it to whoever needs it, like the webdash.  Don't bother checking the
+    * return,
+    *  this is only for instrumentation and is not necessary for Talon
+    * functionality. */
+    (void)m_impl->SetParam(CanTalonSRX::eNumberEncoderCPR, m_codesPerRev);
 }
 
 /**
@@ -1245,12 +1231,16 @@ void CANTalon::ConfigEncoderCodesPerRev(uint16_t codesPerRev) {
  * @param turns The number of turns of the potentiometer.
  */
 void CANTalon::ConfigPotentiometerTurns(uint16_t turns) {
-    /* first save the scalar so that all getters/setter work as the user expects */
+    /* first save the scalar so that all getters/setter work as the user expects
+     */
     m_numPotTurns = turns;
-    /* next send the scalar to the Talon over CAN.  This is so that the Talon can report
-    *  it to whoever needs it, like the webdash.  Don't bother checking the return,
-    *  this is only for instrumentation and is not necessary for Talon functionality. */
-    (void) m_impl->SetParam(CanTalonSRX::eNumberPotTurns, m_numPotTurns);
+    /* next send the scalar to the Talon over CAN.  This is so that the Talon
+    * can report
+    *  it to whoever needs it, like the webdash.  Don't bother checking the
+    * return,
+    *  this is only for instrumentation and is not necessary for Talon
+    * functionality. */
+    (void)m_impl->SetParam(CanTalonSRX::eNumberPotTurns, m_numPotTurns);
 }
 
 /**
@@ -1278,62 +1268,70 @@ void CANTalon::DisableSoftPositionLimits() {
 void CANTalon::ConfigLimitMode(LimitMode mode) {
     CTR_Code status = CTR_OKAY;
     switch (mode) {
-    case kLimitMode_SwitchInputsOnly: /** Only use switches for limits */
-        /* turn OFF both limits. SRX has individual enables and polarity for each
-         * limit switch.*/
-        status = m_impl->SetForwardSoftEnable(false);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        status = m_impl->SetReverseSoftEnable(false);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        /* override enable the limit switches, this circumvents the webdash */
-        status = m_impl->SetOverrideLimitSwitchEn(
-            CanTalonSRX::kLimitSwitchOverride_EnableFwd_EnableRev);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        break;
-    case kLimitMode_SoftPositionLimits: /** Use both switches and soft limits */
-        /* turn on both limits. SRX has individual enables and polarity for each
-         * limit switch.*/
-        status = m_impl->SetForwardSoftEnable(true);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        status = m_impl->SetReverseSoftEnable(true);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        /* override enable the limit switches, this circumvents the webdash */
-        status = m_impl->SetOverrideLimitSwitchEn(
-            CanTalonSRX::kLimitSwitchOverride_EnableFwd_EnableRev);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        break;
+        case kLimitMode_SwitchInputsOnly: /** Only use switches for limits */
+            /* turn OFF both limits. SRX has individual enables and polarity for
+             * each
+             * limit switch.*/
+            status = m_impl->SetForwardSoftEnable(false);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            status = m_impl->SetReverseSoftEnable(false);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            /* override enable the limit switches, this circumvents the webdash
+             */
+            status = m_impl->SetOverrideLimitSwitchEn(
+                CanTalonSRX::kLimitSwitchOverride_EnableFwd_EnableRev);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            break;
+        case kLimitMode_SoftPositionLimits: /** Use both switches and soft
+                                               limits */
+            /* turn on both limits. SRX has individual enables and polarity for
+             * each
+             * limit switch.*/
+            status = m_impl->SetForwardSoftEnable(true);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            status = m_impl->SetReverseSoftEnable(true);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            /* override enable the limit switches, this circumvents the webdash
+             */
+            status = m_impl->SetOverrideLimitSwitchEn(
+                CanTalonSRX::kLimitSwitchOverride_EnableFwd_EnableRev);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            break;
 
-    case kLimitMode_SrxDisableSwitchInputs: /** disable both limit switches and
-                                             *  soft limits */
-        /* turn on both limits. SRX has individual enables and polarity for each
-         * limit switch.*/
-        status = m_impl->SetForwardSoftEnable(false);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        status = m_impl->SetReverseSoftEnable(false);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        /* override enable the limit switches, this circumvents the webdash */
-        status = m_impl->SetOverrideLimitSwitchEn(
-            CanTalonSRX::kLimitSwitchOverride_DisableFwd_DisableRev);
-        if (status != CTR_OKAY) {
-            wpi_setErrorWithContext(status, getHALErrorMessage(status));
-        }
-        break;
+        case kLimitMode_SrxDisableSwitchInputs: /** disable both limit switches
+                                                 * and
+                                                 *  soft limits */
+            /* turn on both limits. SRX has individual enables and polarity for
+             * each
+             * limit switch.*/
+            status = m_impl->SetForwardSoftEnable(false);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            status = m_impl->SetReverseSoftEnable(false);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            /* override enable the limit switches, this circumvents the webdash
+             */
+            status = m_impl->SetOverrideLimitSwitchEn(
+                CanTalonSRX::kLimitSwitchOverride_DisableFwd_DisableRev);
+            if (status != CTR_OKAY) {
+                wpi_setErrorWithContext(status, getHALErrorMessage(status));
+            }
+            break;
     }
 }
 
@@ -1342,8 +1340,8 @@ void CANTalon::ConfigLimitMode(LimitMode mode) {
  */
 void CANTalon::ConfigForwardLimit(double forwardLimitPosition) {
     CTR_Code status = CTR_OKAY;
-    int32_t nativeLimitPos = ScaleRotationsToNativeUnits(m_feedbackDevice,
-                                                         forwardLimitPosition);
+    int32_t nativeLimitPos =
+        ScaleRotationsToNativeUnits(m_feedbackDevice, forwardLimitPosition);
     status = m_impl->SetForwardSoftLimit(nativeLimitPos);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
@@ -1360,10 +1358,9 @@ void CANTalon::ConfigForwardLimit(double forwardLimitPosition) {
  * @param normallyOpen true for normally open.  false for normally closed.
  */
 void CANTalon::ConfigFwdLimitSwitchNormallyOpen(bool normallyOpen) {
-    CTR_Code status =
-        m_impl->SetParam(
-            CanTalonSRX::eOnBoot_LimitSwitch_Forward_NormallyClosed,
-            normallyOpen ? 0 : 1);
+    CTR_Code status = m_impl->SetParam(
+        CanTalonSRX::eOnBoot_LimitSwitch_Forward_NormallyClosed,
+        normallyOpen ? 0 : 1);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
@@ -1379,10 +1376,9 @@ void CANTalon::ConfigFwdLimitSwitchNormallyOpen(bool normallyOpen) {
  * @param normallyOpen true for normally open.  false for normally closed.
  */
 void CANTalon::ConfigRevLimitSwitchNormallyOpen(bool normallyOpen) {
-    CTR_Code status =
-        m_impl->SetParam(
-            CanTalonSRX::eOnBoot_LimitSwitch_Reverse_NormallyClosed,
-            normallyOpen ? 0 : 1);
+    CTR_Code status = m_impl->SetParam(
+        CanTalonSRX::eOnBoot_LimitSwitch_Reverse_NormallyClosed,
+        normallyOpen ? 0 : 1);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
@@ -1392,8 +1388,8 @@ void CANTalon::ConfigRevLimitSwitchNormallyOpen(bool normallyOpen) {
  */
 void CANTalon::ConfigReverseLimit(double reverseLimitPosition) {
     CTR_Code status = CTR_OKAY;
-    int32_t nativeLimitPos = ScaleRotationsToNativeUnits(m_feedbackDevice,
-                                                         reverseLimitPosition);
+    int32_t nativeLimitPos =
+        ScaleRotationsToNativeUnits(m_feedbackDevice, reverseLimitPosition);
     status = m_impl->SetReverseSoftLimit(nativeLimitPos);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
@@ -1403,7 +1399,8 @@ void CANTalon::ConfigReverseLimit(double reverseLimitPosition) {
  * TODO documentation (see CANJaguar.cpp)
  */
 void CANTalon::ConfigMaxOutputVoltage(double voltage) {
-    /* config peak throttle when in closed-loop mode in the fwd and rev direction. */
+    /* config peak throttle when in closed-loop mode in the fwd and rev
+     * direction. */
     ConfigPeakOutputVoltage(voltage, -voltage);
 }
 void CANTalon::ConfigPeakOutputVoltage(double forwardVoltage,
@@ -1411,14 +1408,12 @@ void CANTalon::ConfigPeakOutputVoltage(double forwardVoltage,
     /* bounds checking */
     if (forwardVoltage > 12) {
         forwardVoltage = 12;
-    }
-    else if (forwardVoltage < 0) {
+    } else if (forwardVoltage < 0) {
         forwardVoltage = 0;
     }
     if (reverseVoltage > 0) {
         reverseVoltage = 0;
-    }
-    else if (reverseVoltage < -12) {
+    } else if (reverseVoltage < -12) {
         reverseVoltage = -12;
     }
     /* config calls */
@@ -1432,14 +1427,12 @@ void CANTalon::ConfigNominalOutputVoltage(double forwardVoltage,
     /* bounds checking */
     if (forwardVoltage > 12) {
         forwardVoltage = 12;
-    }
-    else if (forwardVoltage < 0) {
+    } else if (forwardVoltage < 0) {
         forwardVoltage = 0;
     }
     if (reverseVoltage > 0) {
         reverseVoltage = 0;
-    }
-    else if (reverseVoltage < -12) {
+    } else if (reverseVoltage < -12) {
         reverseVoltage = -12;
     }
     /* config calls */
@@ -1454,8 +1447,9 @@ void CANTalon::ConfigNominalOutputVoltage(double forwardVoltage,
  */
 void CANTalon::ConfigSetParameter(uint32_t paramEnum, double value) {
     CTR_Code status;
-    /* config peak throttle when in closed-loop mode in the positive direction. */
-    status = m_impl->SetParam((CanTalonSRX::param_t) paramEnum, value);
+    /* config peak throttle when in closed-loop mode in the positive direction.
+     */
+    status = m_impl->SetParam((CanTalonSRX::param_t)paramEnum, value);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
@@ -1467,7 +1461,7 @@ void CANTalon::ConfigSetParameter(uint32_t paramEnum, double value) {
 bool CANTalon::GetParameter(uint32_t paramEnum, double& dvalue) const {
     bool retval = true;
     /* send the request frame */
-    CTR_Code status = m_impl->RequestParam((CanTalonSRX::param_t) paramEnum);
+    CTR_Code status = m_impl->RequestParam((CanTalonSRX::param_t)paramEnum);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
         retval = false;
@@ -1475,7 +1469,7 @@ bool CANTalon::GetParameter(uint32_t paramEnum, double& dvalue) const {
     /* small yield for getting response */
     usleep(kDelayForSolicitedSignalsUs);
     /* get the last received update */
-    status = m_impl->GetParamResponse((CanTalonSRX::param_t) paramEnum, dvalue);
+    status = m_impl->GetParamResponse((CanTalonSRX::param_t)paramEnum, dvalue);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
         retval = false;
@@ -1503,30 +1497,30 @@ void CANTalon::ApplyControlMode(CANSpeedController::ControlMode mode) {
     HALReport(HALUsageReporting::kResourceType_CANTalonSRX, m_deviceNumber + 1,
               mode);
     switch (mode) {
-    case kPercentVbus:
-        m_sendMode = kThrottle;
-        break;
-    case kCurrent:
-        m_sendMode = kCurrentMode;
-        break;
-    case kSpeed:
-        m_sendMode = kSpeedMode;
-        break;
-    case kPosition:
-        m_sendMode = kPositionMode;
-        break;
-    case kVoltage:
-        m_sendMode = kVoltageMode;
-        break;
-    case kFollower:
-        m_sendMode = kFollowerMode;
-        break;
-    case kMotionProfile:
-        m_sendMode = kMotionProfileMode;
-        break;
+        case kPercentVbus:
+            m_sendMode = kThrottle;
+            break;
+        case kCurrent:
+            m_sendMode = kCurrentMode;
+            break;
+        case kSpeed:
+            m_sendMode = kSpeedMode;
+            break;
+        case kPosition:
+            m_sendMode = kPositionMode;
+            break;
+        case kVoltage:
+            m_sendMode = kVoltageMode;
+            break;
+        case kFollower:
+            m_sendMode = kFollowerMode;
+            break;
+        case kMotionProfile:
+            m_sendMode = kMotionProfileMode;
+            break;
     }
     // Keep the talon disabled until Set() is called.
-    CTR_Code status = m_impl->SetModeSelect((int) kDisabled);
+    CTR_Code status = m_impl->SetModeSelect((int)kDisabled);
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
@@ -1537,8 +1531,7 @@ void CANTalon::ApplyControlMode(CANSpeedController::ControlMode mode) {
 void CANTalon::SetControlMode(CANSpeedController::ControlMode mode) {
     if (m_controlMode == mode) {
         /* we already are in this mode, don't perform disable workaround */
-    }
-    else {
+    } else {
         ApplyControlMode(mode);
     }
 }
@@ -1558,9 +1551,7 @@ float CANTalon::GetExpiration() const {
     return m_safetyHelper->GetExpiration();
 }
 
-bool CANTalon::IsAlive() const {
-    return m_safetyHelper->IsAlive();
-}
+bool CANTalon::IsAlive() const { return m_safetyHelper->IsAlive(); }
 
 bool CANTalon::IsSafetyEnabled() const {
     return m_safetyHelper->IsSafetyEnabled();
@@ -1571,95 +1562,97 @@ void CANTalon::SetSafetyEnabled(bool enabled) {
 }
 
 void CANTalon::GetDescription(std::ostringstream& desc) const {
-    desc << "CANTalon ID " <<  m_deviceNumber;
+    desc << "CANTalon ID " << m_deviceNumber;
 }
 /**
  * @param devToLookup FeedbackDevice to lookup the scalar for.  Because Talon
  *            allows multiple sensors to be attached simultaneously, caller must
  *            specify which sensor to lookup.
- * @return    The number of native Talon units per rotation of the selected sensor.
+ * @return    The number of native Talon units per rotation of the selected
+ * sensor.
  *            Zero if the necessary sensor information is not available.
  * @see ConfigEncoderCodesPerRev
  * @see ConfigPotentiometerTurns
  */
-double CANTalon::GetNativeUnitsPerRotationScalar(FeedbackDevice devToLookup)
-const {
+double CANTalon::GetNativeUnitsPerRotationScalar(
+    FeedbackDevice devToLookup) const {
     bool scalingAvail = false;
     CTR_Code status = CTR_OKAY;
     double retval = 0;
     switch (devToLookup) {
-    case QuadEncoder:
-    { /* When caller wants to lookup Quadrature, the QEI may be in 1x if the selected feedback is edge counter.
-       * Additionally if the quadrature source is the CTRE Mag encoder, then the CPR is known.
-       * This is nice in that the calling app does not require knowing the CPR at all.
-       * So do both checks here.
-       */
-        int32_t qeiPulsePerCount = 4; /* default to 4x */
-        switch (m_feedbackDevice) {
-        case CtreMagEncoder_Relative:
-        case CtreMagEncoder_Absolute:
-            /* we assume the quadrature signal comes from the MagEnc,
-             *  of which we know the CPR already */
-            retval = kNativePwdUnitsPerRotation;
-            scalingAvail = true;
-            break;
-        case EncRising: /* Talon's QEI is setup for 1x, so perform 1x math */
+        case QuadEncoder: { /* When caller wants to lookup Quadrature, the QEI
+                             * may be in 1x if the selected feedback is edge
+                             * counter.
+                             * Additionally if the quadrature source is the CTRE
+                             * Mag encoder, then the CPR is known.
+                             * This is nice in that the calling app does not
+                             * require knowing the CPR at all.
+                             * So do both checks here.
+                             */
+            int32_t qeiPulsePerCount = 4; /* default to 4x */
+            switch (m_feedbackDevice) {
+                case CtreMagEncoder_Relative:
+                case CtreMagEncoder_Absolute:
+                    /* we assume the quadrature signal comes from the MagEnc,
+                     *  of which we know the CPR already */
+                    retval = kNativePwdUnitsPerRotation;
+                    scalingAvail = true;
+                    break;
+                case EncRising: /* Talon's QEI is setup for 1x, so perform 1x
+                                   math */
+                case EncFalling:
+                    qeiPulsePerCount = 1;
+                    break;
+                case QuadEncoder: /* Talon's QEI is 4x */
+                default
+                    : /* pulse width and everything else, assume its regular
+                         quad use. */
+                    break;
+            }
+            if (scalingAvail) {
+                /* already deduced the scalar above, we're done. */
+            } else {
+                /* we couldn't deduce the scalar just based on the selection */
+                if (0 == m_codesPerRev) {
+                    /* caller has never set the CPR.  Most likely caller
+                     *  is just using engineering units so fall to the
+                     *  bottom of this func.*/
+                } else {
+                    /* Talon expects PPR units */
+                    retval = qeiPulsePerCount * m_codesPerRev;
+                    scalingAvail = true;
+                }
+            }
+        } break;
+        case EncRising:
         case EncFalling:
-            qeiPulsePerCount = 1;
-            break;
-        case QuadEncoder: /* Talon's QEI is 4x */
-        default: /* pulse width and everything else, assume its regular quad use. */
-            break;
-        }
-        if (scalingAvail) {
-            /* already deduced the scalar above, we're done. */
-        }
-        else {
-            /* we couldn't deduce the scalar just based on the selection */
             if (0 == m_codesPerRev) {
                 /* caller has never set the CPR.  Most likely caller
                  *  is just using engineering units so fall to the
                  *  bottom of this func.*/
-            }
-            else {
+            } else {
                 /* Talon expects PPR units */
-                retval = qeiPulsePerCount * m_codesPerRev;
+                retval = 1 * m_codesPerRev;
                 scalingAvail = true;
             }
-        }
-    }
-    break;
-    case EncRising:
-    case EncFalling:
-        if (0 == m_codesPerRev) {
-            /* caller has never set the CPR.  Most likely caller
-             *  is just using engineering units so fall to the
-             *  bottom of this func.*/
-        }
-        else {
-            /* Talon expects PPR units */
-            retval = 1 * m_codesPerRev;
+            break;
+        case AnalogPot:
+        case AnalogEncoder:
+            if (0 == m_numPotTurns) {
+                /* caller has never set the CPR.  Most likely caller
+                 *  is just using engineering units so fall to the
+                 *  bottom of this func.*/
+            } else {
+                retval = (double)kNativeAdcUnitsPerRotation / m_numPotTurns;
+                scalingAvail = true;
+            }
+            break;
+        case CtreMagEncoder_Relative:
+        case CtreMagEncoder_Absolute:
+        case PulseWidth:
+            retval = kNativePwdUnitsPerRotation;
             scalingAvail = true;
-        }
-        break;
-    case AnalogPot:
-    case AnalogEncoder:
-        if (0 == m_numPotTurns) {
-            /* caller has never set the CPR.  Most likely caller
-             *  is just using engineering units so fall to the
-             *  bottom of this func.*/
-        }
-        else {
-            retval = (double) kNativeAdcUnitsPerRotation / m_numPotTurns;
-            scalingAvail = true;
-        }
-        break;
-    case CtreMagEncoder_Relative:
-    case CtreMagEncoder_Absolute:
-    case PulseWidth:
-        retval = kNativePwdUnitsPerRotation;
-        scalingAvail = true;
-        break;
+            break;
     }
     /* handle any detected errors */
     if (status != CTR_OKAY) {
@@ -1673,9 +1666,12 @@ const {
     return retval;
 }
 /**
- * @param fullRotations   double precision value representing number of rotations of selected feedback sensor.
- *              If user has never called the config routine for the selected sensor, then the caller
- *              is likely passing rotations in engineering units already, in which case it is returned
+ * @param fullRotations   double precision value representing number of
+ * rotations of selected feedback sensor.
+ *              If user has never called the config routine for the selected
+ * sensor, then the caller
+ *              is likely passing rotations in engineering units already, in
+ * which case it is returned
  *              as is.
  *              @see ConfigPotentiometerTurns
  *              @see ConfigEncoderCodesPerRev
@@ -1684,73 +1680,85 @@ const {
 int32_t CANTalon::ScaleRotationsToNativeUnits(FeedbackDevice devToLookup,
                                               double fullRotations) const {
     /* first assume we don't have config info, prep the default return */
-    int32_t retval = (int32_t) fullRotations;
+    int32_t retval = (int32_t)fullRotations;
     /* retrieve scaling info */
     double scalar = GetNativeUnitsPerRotationScalar(devToLookup);
     /* apply scalar if its available */
     if (scalar > 0) {
-        retval = (int32_t) (fullRotations * scalar);
+        retval = (int32_t)(fullRotations * scalar);
     }
     return retval;
 }
 /**
- * @param rpm   double precision value representing number of rotations per minute of selected feedback sensor.
- *              If user has never called the config routine for the selected sensor, then the caller
- *              is likely passing rotations in engineering units already, in which case it is returned
+ * @param rpm   double precision value representing number of rotations per
+ * minute of selected feedback sensor.
+ *              If user has never called the config routine for the selected
+ * sensor, then the caller
+ *              is likely passing rotations in engineering units already, in
+ * which case it is returned
  *              as is.
  *              @see ConfigPotentiometerTurns
  *              @see ConfigEncoderCodesPerRev
- * @return sensor velocity in native engineering units of the Talon SRX firmware.
+ * @return sensor velocity in native engineering units of the Talon SRX
+ * firmware.
  */
 int32_t CANTalon::ScaleVelocityToNativeUnits(FeedbackDevice devToLookup,
                                              double rpm) const {
     /* first assume we don't have config info, prep the default return */
-    int32_t retval = (int32_t) rpm;
+    int32_t retval = (int32_t)rpm;
     /* retrieve scaling info */
     double scalar = GetNativeUnitsPerRotationScalar(devToLookup);
     /* apply scalar if its available */
     if (scalar > 0) {
-        retval = (int32_t) (rpm * kMinutesPer100msUnit * scalar);
+        retval = (int32_t)(rpm * kMinutesPer100msUnit * scalar);
     }
     return retval;
 }
 /**
- * @param nativePos   integral position of the feedback sensor in native Talon SRX units.
- *              If user has never called the config routine for the selected sensor, then the return
- *              will be in TALON SRX units as well to match the behavior in the 2015 season.
+ * @param nativePos   integral position of the feedback sensor in native Talon
+ * SRX units.
+ *              If user has never called the config routine for the selected
+ * sensor, then the return
+ *              will be in TALON SRX units as well to match the behavior in the
+ * 2015 season.
  *              @see ConfigPotentiometerTurns
  *              @see ConfigEncoderCodesPerRev
- * @return double precision number of rotations, unless config was never performed.
+ * @return double precision number of rotations, unless config was never
+ * performed.
  */
 double CANTalon::ScaleNativeUnitsToRotations(FeedbackDevice devToLookup,
                                              int32_t nativePos) const {
     /* first assume we don't have config info, prep the default return */
-    double retval = (double) nativePos;
+    double retval = (double)nativePos;
     /* retrieve scaling info */
     double scalar = GetNativeUnitsPerRotationScalar(devToLookup);
     /* apply scalar if its available */
     if (scalar > 0) {
-        retval = ((double) nativePos) / scalar;
+        retval = ((double)nativePos) / scalar;
     }
     return retval;
 }
 /**
- * @param nativeVel   integral velocity of the feedback sensor in native Talon SRX units.
- *              If user has never called the config routine for the selected sensor, then the return
- *              will be in TALON SRX units as well to match the behavior in the 2015 season.
+ * @param nativeVel   integral velocity of the feedback sensor in native Talon
+ * SRX units.
+ *              If user has never called the config routine for the selected
+ * sensor, then the return
+ *              will be in TALON SRX units as well to match the behavior in the
+ * 2015 season.
  *              @see ConfigPotentiometerTurns
  *              @see ConfigEncoderCodesPerRev
- * @return double precision of sensor velocity in RPM, unless config was never performed.
+ * @return double precision of sensor velocity in RPM, unless config was never
+ * performed.
  */
 double CANTalon::ScaleNativeUnitsToRpm(FeedbackDevice devToLookup,
                                        int32_t nativeVel) const {
     /* first assume we don't have config info, prep the default return */
-    double retval = (double) nativeVel;
+    double retval = (double)nativeVel;
     /* retrieve scaling info */
     double scalar = GetNativeUnitsPerRotationScalar(devToLookup);
     /* apply scalar if its available */
     if (scalar > 0) {
-        retval = (double) (nativeVel) / (scalar * kMinutesPer100msUnit);
+        retval = (double)(nativeVel) / (scalar * kMinutesPer100msUnit);
     }
     return retval;
 }
@@ -1758,27 +1766,30 @@ double CANTalon::ScaleNativeUnitsToRpm(FeedbackDevice devToLookup,
 /**
  * Enables Talon SRX to automatically zero the Sensor Position whenever an
  * edge is detected on the index signal.
- * @param enable     boolean input, pass true to enable feature or false to disable.
- * @param risingEdge   boolean input, pass true to clear the position on rising edge,
+ * @param enable     boolean input, pass true to enable feature or false to
+ * disable.
+ * @param risingEdge   boolean input, pass true to clear the position on rising
+ * edge,
  *          pass false to clear the position on falling edge.
  */
 void CANTalon::EnableZeroSensorPositionOnIndex(bool enable, bool risingEdge) {
     if (enable) {
         /* enable the feature, update the edge polarity first to ensure
          *  it is correct before the feature is enabled. */
-        ConfigSetParameter(CanTalonSRX::eQuadIdxPolarity, risingEdge  ? 1 : 0);
+        ConfigSetParameter(CanTalonSRX::eQuadIdxPolarity, risingEdge ? 1 : 0);
         ConfigSetParameter(CanTalonSRX::eClearPositionOnIdx, 1);
-    }
-    else {
+    } else {
         /* disable the feature first, then update the edge polarity. */
         ConfigSetParameter(CanTalonSRX::eClearPositionOnIdx, 0);
-        ConfigSetParameter(CanTalonSRX::eQuadIdxPolarity, risingEdge  ? 1 : 0);
+        ConfigSetParameter(CanTalonSRX::eQuadIdxPolarity, risingEdge ? 1 : 0);
     }
 }
 
 /**
- * Calling application can opt to speed up the handshaking between the robot API and the Talon to increase the
- * download rate of the Talon's Motion Profile.  Ideally the period should be no more than half the period
+ * Calling application can opt to speed up the handshaking between the robot API
+ * and the Talon to increase the
+ * download rate of the Talon's Motion Profile.  Ideally the period should be no
+ * more than half the period
  * of a trajectory point.
  */
 void CANTalon::ChangeMotionControlFramePeriod(int periodMs) {
@@ -1786,8 +1797,10 @@ void CANTalon::ChangeMotionControlFramePeriod(int periodMs) {
 }
 
 /**
- * Clear the buffered motion profile in both Talon RAM (bottom), and in the API (top).
- * Be sure to check GetMotionProfileStatus() to know when the buffer is actually cleared.
+ * Clear the buffered motion profile in both Talon RAM (bottom), and in the API
+ * (top).
+ * Be sure to check GetMotionProfileStatus() to know when the buffer is actually
+ * cleared.
  */
 void CANTalon::ClearMotionProfileTrajectories() {
     m_impl->ClearMotionProfileTrajectories();
@@ -1796,7 +1809,8 @@ void CANTalon::ClearMotionProfileTrajectories() {
 /**
  * Retrieve just the buffer count for the api-level (top) buffer.
  * This routine performs no CAN or data structure lookups, so its fast and ideal
- * if caller needs to quickly poll the progress of trajectory points being emptied
+ * if caller needs to quickly poll the progress of trajectory points being
+ * emptied
  * into Talon's RAM. Otherwise just use GetMotionProfileStatus.
  * @return number of trajectory points in the top buffer.
  */
@@ -1805,7 +1819,8 @@ int CANTalon::GetMotionProfileTopLevelBufferCount() {
 }
 
 /**
- * Push another trajectory point into the top level buffer (which is emptied into
+ * Push another trajectory point into the top level buffer (which is emptied
+ * into
  * the Talon's bottom buffer as room allows).
  * @param trajPt the trajectory point to insert into buffer.
  * @return true  if trajectory point push ok. CTR_BufferFull if buffer is full
@@ -1813,21 +1828,19 @@ int CANTalon::GetMotionProfileTopLevelBufferCount() {
  */
 bool CANTalon::PushMotionProfileTrajectory(const TrajectoryPoint& trajPt) {
     /* convert positiona and velocity to native units */
-    int32_t targPos  = ScaleRotationsToNativeUnits(m_feedbackDevice,
-                                                   trajPt.position);
-    int32_t targVel = ScaleVelocityToNativeUnits(m_feedbackDevice,
-                                                 trajPt.velocity);
+    int32_t targPos =
+        ScaleRotationsToNativeUnits(m_feedbackDevice, trajPt.position);
+    int32_t targVel =
+        ScaleVelocityToNativeUnits(m_feedbackDevice, trajPt.velocity);
     /* bounds check signals that require it */
     uint32_t profileSlotSelect = (trajPt.profileSlotSelect) ? 1 : 0;
-    uint8_t timeDurMs = (trajPt.timeDurMs >= 255) ? 255 : trajPt.timeDurMs; /* cap time to 255ms */
+    uint8_t timeDurMs = (trajPt.timeDurMs >= 255)
+                            ? 255
+                            : trajPt.timeDurMs; /* cap time to 255ms */
     /* send it to the top level buffer */
-    CTR_Code status = m_impl->PushMotionProfileTrajectory(targPos,
-                                                          targVel,
-                                                          profileSlotSelect,
-                                                          timeDurMs,
-                                                          trajPt.velocityOnly,
-                                                          trajPt.isLastPoint,
-                                                          trajPt.zeroPos);
+    CTR_Code status = m_impl->PushMotionProfileTrajectory(
+        targPos, targVel, profileSlotSelect, timeDurMs, trajPt.velocityOnly,
+        trajPt.isLastPoint, trajPt.zeroPos);
     return (status == CTR_OKAY) ? true : false;
 }
 /**
@@ -1838,10 +1851,14 @@ bool CANTalon::IsMotionProfileTopLevelBufferFull() {
 }
 
 /**
- * This must be called periodically to funnel the trajectory points from the API's top level buffer to
- * the Talon's bottom level buffer.  Recommendation is to call this twice as fast as the executation rate of the motion profile.
- * So if MP is running with 20ms trajectory points, try calling this routine every 10ms.  All motion profile functions are thread-safe
- * through the use of a mutex, so there is no harm in having the caller utilize threading.
+ * This must be called periodically to funnel the trajectory points from the
+ * API's top level buffer to
+ * the Talon's bottom level buffer.  Recommendation is to call this twice as
+ * fast as the executation rate of the motion profile.
+ * So if MP is running with 20ms trajectory points, try calling this routine
+ * every 10ms.  All motion profile functions are thread-safe
+ * through the use of a mutex, so there is no harm in having the caller utilize
+ * threading.
  */
 void CANTalon::ProcessMotionProfileBuffer() {
     m_impl->ProcessMotionProfileBuffer();
@@ -1849,74 +1866,77 @@ void CANTalon::ProcessMotionProfileBuffer() {
 
 /**
  * Retrieve all status information.
- * Since this all comes from one CAN frame, its ideal to have one routine to retrieve the frame once and decode everything.
- * @param [out] motionProfileStatus contains all progress information on the currently running MP.
+ * Since this all comes from one CAN frame, its ideal to have one routine to
+ * retrieve the frame once and decode everything.
+ * @param [out] motionProfileStatus contains all progress information on the
+ * currently running MP.
  */
-void CANTalon::GetMotionProfileStatus(MotionProfileStatus& motionProfileStatus)
-{
+void CANTalon::GetMotionProfileStatus(
+    MotionProfileStatus& motionProfileStatus) {
     uint32_t flags;
     uint32_t profileSlotSelect;
     int32_t targPos, targVel;
     uint32_t topBufferRem, topBufferCnt, btmBufferCnt;
     uint32_t outputEnable;
     /* retrieve all motion profile signals from status frame */
-    CTR_Code status = m_impl->GetMotionProfileStatus(flags,
-                                                     profileSlotSelect,
-                                                     targPos,
-                                                     targVel,
-                                                     topBufferRem,
-                                                     topBufferCnt,
-                                                     btmBufferCnt,
-                                                     outputEnable);
+    CTR_Code status = m_impl->GetMotionProfileStatus(
+        flags, profileSlotSelect, targPos, targVel, topBufferRem, topBufferCnt,
+        btmBufferCnt, outputEnable);
     /* completely update the caller's structure */
     motionProfileStatus.topBufferRem = topBufferRem;
     motionProfileStatus.topBufferCnt = topBufferCnt;
     motionProfileStatus.btmBufferCnt = btmBufferCnt;
     motionProfileStatus.hasUnderrun =
-        (flags& CanTalonSRX::kMotionProfileFlag_HasUnderrun)     ? true : false;
-    motionProfileStatus.isUnderrun  =
-        (flags& CanTalonSRX::kMotionProfileFlag_IsUnderrun)      ? true : false;
+        (flags & CanTalonSRX::kMotionProfileFlag_HasUnderrun) ? true : false;
+    motionProfileStatus.isUnderrun =
+        (flags & CanTalonSRX::kMotionProfileFlag_IsUnderrun) ? true : false;
     motionProfileStatus.activePointValid =
-        (flags& CanTalonSRX::kMotionProfileFlag_ActTraj_IsValid) ? true : false;
+        (flags & CanTalonSRX::kMotionProfileFlag_ActTraj_IsValid) ? true
+                                                                  : false;
     motionProfileStatus.activePoint.isLastPoint =
-        (flags& CanTalonSRX::kMotionProfileFlag_ActTraj_IsLast)  ? true : false;
+        (flags & CanTalonSRX::kMotionProfileFlag_ActTraj_IsLast) ? true : false;
     motionProfileStatus.activePoint.velocityOnly =
-        (flags& CanTalonSRX::kMotionProfileFlag_ActTraj_VelOnly) ? true : false;
-    motionProfileStatus.activePoint.position = ScaleNativeUnitsToRotations(
-        m_feedbackDevice,
-        targPos);
-    motionProfileStatus.activePoint.velocity = ScaleNativeUnitsToRpm(
-        m_feedbackDevice,
-        targVel);
+        (flags & CanTalonSRX::kMotionProfileFlag_ActTraj_VelOnly) ? true
+                                                                  : false;
+    motionProfileStatus.activePoint.position =
+        ScaleNativeUnitsToRotations(m_feedbackDevice, targPos);
+    motionProfileStatus.activePoint.velocity =
+        ScaleNativeUnitsToRpm(m_feedbackDevice, targVel);
     motionProfileStatus.activePoint.profileSlotSelect = profileSlotSelect;
     switch (outputEnable) {
-    case CanTalonSRX::kMotionProf_Disabled:
-        motionProfileStatus.outputEnable = SetValueMotionProfileDisable;
-        break;
-    case CanTalonSRX::kMotionProf_Enable:
-        motionProfileStatus.outputEnable = SetValueMotionProfileEnable;
-        break;
-    case CanTalonSRX::kMotionProf_Hold:
-        motionProfileStatus.outputEnable = SetValueMotionProfileHold;
-        break;
-    default:
-        motionProfileStatus.outputEnable = SetValueMotionProfileDisable;
-        break;
+        case CanTalonSRX::kMotionProf_Disabled:
+            motionProfileStatus.outputEnable = SetValueMotionProfileDisable;
+            break;
+        case CanTalonSRX::kMotionProf_Enable:
+            motionProfileStatus.outputEnable = SetValueMotionProfileEnable;
+            break;
+        case CanTalonSRX::kMotionProf_Hold:
+            motionProfileStatus.outputEnable = SetValueMotionProfileHold;
+            break;
+        default:
+            motionProfileStatus.outputEnable = SetValueMotionProfileDisable;
+            break;
     }
-    motionProfileStatus.activePoint.zeroPos = false; /* this signal is only used sending pts to Talon */
-    motionProfileStatus.activePoint.timeDurMs = 0; /* this signal is only used sending pts to Talon */
+    motionProfileStatus.activePoint.zeroPos =
+        false; /* this signal is only used sending pts to Talon */
+    motionProfileStatus.activePoint.timeDurMs =
+        0; /* this signal is only used sending pts to Talon */
 
     if (status != CTR_OKAY) {
         wpi_setErrorWithContext(status, getHALErrorMessage(status));
     }
 }
 /**
- * Clear the hasUnderrun flag in Talon's Motion Profile Executer when MPE is ready for another point,
+ * Clear the hasUnderrun flag in Talon's Motion Profile Executer when MPE is
+ * ready for another point,
  * but the low level buffer is empty.
  *
- * Once the Motion Profile Executer sets the hasUnderrun flag, it stays set until
- * Robot Application clears it with this routine, which ensures Robot Application
- * gets a chance to instrument or react.  Caller could also check the isUnderrun flag
+ * Once the Motion Profile Executer sets the hasUnderrun flag, it stays set
+ * until
+ * Robot Application clears it with this routine, which ensures Robot
+ * Application
+ * gets a chance to instrument or react.  Caller could also check the isUnderrun
+ * flag
  * which automatically clears when fault condition is removed.
  */
 void CANTalon::ClearMotionProfileHasUnderrun() {
@@ -1927,9 +1947,7 @@ void CANTalon::ClearMotionProfileHasUnderrun() {
  * Only works in PercentVbus, speed, and Voltage modes.
  * @param isInverted The state of inversion, true is inverted.
  */
-void CANTalon::SetInverted(bool isInverted) {
-    m_isInverted = isInverted;
-}
+void CANTalon::SetInverted(bool isInverted) { m_isInverted = isInverted; }
 
 /**
  * Common interface for the inverting direction of a speed controller.
@@ -1937,9 +1955,7 @@ void CANTalon::SetInverted(bool isInverted) {
  * @return isInverted The state of inversion, true is inverted.
  *
  */
-bool CANTalon::GetInverted() const {
-    return m_isInverted;
-}
+bool CANTalon::GetInverted() const { return m_isInverted; }
 
 /**
  * Common interface for stopping the motor
@@ -1947,17 +1963,13 @@ bool CANTalon::GetInverted() const {
  *
  * @deprecated Call Disable instead.
  */
-void CANTalon::StopMotor() {
-    Disable();
-}
+void CANTalon::StopMotor() { Disable(); }
 
-void CANTalon::ValueChanged(ITable* source,
-                            llvm::StringRef key,
-                            std::shared_ptr<nt::Value> value,
-                            bool isNew) {
+void CANTalon::ValueChanged(ITable* source, llvm::StringRef key,
+                            std::shared_ptr<nt::Value> value, bool isNew) {
     if (key == "Mode" && value->IsDouble()) {
-        SetControlMode(static_cast<CANSpeedController::ControlMode>(value->
-                                                                    GetDouble()));
+        SetControlMode(
+            static_cast<CANSpeedController::ControlMode>(value->GetDouble()));
     }
     if (key == "p" && value->IsDouble()) {
         SetP(value->GetDouble());
@@ -1977,8 +1989,7 @@ void CANTalon::ValueChanged(ITable* source,
     if (key == "Enabled" && value->IsBoolean()) {
         if (value->GetBoolean()) {
             Enable();
-        }
-        else {
+        } else {
             Disable();
         }
     }
@@ -2027,6 +2038,4 @@ void CANTalon::InitTable(std::shared_ptr<ITable> subTable) {
     UpdateTable();
 }
 
-std::shared_ptr<ITable> CANTalon::GetTable() const {
-    return m_table;
-}
+std::shared_ptr<ITable> CANTalon::GetTable() const { return m_table; }

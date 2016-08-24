@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Represents a gear box with up to 3 motors and an encoder
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef GEARBOX_HPP
 #define GEARBOX_HPP
@@ -16,21 +13,18 @@
 
 class DigitalInput;
 
-/* Notes:
- * This class uses only CANTalons.
+/**
+ * Represents a gear box with up to 3 motors and an encoder
  *
- * Up to three motors can be specified per gearbox, since drive train gearboxes
- * will use up to three and other gearboxes will use less.
+ * Notes:
+ * - This class uses only CANTalons.
+ * - Up to three motors can be specified per gearbox, since drive train
+ *   gearboxes will use up to three and other gearboxes will use less.
  */
-
 class GearBox : public PIDOutput, public PIDSource {
 public:
-    GearBox(int shifterChan,
-            int forwardLimitPin,
-            int reverseLimitPin,
-            int motor1,
-            int motor2 = -1,
-            int motor3 = -1);
+    GearBox(int shifterChan, int forwardLimitPin, int reverseLimitPin,
+            int motor1, int motor2 = -1, int motor3 = -1);
 
     // Disables PID controller and sets the motor speeds manually
     void Set(double value);
@@ -108,4 +102,4 @@ private:
     std::vector<std::unique_ptr<CANTalon>> m_motors;
 };
 
-#endif // GEARBOX_HPP
+#endif  // GEARBOX_HPP

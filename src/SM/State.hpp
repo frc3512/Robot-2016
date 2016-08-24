@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Defines State in StateMachine class
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef STATE_HPP
 #define STATE_HPP
@@ -11,6 +8,9 @@
 
 #include "../Events/EventAcceptor.hpp"
 
+/**
+ * Defines State in StateMachine class
+ */
 class State : public EventAcceptor {
 public:
     explicit State(std::string name);
@@ -31,7 +31,7 @@ public:
      * is returned, so it won't be passed up the state machine hierarchy.
      */
     std::function<std::string(const std::string&)> CheckTransition =
-        [] (const std::string& event) { return ""; };
+        [](const std::string& event) { return ""; };
 
     // Run() is run while the state machine is in that state.
     std::function<void()> Run = [] {};
@@ -47,9 +47,9 @@ private:
      * StateMachine overrides this to do extra handling and recursion (see
      * StateMachine.hpp for details).
      */
-    virtual std::string HandleEvent(std::string& event) override;
+    std::string HandleEvent(std::string& event) override;
 
     friend class StateMachine;
 };
 
-#endif // STATE_HPP
+#endif  // STATE_HPP

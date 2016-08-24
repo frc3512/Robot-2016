@@ -1,10 +1,10 @@
-// =============================================================================
-// Description: Does nothing
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "../Robot.hpp"
 
+using namespace std::chrono_literals;
+
+// Does nothing
 void Robot::AutoNoop() {
     while (IsAutonomous() && IsEnabled()) {
         DS_PrintOut();

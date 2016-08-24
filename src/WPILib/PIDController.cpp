@@ -1,10 +1,9 @@
-/*----------------------------------------------------------------------------
- * Copyright (c) FIRST 2008-2016. All Rights Reserved.
- * Open Source Software - may be modified and shared by FRC teams. The code
- * must be accompanied by the FIRST BSD license file in the root directory of
- * the project.
- *----------------------------------------------------------------------------
- */
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008-2016. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 #include "PIDController.hpp"
 
@@ -35,12 +34,8 @@ static const std::string kEnabled = "enabled";
  * calculations of the
  * integral and differental terms. The default is 50ms.
  */
-PIDController::PIDController(float Kp,
-                             float Ki,
-                             float Kd,
-                             PIDSource* source,
-                             PIDOutput* output,
-                             float period) {
+PIDController::PIDController(float Kp, float Ki, float Kd, PIDSource* source,
+                             PIDOutput* output, float period) {
     Initialize(Kp, Ki, Kd, 0.0f, 0.0f, source, output, period);
 }
 
@@ -55,24 +50,14 @@ PIDController::PIDController(float Kp,
  * calculations of the
  * integral and differental terms. The default is 50ms.
  */
-PIDController::PIDController(float Kp,
-                             float Ki,
-                             float Kd,
-                             float Kv,
-                             float Ka,
-                             PIDSource* source,
-                             PIDOutput* output,
+PIDController::PIDController(float Kp, float Ki, float Kd, float Kv, float Ka,
+                             PIDSource* source, PIDOutput* output,
                              float period) {
     Initialize(Kp, Ki, Kd, Kv, Ka, source, output, period);
 }
 
-void PIDController::Initialize(float Kp,
-                               float Ki,
-                               float Kd,
-                               float Kv,
-                               float Ka,
-                               PIDSource* source,
-                               PIDOutput* output,
+void PIDController::Initialize(float Kp, float Ki, float Kd, float Kv, float Ka,
+                               PIDSource* source, PIDOutput* output,
                                float period) {
     m_controlLoop = std::make_unique<Notifier>(&PIDController::Calculate, this);
 
@@ -130,16 +115,14 @@ void PIDController::Calculate() {
 
         if (m_pidInput->GetPIDSourceType() == PIDSourceType::kRate) {
             m_error = m_setpoint.velocity - input;
-        }
-        else {
+        } else {
             m_error = m_setpoint.displacement - input;
         }
         if (m_continuous) {
             if (fabs(m_error) > (m_maximumInput - m_minimumInput) / 2) {
                 if (m_error > 0) {
                     m_error = m_error - m_maximumInput + m_minimumInput;
-                }
-                else {
+                } else {
                     m_error = m_error + m_maximumInput - m_minimumInput;
                 }
             }
@@ -152,40 +135,33 @@ void PIDController::Calculate() {
                     if (potentialPGain > m_minimumOutput) {
                         if (m_error < 10.0) {
                             m_totalError += m_error;
-                        }
-                        else {
+                        } else {
                             m_totalError = 0.0;
                         }
-                    }
-                    else {
+                    } else {
                         m_totalError = m_minimumOutput / m_P;
                     }
-                }
-                else {
+                } else {
                     m_totalError = m_maximumOutput / m_P;
                 }
             }
 
-            m_result = m_D * m_error + m_P * m_totalError +
-                       CalculateFeedForward();
-        }
-        else {
+            m_result =
+                m_D * m_error + m_P * m_totalError + CalculateFeedForward();
+        } else {
             if (m_I != 0) {
                 double potentialIGain = (m_totalError + m_error) * m_I;
                 if (potentialIGain < m_maximumOutput) {
                     if (potentialIGain > m_minimumOutput) {
                         if (m_error < 10.0) {
                             m_totalError += m_error;
-                        }
-                        else {
+                        } else {
                             m_totalError = 0.0;
                         }
-                    }
-                    else {
+                    } else {
                         m_totalError = m_minimumOutput / m_I;
                     }
-                }
-                else {
+                } else {
                     m_totalError = m_maximumOutput / m_I;
                 }
             }
@@ -197,8 +173,7 @@ void PIDController::Calculate() {
 
         if (m_result > m_maximumOutput) {
             m_result = m_maximumOutput;
-        }
-        else if (m_result < m_minimumOutput) {
+        } else if (m_result < m_minimumOutput) {
             m_result = m_minimumOutput;
         }
 
@@ -389,17 +364,14 @@ void PIDController::SetSetpoint(PIDState setpoint) {
                 m_setpoint.displacement = m_maximumInput;
                 m_setpoint.velocity = setpoint.velocity;
                 m_setpoint.acceleration = setpoint.acceleration;
-            }
-            else if (setpoint.displacement < m_minimumInput) {
+            } else if (setpoint.displacement < m_minimumInput) {
                 m_setpoint.displacement = m_minimumInput;
                 m_setpoint.velocity = setpoint.velocity;
                 m_setpoint.acceleration = setpoint.acceleration;
-            }
-            else {
+            } else {
                 m_setpoint = setpoint;
             }
-        }
-        else {
+        } else {
             m_setpoint = setpoint;
         }
     }
@@ -498,16 +470,16 @@ bool PIDController::OnTarget() const {
     std::lock_guard<priority_recursive_mutex> sync(m_mutex);
     double error = GetError();
     switch (m_toleranceType) {
-    case kPercentTolerance:
-        return fabs(error) <
-               m_tolerance / 100 * (m_maximumInput - m_minimumInput);
-        break;
-    case kAbsoluteTolerance:
-        return fabs(error) < m_tolerance;
-        break;
-    case kNoTolerance:
-        // TODO: this case needs an error
-        return false;
+        case kPercentTolerance:
+            return fabs(error) <
+                   m_tolerance / 100 * (m_maximumInput - m_minimumInput);
+            break;
+        case kAbsoluteTolerance:
+            return fabs(error) < m_tolerance;
+            break;
+        case kNoTolerance:
+            // TODO: this case needs an error
+            return false;
     }
     return false;
 }
@@ -582,14 +554,10 @@ void PIDController::InitTable(std::shared_ptr<ITable> table) {
     }
 }
 
-std::shared_ptr<ITable> PIDController::GetTable() const {
-    return m_table;
-}
+std::shared_ptr<ITable> PIDController::GetTable() const { return m_table; }
 
-void PIDController::ValueChanged(ITable* source,
-                                 llvm::StringRef key,
-                                 std::shared_ptr<nt::Value> value,
-                                 bool isNew) {
+void PIDController::ValueChanged(ITable* source, llvm::StringRef key,
+                                 std::shared_ptr<nt::Value> value, bool isNew) {
     if (key == kP || key == kI || key == kD || key == kV || key == kA) {
         if (m_P != m_table->GetNumber(kP, 0.0) ||
             m_I != m_table->GetNumber(kI, 0.0) ||
@@ -600,28 +568,21 @@ void PIDController::ValueChanged(ITable* source,
                    m_table->GetNumber(kD, 0.0), m_table->GetNumber(kV, 0.0),
                    m_table->GetNumber(kA, 0.0));
         }
-    }
-    else if (key == kSetpoint && value->IsDouble() &&
-             m_setpoint.displacement != value->GetDouble()) {
+    } else if (key == kSetpoint && value->IsDouble() &&
+               m_setpoint.displacement != value->GetDouble()) {
         SetSetpoint({value->GetDouble(), 0.0, 0.0});
-    }
-    else if (key == kEnabled && value->IsBoolean() &&
-             m_enabled != value->GetBoolean()) {
+    } else if (key == kEnabled && value->IsBoolean() &&
+               m_enabled != value->GetBoolean()) {
         if (value->GetBoolean()) {
             Enable();
-        }
-        else {
+        } else {
             Disable();
         }
     }
 }
 
-void PIDController::UpdateTable() {
-}
+void PIDController::UpdateTable() {}
 
-void PIDController::StartLiveWindowMode() {
-    Disable();
-}
+void PIDController::StartLiveWindowMode() { Disable(); }
 
-void PIDController::StopLiveWindowMode() {
-}
+void PIDController::StopLiveWindowMode() {}

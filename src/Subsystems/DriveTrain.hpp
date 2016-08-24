@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides an interface for this year's drive train
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef DRIVE_TRAIN_HPP
 #define DRIVE_TRAIN_HPP
@@ -20,6 +17,9 @@
 class GearBox;
 class PIDController;
 
+/**
+ * Provides an interface for this year's drive train
+ */
 class DriveTrain : public SubsystemBase {
 public:
     DriveTrain();
@@ -74,7 +74,6 @@ private:
     float m_deadband = k_joystickDeadband;
     float m_sensitivity;
 
-
     // Cheesy Drive variables
     float m_oldTurn = 0.f;
     float m_quickStopAccumulator = 0.f;
@@ -84,8 +83,9 @@ private:
     GearBox m_rightGrbx{-1, -1, -1, k_rightDriveMasterID, k_rightDriveSlaveID};
 
     Differential m_diff{&m_leftGrbx, &m_rightGrbx};
-    PIDController m_diffPID{ k_diffDriveP, k_diffDriveI, k_diffDriveD,
-                             k_diffDriveV, k_diffDriveA, &m_diff, &m_diff};
+    PIDController m_diffPID{k_diffDriveP, k_diffDriveI, k_diffDriveD,
+                            k_diffDriveV, k_diffDriveA, &m_diff,
+                            &m_diff};
 };
 
-#endif // DRIVE_TRAIN_HPP
+#endif  // DRIVE_TRAIN_HPP

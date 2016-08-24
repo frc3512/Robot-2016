@@ -1,11 +1,11 @@
-// =============================================================================
-// Description: Drives forward
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#include "../Robot.hpp"
 #include "../DigitalInputHandler.hpp"
+#include "../Robot.hpp"
 
+using namespace std::chrono_literals;
+
+// Drives forward
 void Robot::AutoDriveForward() {
     Timer timer;
     timer.Start();
@@ -16,8 +16,7 @@ void Robot::AutoDriveForward() {
         if (timer.Get() < 1.0 &&
             DigitalInputHandler::Get(k_leftArmBottomLimitChannel)->Get()) {
             arm.SetArmHeight(1.0);
-        }
-        else {
+        } else {
             arm.SetArmHeight(0.0);
         }
         std::this_thread::sleep_for(10ms);

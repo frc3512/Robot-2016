@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides an easier way to create state machines
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "StateMachine.hpp"
 
@@ -51,8 +48,7 @@ std::string StateMachine::HandleEvent(std::string& event) {
         }
 
         return ret;
-    }
-    else {
+    } else {
         if (m_debugEnabled) {
             std::cout << " consumed -> transition from "
                       << m_currentState->Name() << " to " << newState
@@ -83,6 +79,4 @@ bool StateMachine::SetState(const std::string& newState) {
     return false;
 }
 
-void StateMachine::EnableDebug(bool enable) {
-    m_debugEnabled = enable;
-}
+void StateMachine::EnableDebug(bool enable) { m_debugEnabled = enable; }

@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Pass event to a handler if a digital input changed state
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "DigitalInputEventGenerator.hpp"
 
@@ -10,9 +7,8 @@ void DigitalInputEventGenerator::RegisterInputEvent(std::string eventName,
                                                     bool onRisingEdge,
                                                     bool onFallingEdge,
                                                     EventAcceptor& acceptor) {
-    m_events.push_back({std::move(eventName),
-                        DigitalInputHandler::Get(channel), onRisingEdge,
-                        onFallingEdge});
+    m_events.push_back({std::move(eventName), DigitalInputHandler::Get(channel),
+                        onRisingEdge, onFallingEdge});
     m_oldStates.emplace_back(false);
     m_newStates.emplace_back(false);
 }

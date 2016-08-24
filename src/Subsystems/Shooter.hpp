@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides an interface for the robot's shooter
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef SHOOTER_HPP
 #define SHOOTER_HPP
@@ -10,8 +7,8 @@
 #include <Relay.h>
 
 #include "../Constants.hpp"
-#include "../Events/JoystickEventGenerator.hpp"
 #include "../Events/DigitalInputEventGenerator.hpp"
+#include "../Events/JoystickEventGenerator.hpp"
 #include "../Events/TimerEventGenerator.hpp"
 #include "../LeverPIDController.hpp"
 #include "../MotionProfile/TrapezoidProfile.hpp"
@@ -19,6 +16,9 @@
 #include "GearBox.hpp"
 #include "SubsystemBase.hpp"
 
+/**
+ * Provides an interface for the robot's shooter
+ */
 class Shooter : public SubsystemBase {
 public:
     Shooter();
@@ -58,12 +58,10 @@ private:
     TimerEventGenerator m_timerEvent{"ShootTimer", 1.0};
 
     std::shared_ptr<GearBox> m_leftShootGrbx;
-    LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}
-    };
+    LinearDigitalFilter m_leftShootFilter{nullptr, {}, {}};
 
     std::shared_ptr<GearBox> m_rightShootGrbx;
-    LinearDigitalFilter m_rightShootFilter{nullptr, {}, {}
-    };
+    LinearDigitalFilter m_rightShootFilter{nullptr, {}, {}};
 
     GearBox m_shooterHeightGrbx{-1, -1, -1, k_shooterHeightID};
     std::shared_ptr<LeverPIDController> m_shooterHeightPID;
@@ -77,4 +75,4 @@ private:
     friend class Robot;
 };
 
-#endif // ELEVATOR_HPP
+#endif  // ELEVATOR_HPP

@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides generic utility functions
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "Utility.hpp"
 
@@ -11,12 +8,10 @@ float ApplyDeadband(float value, float deadband) {
     if (std::fabs(value) > deadband) {
         if (value > 0) {
             return (value - deadband) / (1 - deadband);
-        }
-        else {
+        } else {
             return (value + deadband) / (1 - deadband);
         }
-    }
-    else {
+    } else {
         return 0.f;
     }
 }

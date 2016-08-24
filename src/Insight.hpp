@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Receives Insight's processed target data
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef INSIGHT_HPP
 #define INSIGHT_HPP
@@ -14,13 +11,16 @@
 #include "SFML/Network/IpAddress.hpp"
 #include "SFML/Network/UdpSocket.hpp"
 
+/**
+ * Receives Insight's processed target data
+ */
 class Insight {
 public:
     Insight(const Insight&) = delete;
     Insight& operator=(const Insight&) = delete;
     virtual ~Insight();
 
-    static Insight& GetInstance(unsigned short dsPort);
+    static Insight& GetInstance(uint16_t dsPort);
 
     // Receives control commands from Driver Station and processes them
     std::string ReceiveFromDS();
@@ -33,17 +33,17 @@ public:
     size_t GetNumTargets() const;
 
 private:
-    Insight(unsigned short portNumber);
+    Insight(uint16_t portNumber);
 
     sf::UdpSocket m_socket;
-    sf::IpAddress m_recvIP; // stores IP address temporarily during receive
-    unsigned short m_recvPort; // stores port temporarily during receive
+    sf::IpAddress m_recvIP;  // stores IP address temporarily during receive
+    uint16_t m_recvPort;     // stores port temporarily during receive
 
-    char m_recvBuffer[256]; // buffer for Insight packets
-    size_t m_recvAmount; // holds number of bytes received from Driver Station
+    char m_recvBuffer[256];  // buffer for Insight packets
+    size_t m_recvAmount;  // holds number of bytes received from Driver Station
 
     std::vector<std::pair<char, char>> m_targets;
     bool m_hasNewData;
 };
 
-#endif // INSIGHT_HPP
+#endif  // INSIGHT_HPP

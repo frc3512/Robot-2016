@@ -1,23 +1,23 @@
-// =============================================================================
-// Description: Implements the main robot class
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
 #include <CameraServer.h>
-#include <SampleRobot.h>
 #include <Joystick.h>
+#include <SampleRobot.h>
 
 #include "ButtonTracker.hpp"
 #include "Constants.hpp"
 #include "DSDisplay.hpp"
 #include "LiveGrapher/GraphHost.hpp"
-#include "Subsystems/Shooter.hpp"
-#include "Subsystems/DriveTrain.hpp"
 #include "Subsystems/Arm.hpp"
+#include "Subsystems/DriveTrain.hpp"
+#include "Subsystems/Shooter.hpp"
 
+/**
+ * Implements the main robot class
+ */
 class Robot : public SampleRobot {
 public:
     Robot();
@@ -60,4 +60,4 @@ private:
     // CameraServer* camera = CameraServer::GetInstance();
 };
 
-#endif // ROBOT_HPP
+#endif  // ROBOT_HPP

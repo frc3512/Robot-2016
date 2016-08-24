@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Stores Autonomous modes as function pointers for easy retrieval
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef AUTON_CONTAINER_HPP
 #define AUTON_CONTAINER_HPP
@@ -17,11 +14,13 @@ struct AutonMethod {
     AutonMethod(const std::string& methodName, std::function<void()> func);
 };
 
+/**
+ * Stores Autonomous modes as function pointers for easy retrieval
+ */
 class AutonContainer {
 public:
     // Add and remove autonomous functions
-    void AddMethod(const std::string& methodName,
-                   std::function<void()> func);
+    void AddMethod(const std::string& methodName, std::function<void()> func);
     void DeleteAllMethods();
 
     // Returns number of routines currently held
@@ -38,4 +37,4 @@ private:
     std::vector<AutonMethod> m_functionList;
 };
 
-#endif // AUTON_CONTAINER_HPP
+#endif  // AUTON_CONTAINER_HPP

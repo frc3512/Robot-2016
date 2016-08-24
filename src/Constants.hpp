@@ -1,11 +1,9 @@
-// =============================================================================
-// Description: Includes definition for Talons and etc that connect to the
-//              RoboRIO
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
+
+// Includes definition for Talons and etc that connect to the RoboRIO
 
 /* Used to flip directions of some motors on the practice robot with respect to
  * the competition one
@@ -51,10 +49,10 @@ constexpr int k_rightDriveMasterID = 4;
 constexpr int k_rightDriveSlaveID = 6;
 
 // DriveTrain distance per pulse
-constexpr double k_driveDpP = 36.0 / 575.0; // in/pulse
+constexpr double k_driveDpP = 36.0 / 575.0;  // in/pulse
 
 // Differential DriveTrain PID
-constexpr double k_diffDriveMaxSpeed = 15.600; // in/sec
+constexpr double k_diffDriveMaxSpeed = 15.600;  // in/sec
 constexpr double k_diffDriveP = 0.015;
 constexpr double k_diffDriveI = 0.007;
 constexpr double k_diffDriveD = 0.0;
@@ -76,9 +74,9 @@ constexpr double k_inertiaLowTurn = 3.0;
 constexpr int k_leftArmLiftID = 7;
 
 // Arm carriage and winch ID's
-constexpr int k_carriageID = 20; // Remove
+constexpr int k_carriageID = 20;  // Remove
 constexpr int k_winchID = 9;
-constexpr int k_armIntakeID = 11; // TODO: CHANGE
+constexpr int k_armIntakeID = 11;  // TODO: CHANGE
 
 // Arm limit switch channels
 constexpr int k_leftArmBottomLimitChannel = 0;
@@ -89,7 +87,7 @@ constexpr int k_carriageLeftLimitChannel = 8;
 constexpr int k_carriageRightLimitChannel = 7;
 
 // Arm distance per pulse
-constexpr double k_armDpP = 30.0 / 133.0; // degrees/pulse
+constexpr double k_armDpP = 30.0 / 133.0;  // degrees/pulse
 
 // Arm height constants
 constexpr int k_armHeight1 = 1;
@@ -107,7 +105,7 @@ constexpr int k_armMax = 80;
 constexpr int k_leftShooterID = 5;
 constexpr int k_rightShooterID = 3;
 constexpr int k_shooterHeightID = 2;
-constexpr int k_rollBallID = 1; // TODO: was 11
+constexpr int k_rollBallID = 1;  // TODO: was 11
 
 // Shooter limit switch channels
 constexpr int k_shooterIntakeLimitChannel = 2;
@@ -121,11 +119,11 @@ constexpr int k_shooterBottomLimitChannel = 1;
  * Shooter has 1:1 gear ratio, so no conversion between driving and driven RPMs
  * needed
  */
-constexpr double k_shooterDpP = 60.0 / 360.0; // RPM/(pulse/sec)
+constexpr double k_shooterDpP = 60.0 / 360.0;  // RPM/(pulse/sec)
 
 // Shooter speed
-constexpr double k_shooterWheelMaxSpeed = 800.0; // RPM
-constexpr double k_shooterHeightMaxSpeed = 24.0 / 0.2; // Degrees per second
+constexpr double k_shooterWheelMaxSpeed = 800.0;        // RPM
+constexpr double k_shooterHeightMaxSpeed = 24.0 / 0.2;  // Degrees per second
 
 // Left shooter wheel PID
 constexpr double k_leftShooterP = 0.001;
@@ -152,7 +150,7 @@ constexpr double k_heightShooterF = 0.155;
 constexpr double k_shooterTimeMaxV = 3.0;
 
 constexpr double k_shooterHeightDpP = 360;
-constexpr double k_shooterHeightMax = 65.0; // Degrees
-constexpr double k_shooterHeightMin = 0.0; // Degrees
+constexpr double k_shooterHeightMax = 65.0;  // Degrees
+constexpr double k_shooterHeightMin = 0.0;   // Degrees
 
-#endif // CONSTANTS_HPP
+#endif  // CONSTANTS_HPP

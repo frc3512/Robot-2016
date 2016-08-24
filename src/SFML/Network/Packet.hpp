@@ -32,7 +32,8 @@
 #ifndef SFML_PACKET_HPP
 #define SFML_PACKET_HPP
 
-#include <cstdint>
+#include <stdint.h>
+
 #include <string>
 #include <vector>
 

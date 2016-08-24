@@ -1,10 +1,7 @@
-// =============================================================================
-// Description: Base class for all types of motion profile controllers
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#include <cmath>
 #include <chrono>
+#include <cmath>
 #include <thread>
 
 #include "../WPILib/PIDController.hpp"
@@ -17,9 +14,7 @@ ProfileBase::ProfileBase(std::shared_ptr<PIDController> pid) {
     m_timer.Start();
 }
 
-ProfileBase::~ProfileBase() {
-    Stop();
-}
+ProfileBase::~ProfileBase() { Stop(); }
 
 bool ProfileBase::AtGoal() const {
     if (m_interrupt || m_lastTime >= m_timeTotal) {
@@ -32,19 +27,14 @@ bool ProfileBase::AtGoal() const {
     if (m_pid->GetPIDSourceType() == PIDSourceType::kRate) {
         return std::fabs(m_goal.velocity - m_sp.velocity) < 0.001 &&
                std::fabs(m_goal.acceleration - m_sp.acceleration) < 0.001;
-    }
-    else {
+    } else {
         return m_goal == m_sp;
     }
 }
 
-PIDState ProfileBase::GetGoal() const {
-    return m_goal;
-}
+PIDState ProfileBase::GetGoal() const { return m_goal; }
 
-PIDState ProfileBase::GetSetpoint() const {
-    return m_sp;
-}
+PIDState ProfileBase::GetSetpoint() const { return m_sp; }
 
 void ProfileBase::Stop() {
     if (!m_interrupt && m_task.joinable()) {

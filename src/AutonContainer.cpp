@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Stores Autonomous modes as function pointers for easy retrieval
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "AutonContainer.hpp"
 
@@ -16,13 +13,9 @@ void AutonContainer::AddMethod(const std::string& methodName,
     m_functionList.emplace_back(methodName, func);
 }
 
-void AutonContainer::DeleteAllMethods() {
-    m_functionList.clear();
-}
+void AutonContainer::DeleteAllMethods() { m_functionList.clear(); }
 
-size_t AutonContainer::Size() const {
-    return m_functionList.size();
-}
+size_t AutonContainer::Size() const { return m_functionList.size(); }
 
 const std::string& AutonContainer::Name(size_t pos) {
     return m_functionList[pos].name;

@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Pass event to a handler if a timer expired
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef TIMER_EVENT_GENERATOR_HPP
 #define TIMER_EVENT_GENERATOR_HPP
@@ -12,6 +9,9 @@
 
 #include "EventGenerator.hpp"
 
+/**
+ * Pass event to a handler if a timer expired
+ */
 class TimerEventGenerator : public EventGenerator {
 public:
     TimerEventGenerator(std::string eventName, double period,
@@ -30,4 +30,4 @@ private:
     Timer m_timer;
 };
 
-#endif // TIMER_EVENT_GENERATOR_HPP
+#endif  // TIMER_EVENT_GENERATOR_HPP

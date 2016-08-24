@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Used to control two gear boxes as a differential
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #include "Differential.hpp"
 
@@ -31,17 +28,15 @@ void Differential::PIDWrite(float output) {
 
     m_leftGrbx->PIDWrite(m_forwardValue - m_turnValue);
     m_rightGrbx->PIDWrite(m_forwardValue + m_turnValue);
-    std::cout << "LeftGrbx: " << m_forwardValue - m_turnValue <<
-        " RightGrbx: " << m_forwardValue + m_turnValue << " PIDGet: " <<
-        PIDGet() <<
-        std::endl;
+    std::cout << "LeftGrbx: " << m_forwardValue - m_turnValue
+              << " RightGrbx: " << m_forwardValue + m_turnValue
+              << " PIDGet: " << PIDGet() << std::endl;
 }
 
 double Differential::PIDGet() {
     if (GetPIDSourceType() == PIDSourceType::kRate) {
         return m_rightGrbx->GetSpeed() - m_leftGrbx->GetSpeed();
-    }
-    else {
+    } else {
         return m_rightGrbx->GetPosition() - m_leftGrbx->GetPosition();
     }
 }

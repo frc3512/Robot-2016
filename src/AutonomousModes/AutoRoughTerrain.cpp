@@ -1,11 +1,11 @@
-// =============================================================================
-// Description: Rough terrain autonomous
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#include "../Robot.hpp"
 #include "../DigitalInputHandler.hpp"
+#include "../Robot.hpp"
 
+using namespace std::chrono_literals;
+
+// Rough terrain autonomous
 void Robot::AutoRoughTerrain() {
     Timer timer;
     timer.Start();

@@ -1,7 +1,4 @@
-// =============================================================================
-// Description: Provides trapezoidal velocity control
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 /* Implementation of trapezoid motion profile translated to C++; base Java code
  * courtesy of FRC Team 254
@@ -22,6 +19,9 @@
 
 class PIDController;
 
+/**
+ * Provides trapezoidal velocity control
+ */
 class TrapezoidProfile : public ProfileBase {
 public:
     TrapezoidProfile(std::shared_ptr<PIDController> pid, double maxV,
@@ -49,4 +49,4 @@ protected:
     virtual PIDState UpdateSetpoint(double curTime);
 };
 
-#endif // TRAPEZOID_PROFILE_HPP
+#endif  // TRAPEZOID_PROFILE_HPP

@@ -1,19 +1,16 @@
-// =============================================================================
-// Description: Helps user determine if joystick button was just pressed, just
-//              released, or held
-// Author: FRC Team 3512, Spartatroniks
-// =============================================================================
+// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
 #ifndef BUTTON_TRACKER_HPP
 #define BUTTON_TRACKER_HPP
 
-#include <cstdint>
+#include <stdint.h>
 
 /* This class allows you to check if a button was pressed or released without
  * having to wait in one spot of code until that happens.
  *
  * It is useful for situations in which you need to toggle a variable and just
- * checking for it with Joystick::GetRawButton(uint32_t) would cause it to toggle
+ * checking for it with Joystick::GetRawButton(uint32_t) would cause it to
+ * toggle
  * in every iteration of a loop.
  *
  * USAGE
@@ -45,10 +42,10 @@ protected:
     uint32_t m_port;
 
 private:
-    static bool GetButtonState(short buttonStates, uint32_t button);
+    static bool GetButtonState(uint16_t buttonStates, uint32_t button);
 
-    short m_oldStates = 0;
-    short m_newStates = 0;
+    uint16_t m_oldStates = 0;
+    uint16_t m_newStates = 0;
 };
 
-#endif // BUTTON_TRACKER_HPP
+#endif  // BUTTON_TRACKER_HPP
