@@ -44,13 +44,13 @@ struct PIDState {
         return result;
     }
 
-    bool operator==(const PIDState& rhs) {
+    bool operator==(const PIDState& rhs) const {
         return std::fabs(displacement - rhs.displacement) < 0.001 &&
                std::fabs(velocity - rhs.velocity) < 0.001 &&
                std::fabs(acceleration - rhs.acceleration) < 0.001;
     }
 
-    bool operator!=(const PIDState& rhs) {
+    bool operator!=(const PIDState& rhs) const {
         return !(*this == rhs);
     }
 
