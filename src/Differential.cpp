@@ -5,6 +5,8 @@
 
 #include "Differential.hpp"
 
+#include <iostream>
+
 Differential::Differential(GearBox* leftGrbx, GearBox* rightGrbx) {
     m_leftGrbx = leftGrbx;
     m_rightGrbx = rightGrbx;

@@ -4,6 +4,9 @@
 // =============================================================================
 
 #include "GearBox.hpp"
+
+#include <iostream>
+
 #include "../DigitalInputHandler.hpp"
 
 GearBox::GearBox(int shifterChan,

@@ -22,7 +22,7 @@ public:
     virtual ~ProfileBase();
 
     virtual void SetGoal(PIDState goal, PIDState curSource) = 0;
-    virtual bool AtGoal();
+    virtual bool AtGoal() const;
 
     PIDState GetGoal() const;
     PIDState GetSetpoint() const;

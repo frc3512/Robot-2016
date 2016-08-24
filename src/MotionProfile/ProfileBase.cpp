@@ -21,7 +21,7 @@ ProfileBase::~ProfileBase() {
     Stop();
 }
 
-bool ProfileBase::AtGoal() {
+bool ProfileBase::AtGoal() const {
     if (m_interrupt || m_lastTime >= m_timeTotal) {
         return true;
     }
