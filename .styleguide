@@ -5,6 +5,7 @@ cExtensions {
 
 cppHeaderExtensions {
   hpp
+  inl
 }
 
 cppSrcExtensions {
