@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#pragma once
 
 // Includes definition for Talons and etc that connect to the RoboRIO
 
@@ -152,5 +151,3 @@ constexpr double k_shooterTimeMaxV = 3.0;
 constexpr double k_shooterHeightDpP = 360;
 constexpr double k_shooterHeightMax = 65.0;  // Degrees
 constexpr double k_shooterHeightMin = 0.0;   // Degrees
-
-#endif  // CONSTANTS_HPP

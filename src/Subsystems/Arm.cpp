@@ -3,6 +3,8 @@
 #include "Arm.hpp"
 
 #include <iostream>
+#include <string>
+#include <utility>
 
 #include "../WPILib/PIDController.hpp"
 

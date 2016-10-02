@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef INSIGHT_HPP
-#define INSIGHT_HPP
+#pragma once
 
 #include <cstddef>
 #include <string>
@@ -33,7 +32,7 @@ public:
     size_t GetNumTargets() const;
 
 private:
-    Insight(uint16_t portNumber);
+    explicit Insight(uint16_t portNumber);
 
     sf::UdpSocket m_socket;
     sf::IpAddress m_recvIP;  // stores IP address temporarily during receive
@@ -45,5 +44,3 @@ private:
     std::vector<std::pair<char, char>> m_targets;
     bool m_hasNewData;
 };
-
-#endif  // INSIGHT_HPP

@@ -1,5 +1,7 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
+#pragma once
+
 #include "WPILib/PIDController.hpp"
 
 /**

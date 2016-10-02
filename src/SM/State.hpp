@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef STATE_HPP
-#define STATE_HPP
+#pragma once
 
 #include <functional>
 #include <string>
@@ -51,5 +50,3 @@ private:
 
     friend class StateMachine;
 };
-
-#endif  // STATE_HPP

@@ -1,7 +1,8 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef SHOOTER_HPP
-#define SHOOTER_HPP
+#pragma once
+
+#include <memory>
 
 #include <Filters/LinearDigitalFilter.h>
 #include <Relay.h>
@@ -74,5 +75,3 @@ private:
 
     friend class Robot;
 };
-
-#endif  // ELEVATOR_HPP

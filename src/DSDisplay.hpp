@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef DS_DISPLAY_HPP
-#define DS_DISPLAY_HPP
+#pragma once
 
 #include <stdint.h>
 
@@ -92,7 +91,7 @@ public:
     void AddData(std::string ID, double data);
 
 private:
-    DSDisplay(uint16_t portNumber);
+    explicit DSDisplay(uint16_t portNumber);
 
     DSDisplay(const DSDisplay&) = delete;
     DSDisplay& operator=(const DSDisplay&) = delete;
@@ -120,5 +119,3 @@ private:
 };
 
 #include "DSDisplay.inl"
-
-#endif  // DS_DISPLAY_HPP

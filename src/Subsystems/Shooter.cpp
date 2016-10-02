@@ -2,6 +2,9 @@
 
 #include "Shooter.hpp"
 
+#include <string>
+#include <utility>
+
 Shooter::Shooter() {
     m_leftShootGrbx = std::make_shared<GearBox>(-1, -1, -1, k_leftShooterID);
     m_rightShootGrbx = std::make_shared<GearBox>(-1, -1, -1, k_rightShooterID);

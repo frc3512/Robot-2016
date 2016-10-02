@@ -1,11 +1,12 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
+#include "ProfileBase.hpp"
+
 #include <chrono>
 #include <cmath>
 #include <thread>
 
 #include "../WPILib/PIDController.hpp"
-#include "ProfileBase.hpp"
 
 using namespace std::chrono_literals;
 

@@ -1,10 +1,10 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef DIGITAL_INPUT_EVENT_GENERATOR_HPP
-#define DIGITAL_INPUT_EVENT_GENERATOR_HPP
+#pragma once
 
 #include <stdint.h>
 
+#include <string>
 #include <vector>
 
 #include "../DigitalInputHandler.hpp"
@@ -55,5 +55,3 @@ private:
     std::vector<bool> m_oldStates;
     std::vector<bool> m_newStates;
 };
-
-#endif  // DIGITAL_INPUT_EVENT_GENERATOR_HPP

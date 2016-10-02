@@ -10,8 +10,7 @@
  * acceleration.
  */
 
-#ifndef BEZIER_TRAPEZOID_PROFILE_HPP
-#define BEZIER_TRAPEZOID_PROFILE_HPP
+#pragma once
 
 #include <memory>
 
@@ -67,5 +66,3 @@ private:
     double GetLeftVelocity(double t, double v) const;
     double GetRightVelocity(double t, double v) const;
 };
-
-#endif  // BEZIER_TRAPEZOID_PROFILE_HPP

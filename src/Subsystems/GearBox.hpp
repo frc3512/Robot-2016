@@ -1,9 +1,10 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef GEARBOX_HPP
-#define GEARBOX_HPP
+#pragma once
 
 #include <limits>
+#include <memory>
+#include <vector>
 
 #include <PIDOutput.h>
 #include <PIDSource.h>
@@ -101,5 +102,3 @@ private:
 
     std::vector<std::unique_ptr<CANTalon>> m_motors;
 };
-
-#endif  // GEARBOX_HPP

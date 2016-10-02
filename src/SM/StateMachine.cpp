@@ -3,6 +3,8 @@
 #include "StateMachine.hpp"
 
 #include <iostream>
+#include <string>
+#include <utility>
 
 StateMachine::StateMachine(std::string name) : State(std::move(name)) {
     Run = [this] { m_currentState->Run(); };

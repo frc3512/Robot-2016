@@ -10,8 +10,7 @@
  * acceleration.
  */
 
-#ifndef TRAPEZOID_PROFILE_HPP
-#define TRAPEZOID_PROFILE_HPP
+#pragma once
 
 #include <memory>
 
@@ -48,5 +47,3 @@ protected:
     // curTime is current time
     virtual PIDState UpdateSetpoint(double curTime);
 };
-
-#endif  // TRAPEZOID_PROFILE_HPP

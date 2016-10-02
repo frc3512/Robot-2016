@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef TIMER_EVENT_GENERATOR_HPP
-#define TIMER_EVENT_GENERATOR_HPP
+#pragma once
 
 #include <string>
 
@@ -29,5 +28,3 @@ private:
     bool m_oneShot;
     Timer m_timer;
 };
-
-#endif  // TIMER_EVENT_GENERATOR_HPP

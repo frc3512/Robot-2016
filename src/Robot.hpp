@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef ROBOT_HPP
-#define ROBOT_HPP
+#pragma once
 
 #include <CameraServer.h>
 #include <Joystick.h>
@@ -59,5 +58,3 @@ private:
     // Camera
     // CameraServer* camera = CameraServer::GetInstance();
 };
-
-#endif  // ROBOT_HPP

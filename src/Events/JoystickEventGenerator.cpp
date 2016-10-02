@@ -2,6 +2,8 @@
 
 #include "JoystickEventGenerator.hpp"
 
+#include <utility>
+
 JoystickEventGenerator::JoystickEventGenerator() {
     for (auto& state : m_oldStates) {
         state = 0;

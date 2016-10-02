@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef DIGITAL_INPUT_HANDLER
-#define DIGITAL_INPUT_HANDLER
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -19,5 +18,3 @@ public:
 private:
     static std::vector<std::unique_ptr<DigitalInput>> m_inputs;
 };
-
-#endif  // DIGITAL_INPUT_HANDLER

@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef JOYSTICK_EVENT_GENERATOR_HPP
-#define JOYSTICK_EVENT_GENERATOR_HPP
+#pragma once
 
 #include <stdint.h>
 
@@ -51,5 +50,3 @@ private:
 
     bool GetButtonState(uint32_t buttonStates, uint32_t button);
 };
-
-#endif  // JOYSTICK_EVENT_GENERATOR_HPP

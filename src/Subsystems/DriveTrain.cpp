@@ -72,7 +72,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     if (turn * negInertia > 0) {
         negInertiaScalar = k_inertiaDampen;
     } else {
-        if (fabs(turn) > 0.65) {
+        if (std::fabs(turn) > 0.65) {
             negInertiaScalar = k_inertiaHighTurn;
         } else {
             negInertiaScalar = k_inertiaLowTurn;
@@ -103,7 +103,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
         angularPower = turn;
     } else {
         angularPower =
-            fabs(throttle) * turn * m_sensitivity - m_quickStopAccumulator;
+            std::fabs(throttle) * turn * m_sensitivity - m_quickStopAccumulator;
 
         if (m_quickStopAccumulator > 1) {
             m_quickStopAccumulator -= 1;

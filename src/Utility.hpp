@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
+#pragma once
 
 // Provides generic utility functions
 
@@ -24,5 +23,3 @@ T Limit(T value, T limit) {
  * the range)
  */
 float JoystickRescale(float value, float rangeMax);
-
-#endif  // UTILITY_HPP

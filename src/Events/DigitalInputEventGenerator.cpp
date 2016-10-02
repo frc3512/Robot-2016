@@ -2,6 +2,8 @@
 
 #include "DigitalInputEventGenerator.hpp"
 
+#include <utility>
+
 void DigitalInputEventGenerator::RegisterInputEvent(std::string eventName,
                                                     uint32_t channel,
                                                     bool onRisingEdge,

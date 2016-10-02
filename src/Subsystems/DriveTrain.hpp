@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef DRIVE_TRAIN_HPP
-#define DRIVE_TRAIN_HPP
+#pragma once
 
 #include <memory>
 
@@ -87,5 +86,3 @@ private:
                             k_diffDriveV, k_diffDriveA, &m_diff,
                             &m_diff};
 };
-
-#endif  // DRIVE_TRAIN_HPP

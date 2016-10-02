@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef PROFILE_BASE_HPP
-#define PROFILE_BASE_HPP
+#pragma once
 
 #include <limits>
 #include <memory>
@@ -19,7 +18,7 @@ class PIDController;
  */
 class ProfileBase {
 public:
-    ProfileBase(std::shared_ptr<PIDController> pid);
+    explicit ProfileBase(std::shared_ptr<PIDController> pid);
     virtual ~ProfileBase();
 
     virtual void SetGoal(PIDState goal, PIDState curSource) = 0;
@@ -51,5 +50,3 @@ protected:
     double m_lastTime = 0.0;
     double m_timeTotal = std::numeric_limits<double>::infinity();
 };
-
-#endif  // PROFILE_BASE_HPP

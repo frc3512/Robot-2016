@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef DIFFERENTIAL_HPP
-#define DIFFERENTIAL_HPP
+#pragma once
 
 #include <PIDOutput.h>
 #include <PIDSource.h>
@@ -34,5 +33,3 @@ private:
     GearBox* m_leftGrbx;
     GearBox* m_rightGrbx;
 };
-
-#endif  // DIFFERENTIAL_HPP

@@ -1,7 +1,6 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef PID_STATE_HPP
-#define PID_STATE_HPP
+#pragma once
 
 #include <cmath>
 
@@ -56,5 +55,3 @@ struct PIDState {
     double velocity = 0.0;
     double acceleration = 0.0;
 };
-
-#endif  // PID_STATE_HPP

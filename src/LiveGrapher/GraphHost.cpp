@@ -293,7 +293,7 @@ int GraphHost::socket_listen(int port, uint32_t s_addr) {
             throw - 1;
         }
     } catch (int e) {
-        perror("");
+        std::perror("");
         if (sd != -1) {
             close(sd);
         }
@@ -346,7 +346,7 @@ int GraphHost::socket_accept(int listenfd) {
         }
 #endif
     } catch (int e) {
-        perror("");
+        std::perror("");
         if (new_fd != -1) {
             close(new_fd);
         }

@@ -1,9 +1,11 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
+#include "SCurveProfile.hpp"
+
 #include <cmath>
+#include <utility>
 
 #include "../WPILib/PIDController.hpp"
-#include "SCurveProfile.hpp"
 
 SCurveProfile::SCurveProfile(std::shared_ptr<PIDController> pid, double maxV,
                              double maxA, double timeToMaxA)

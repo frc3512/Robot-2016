@@ -6,8 +6,7 @@
  * acceleration.
  */
 
-#ifndef SCURVE_PROFILE_HPP
-#define SCURVE_PROFILE_HPP
+#pragma once
 
 #include <memory>
 
@@ -52,5 +51,3 @@ protected:
     // curTime is current time
     virtual PIDState UpdateSetpoint(double curTime);
 };
-
-#endif  // SCURVE_PROFILE_HPP

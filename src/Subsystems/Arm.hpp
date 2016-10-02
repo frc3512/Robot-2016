@@ -1,7 +1,8 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef ARM_HPP
-#define ARM_HPP
+#pragma once
+
+#include <memory>
 
 #include <Timer.h>
 
@@ -65,5 +66,3 @@ private:
 
     StateMachine m_armSM{"ArmSM"};
 };
-
-#endif  // ARM_HPP

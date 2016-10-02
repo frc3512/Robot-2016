@@ -1,10 +1,11 @@
 // Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
 
-#ifndef STATE_MACHINE_HPP
-#define STATE_MACHINE_HPP
+#pragma once
 
 #include <chrono>
 #include <memory>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "State.hpp"
@@ -18,7 +19,7 @@
  */
 class StateMachine : public State {
 public:
-    StateMachine(std::string name);
+    explicit StateMachine(std::string name);
 
     /* Ownership of 'state' will be transferred to this class, which will handle
      * destroying it. The first state added to the state machine will be made
@@ -71,5 +72,3 @@ private:
     const std::chrono::steady_clock::time_point m_startTime =
         std::chrono::steady_clock::now();
 };
-
-#endif  // STATE_MACHINE_HPP

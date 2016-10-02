@@ -3,6 +3,7 @@
 #include "GearBox.hpp"
 
 #include <iostream>
+#include <memory>
 
 #include "../DigitalInputHandler.hpp"
 

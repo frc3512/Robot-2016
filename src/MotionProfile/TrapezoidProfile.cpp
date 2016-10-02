@@ -3,6 +3,7 @@
 #include "TrapezoidProfile.hpp"
 
 #include <cmath>
+#include <utility>
 
 #include "../WPILib/PIDController.hpp"
 
@@ -64,7 +65,7 @@ void TrapezoidProfile::SetGoal(PIDState goal, PIDState curSource) {
          * 1/2 * a * t^2 = m_setpoint/2
          * a * t^2 = m_setpoint
          * t^2 = m_setpoint / a
-         * t = sqrt( m_setpoint / a )
+         * t = std::sqrt( m_setpoint / a )
          */
         m_timeToMaxVelocity =
             std::sqrt(m_sign * m_goal.displacement / m_acceleration);
