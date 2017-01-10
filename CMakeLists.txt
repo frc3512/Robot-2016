@@ -18,5 +18,7 @@ foreach(ELEM ${DIRS})
     list(APPEND SRC ${FILES})
 endforeach(ELEM)
 
+include_directories($ENV{HOME}/wpilib/cpp/current/include)
+link_directories($ENV{HOME}/wpilib/cpp/current/lib)
 add_executable(${NAME} ${SRC})
 target_link_libraries(${NAME} "wpi")
