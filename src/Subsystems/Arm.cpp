@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "Arm.hpp"
 
@@ -11,14 +11,14 @@
 Arm::Arm() {
     m_leftArmGrbx.SetLimitOnHigh(false);
     // m_leftArmGrbx.SetSoftPositionLimits(k_armMin , k_armMax);
-    m_leftArmPID = std::make_shared<PIDController>(
+    m_leftArmPID = std::make_shared<frc::PIDController>(
         0.f, 0.f, 0.f, 0.f, 0.f, &m_leftArmGrbx, &m_leftArmGrbx);
 
-    m_carriagePID = std::make_shared<PIDController>(
+    m_carriagePID = std::make_shared<frc::PIDController>(
         0.f, 0.f, 0.f, 0.f, 0.f, &m_carriageGrbx, &m_carriageGrbx);
 
-    m_winchPID = std::make_shared<PIDController>(0.f, 0.f, 0.f, 0.f, 0.f,
-                                                 &m_winchGrbx, &m_winchGrbx);
+    m_winchPID = std::make_shared<frc::PIDController>(
+        0.f, 0.f, 0.f, 0.f, 0.f, &m_winchGrbx, &m_winchGrbx);
 
     m_carriageLeftLimit = DigitalInputHandler::Get(k_carriageLeftLimitChannel);
     m_carriageRightLimit =

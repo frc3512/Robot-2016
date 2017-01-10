@@ -1,24 +1,26 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #pragma once
 
 #include <limits>
 #include <memory>
+#include <thread>
 
 #include <HAL/cpp/priority_mutex.h>
-#include <Task.h>
 #include <Timer.h>
 
 #include "../WPILib/PIDState.hpp"
 
+namespace frc {
 class PIDController;
+}
 
 /**
  * Base class for all types of motion profile controllers
  */
 class ProfileBase {
 public:
-    explicit ProfileBase(std::shared_ptr<PIDController> pid);
+    explicit ProfileBase(std::shared_ptr<frc::PIDController> pid);
     virtual ~ProfileBase();
 
     virtual void SetGoal(PIDState goal, PIDState curSource) = 0;
@@ -39,7 +41,7 @@ protected:
 
     std::shared_ptr<PIDController> m_pid;
 
-    Task m_task;
+    std::thread m_thread;
     Timer m_timer;
 
     // Set this to interrupt currently running profile for starting a new one

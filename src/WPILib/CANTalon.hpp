@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "CANSpeedController.h"
-#include "HAL/CanTalonSRX.h"
+#include "CanTalonSRX.h"
 #include "LiveWindow/LiveWindowSendable.h"
 #include "MotorSafetyHelper.h"
 #include "PIDInterface.hpp"
@@ -18,6 +18,8 @@
 #include "PIDSource.h"
 #include "SafePWM.h"
 #include "tables/ITable.h"
+
+namespace frc {
 
 /**
  * CTRE Talon SRX Speed Controller with CAN Control
@@ -242,14 +244,14 @@ public:
     virtual ~CANTalon();
 
     // PIDOutput interface
-    virtual void PIDWrite(float output) override;
+    virtual void PIDWrite(double output) override;
 
     // PIDSource interface
     virtual double PIDGet() override;
 
     // MotorSafety interface
-    virtual void SetExpiration(float timeout) override;
-    virtual float GetExpiration() const override;
+    virtual void SetExpiration(double timeout) override;
+    virtual double GetExpiration() const override;
     virtual bool IsAlive() const override;
     virtual void StopMotor() override;
     virtual void SetSafetyEnabled(bool enabled) override;
@@ -257,8 +259,8 @@ public:
     virtual void GetDescription(std::ostringstream& desc) const override;
 
     // CANSpeedController interface
-    virtual float Get() const override;
-    virtual void Set(float value, uint8_t syncGroup = 0) override;
+    virtual double Get() const override;
+    virtual void Set(double value) override;
     virtual void Reset() override;
     virtual void SetSetpoint(PIDState value) override;
     virtual void Disable() override;
@@ -279,10 +281,10 @@ public:
     virtual double GetV() const override;
     virtual double GetA() const override;
     virtual bool IsModePID(CANSpeedController::ControlMode mode) const override;
-    virtual float GetBusVoltage() const override;
-    virtual float GetOutputVoltage() const override;
-    virtual float GetOutputCurrent() const override;
-    virtual float GetTemperature() const override;
+    virtual double GetBusVoltage() const override;
+    virtual double GetOutputVoltage() const override;
+    virtual double GetOutputCurrent() const override;
+    virtual double GetTemperature() const override;
     void SetPosition(double pos);
     virtual double GetPosition() const override;
     virtual double GetSpeed() const override;
@@ -316,7 +318,7 @@ public:
     void ClearStickyFaults();
     virtual void SetVoltageRampRate(double rampRate) override;
     virtual void SetVoltageCompensationRampRate(double rampRate);
-    virtual uint32_t GetFirmwareVersion() const override;
+    virtual int GetFirmwareVersion() const override;
     virtual void ConfigNeutralMode(NeutralMode mode) override;
     virtual void ConfigEncoderCodesPerRev(uint16_t codesPerRev) override;
     virtual void ConfigPotentiometerTurns(uint16_t turns) override;
@@ -365,7 +367,7 @@ public:
     void ConfigSetParameter(uint32_t paramEnum, double value);
     bool GetParameter(uint32_t paramEnum, double& dvalue) const;
 
-    virtual void ConfigFaultTime(float faultTime) override;
+    virtual void ConfigFaultTime(double faultTime) override;
     virtual void SetControlMode(ControlMode mode);
     void SetFeedbackDevice(FeedbackDevice device);
     void SetStatusFrameRateMs(StatusFrameRate stateFrame, int periodMs);
@@ -616,3 +618,5 @@ private:
 
     HasBeenMoved m_hasBeenMoved;
 };
+
+}  // namespace frc

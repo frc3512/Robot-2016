@@ -1,11 +1,12 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "LeverPIDController.hpp"
 
-LeverPIDController::LeverPIDController(float p, float i, float d, float v,
-                                       float a, float f, PIDSource* source,
-                                       PIDOutput* output, float period)
-    : PIDController(p, i, d, v, a, source, output, period) {
+LeverPIDController::LeverPIDController(double p, double i, double d, double v,
+                                       double a, double f,
+                                       frc::PIDSource* source,
+                                       frc::PIDOutput* output, double period)
+    : frc::PIDController(p, i, d, v, a, source, output, period) {
     m_F = f;
 }
 

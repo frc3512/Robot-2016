@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #pragma once
 
@@ -82,7 +82,7 @@ private:
     GearBox m_rightGrbx{-1, -1, -1, k_rightDriveMasterID, k_rightDriveSlaveID};
 
     Differential m_diff{&m_leftGrbx, &m_rightGrbx};
-    PIDController m_diffPID{k_diffDriveP, k_diffDriveI, k_diffDriveD,
-                            k_diffDriveV, k_diffDriveA, &m_diff,
-                            &m_diff};
+    frc::PIDController m_diffPID{k_diffDriveP, k_diffDriveI, k_diffDriveD,
+                                 k_diffDriveV, k_diffDriveA, &m_diff,
+                                 &m_diff};
 };

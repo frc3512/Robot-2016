@@ -10,7 +10,7 @@
 #include <cmath>
 #include <vector>
 
-#include "HAL/HAL.hpp"
+#include "HAL/HAL.h"
 #include "Notifier.h"
 #include "PIDOutput.h"
 #include "PIDSource.h"
@@ -22,6 +22,8 @@ static const std::string kV = "v";
 static const std::string kA = "a";
 static const std::string kSetpoint = "setpoint";
 static const std::string kEnabled = "enabled";
+
+using namespace frc;
 
 /**
  * Allocate a PID object with the given constants for P, I, D
@@ -75,7 +77,7 @@ void PIDController::Initialize(float Kp, float Ki, float Kd, float Kv, float Ka,
 
     static int32_t instances = 0;
     instances++;
-    HALReport(HALUsageReporting::kResourceType_PIDController, instances);
+    HAL_Report(HALUsageReporting::kResourceType_PIDController, instances);
 }
 
 PIDController::~PIDController() {

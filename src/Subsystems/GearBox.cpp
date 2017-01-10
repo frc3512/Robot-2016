@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "GearBox.hpp"
 
@@ -10,7 +10,7 @@
 GearBox::GearBox(int shifterChan, int forwardLimitPin, int reverseLimitPin,
                  int motor1, int motor2, int motor3) {
     if (shifterChan != -1) {
-        m_shifter = std::make_unique<Solenoid>(shifterChan);
+        m_shifter = std::make_unique<frc::Solenoid>(shifterChan);
     }
 
     if (forwardLimitPin != -1) {
@@ -22,18 +22,18 @@ GearBox::GearBox(int shifterChan, int forwardLimitPin, int reverseLimitPin,
     }
 
     // Create motor controllers of specified template type
-    m_motors.emplace_back(std::make_unique<CANTalon>(motor1));
+    m_motors.emplace_back(std::make_unique<frc::CANTalon>(motor1));
     if (motor2 != -1) {
-        m_motors.emplace_back(std::make_unique<CANTalon>(motor2));
+        m_motors.emplace_back(std::make_unique<frc::CANTalon>(motor2));
     }
     if (motor3 != -1) {
-        m_motors.emplace_back(std::make_unique<CANTalon>(motor3));
+        m_motors.emplace_back(std::make_unique<frc::CANTalon>(motor3));
     }
 
     for (unsigned int i = 0; i < m_motors.size(); i++) {
         if (i == 0) {
-            m_motors[i]->SetControlMode(CANTalon::kPercentVbus);
-            m_motors[i]->SetFeedbackDevice(CANTalon::QuadEncoder);
+            m_motors[i]->SetControlMode(frc::CANTalon::kPercentVbus);
+            m_motors[i]->SetFeedbackDevice(frc::CANTalon::QuadEncoder);
             m_motors[i]->ConfigEncoderCodesPerRev(1);
             m_motors[i]->SetSensorDirection(m_isEncoderReversed);
             ResetEncoder();
@@ -42,7 +42,7 @@ GearBox::GearBox(int shifterChan, int forwardLimitPin, int reverseLimitPin,
             m_motors[i]->EnableControl();
         } else {
             // Use all other CANTalons as slaves
-            m_motors[i]->SetControlMode(CANTalon::kFollower);
+            m_motors[i]->SetControlMode(frc::CANTalon::kFollower);
 
             // Set first CANTalon as master
             m_motors[i]->Set(motor1);
@@ -88,8 +88,8 @@ double GearBox::GetPosition() const {
 }
 
 double GearBox::GetSpeed() const {
-    if (m_feedbackDevice == CANTalon::CtreMagEncoder_Relative ||
-        m_feedbackDevice == CANTalon::CtreMagEncoder_Absolute) {
+    if (m_feedbackDevice == frc::CANTalon::CtreMagEncoder_Relative ||
+        m_feedbackDevice == frc::CANTalon::CtreMagEncoder_Absolute) {
         // RPM * degrees/rev / (seconds/min)
         return m_motors[0]->GetSpeed() * m_distancePerPulse / 60.0;
     } else {
@@ -102,7 +102,7 @@ void GearBox::SetDistancePerPulse(double distancePerPulse) {
     m_distancePerPulse = distancePerPulse;
 }
 
-void GearBox::SetFeedbackDevice(CANTalon::FeedbackDevice device) {
+void GearBox::SetFeedbackDevice(frc::CANTalon::FeedbackDevice device) {
     std::cout << "SetFeedbackDevice " << device << std::endl;
     m_feedbackDevice = device;
     m_motors[0]->SetFeedbackDevice(device);
@@ -142,9 +142,9 @@ bool GearBox::GetGear() const {
     }
 }
 
-CANTalon* GearBox::GetMaster() const { return m_motors[0].get(); }
+frc::CANTalon* GearBox::GetMaster() const { return m_motors[0].get(); }
 
-void GearBox::PIDWrite(float output) {
+void GearBox::PIDWrite(double output) {
     if (m_forwardLimit != nullptr && m_limitOnHigh == m_forwardLimit->Get() &&
         output > 0) {
         /* If stopping motor in same limit switch state that limit switch is in

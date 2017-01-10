@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "ButtonTracker.hpp"
 
@@ -11,7 +11,7 @@ void ButtonTracker::Update() {
     m_oldStates = m_newStates;
 
     // Get newer values
-    m_newStates = DriverStation::GetInstance().GetStickButtons(m_port);
+    m_newStates = frc::DriverStation::GetInstance().GetStickButtons(m_port);
 }
 
 bool ButtonTracker::PressedButton(uint32_t button) const {

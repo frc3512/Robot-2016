@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #pragma once
 
@@ -39,15 +39,15 @@ private:
     Shooter shooter;
     Arm arm;
 
-    Joystick driveStick1{k_driveStick1Port};
-    Joystick driveStick2{k_driveStick2Port};
-    Joystick shootStick{k_shootStickPort};
-    Joystick armStick{k_armStickPort};
+    frc::Joystick driveStick1{k_driveStick1Port};
+    frc::Joystick driveStick2{k_driveStick2Port};
+    frc::Joystick shootStick{k_shootStickPort};
+    frc::Joystick armStick{k_armStickPort};
 
     ButtonTracker shootButtons{k_shootStickPort};
 
-    Timer autoTimer;
-    Timer displayTimer;
+    frc::Timer autoTimer;
+    frc::Timer displayTimer;
 
     // Used for sending data to the Driver Station
     DSDisplay& dsDisplay{DSDisplay::GetInstance(k_dsPort)};
@@ -56,5 +56,5 @@ private:
     GraphHost pidGraph{3513};
 
     // Camera
-    // CameraServer* camera = CameraServer::GetInstance();
+    // frc::CameraServer* camera = frc::CameraServer::GetInstance();
 };

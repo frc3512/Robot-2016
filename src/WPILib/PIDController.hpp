@@ -18,6 +18,8 @@
 #include "PIDSource.h"
 #include "Timer.h"
 
+namespace frc {
+
 class PIDOutput;
 
 /**
@@ -127,3 +129,5 @@ private:
     virtual void StartLiveWindowMode() override;
     virtual void StopLiveWindowMode() override;
 };
+
+}  // namespace frc

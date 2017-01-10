@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #pragma once
 
@@ -15,7 +15,10 @@
 #include "GearBox.hpp"
 #include "SubsystemBase.hpp"
 
+namespace frc {
 class PIDController;
+}
+
 class TrapezoidProfile;
 
 /**
@@ -52,14 +55,14 @@ private:
 
     GearBox m_leftArmGrbx{-1, k_leftArmBottomLimitChannel,
                           k_leftArmTopLimitChannel, k_leftArmLiftID};
-    std::shared_ptr<PIDController> m_leftArmPID;
+    std::shared_ptr<frc::PIDController> m_leftArmPID;
 
     GearBox m_carriageGrbx{-1, k_carriageLeftLimitChannel,
                            k_carriageRightLimitChannel, k_carriageID};
-    std::shared_ptr<PIDController> m_carriagePID;
+    std::shared_ptr<frc::PIDController> m_carriagePID;
 
     GearBox m_winchGrbx{-1, -1, -1, k_winchID};
-    std::shared_ptr<PIDController> m_winchPID;
+    std::shared_ptr<frc::PIDController> m_winchPID;
 
     DigitalInput* m_carriageLeftLimit = nullptr;
     DigitalInput* m_carriageRightLimit = nullptr;

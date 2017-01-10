@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #pragma once
 
@@ -10,25 +10,25 @@
 /**
  * Used to control two gear boxes as a differential
  */
-class Differential : public PIDOutput, public PIDSource {
+class Differential : public frc::PIDOutput, public frc::PIDSource {
 public:
     Differential(GearBox* leftGrbx, GearBox* rightGrbx);
 
     // Set forward speed of differential
-    void SetForward(float value);
+    void SetForward(double value);
 
     // Set turning speed of differential
-    void SetTurn(float value);
+    void SetTurn(double value);
 
     // PIDOutput interface
-    void PIDWrite(float output) override;
+    void PIDWrite(double output) override;
 
     // PIDSource interface
     double PIDGet() override;
 
 private:
-    float m_forwardValue = 0.f;
-    float m_turnValue = 0.f;
+    double m_forwardValue = 0.f;
+    double m_turnValue = 0.f;
 
     GearBox* m_leftGrbx;
     GearBox* m_rightGrbx;

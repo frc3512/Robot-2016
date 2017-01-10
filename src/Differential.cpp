@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "Differential.hpp"
 
@@ -9,21 +9,21 @@ Differential::Differential(GearBox* leftGrbx, GearBox* rightGrbx) {
     m_rightGrbx = rightGrbx;
 }
 
-void Differential::SetForward(float value) {
+void Differential::SetForward(double value) {
     m_forwardValue = value;
 
     m_leftGrbx->Set(m_forwardValue + m_turnValue);
     m_rightGrbx->Set(m_forwardValue - m_turnValue);
 }
 
-void Differential::SetTurn(float value) {
+void Differential::SetTurn(double value) {
     m_turnValue = value;
 
     m_leftGrbx->Set(m_forwardValue - m_turnValue);
     m_rightGrbx->Set(m_forwardValue + m_turnValue);
 }
 
-void Differential::PIDWrite(float output) {
+void Differential::PIDWrite(double output) {
     m_turnValue = output;
 
     m_leftGrbx->PIDWrite(m_forwardValue - m_turnValue);

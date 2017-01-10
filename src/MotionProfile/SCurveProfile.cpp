@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "SCurveProfile.hpp"
 
@@ -7,8 +7,8 @@
 
 #include "../WPILib/PIDController.hpp"
 
-SCurveProfile::SCurveProfile(std::shared_ptr<PIDController> pid, double maxV,
-                             double maxA, double timeToMaxA)
+SCurveProfile::SCurveProfile(std::shared_ptr<frc::PIDController> pid,
+                             double maxV, double maxA, double timeToMaxA)
     : ProfileBase(std::move(pid)) {
     SetMaxVelocity(maxV);
     SetMaxAcceleration(maxA);

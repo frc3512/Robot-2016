@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 /* Constant acceleration until target (max) velocity is reached, sets
  * acceleration to zero for a calculated time, then decelerates at a constant
@@ -12,15 +12,17 @@
 
 #include "ProfileBase.hpp"
 
+namespace frc {
 class PIDController;
+}
 
 /**
  * Provides trapezoidal acceleration control
  */
 class SCurveProfile : public ProfileBase {
 public:
-    SCurveProfile(std::shared_ptr<PIDController> pid, double maxV, double maxA,
-                  double timeToMaxA);
+    SCurveProfile(std::shared_ptr<frc::PIDController> pid, double maxV,
+                  double maxA, double timeToMaxA);
 
     /* goal is a distance to which to travel
      * curSource is the current position

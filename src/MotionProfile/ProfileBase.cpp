@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "ProfileBase.hpp"
 
@@ -10,7 +10,7 @@
 
 using namespace std::chrono_literals;
 
-ProfileBase::ProfileBase(std::shared_ptr<PIDController> pid) {
+ProfileBase::ProfileBase(std::shared_ptr<frc::PIDController> pid) {
     m_pid = pid;
     m_timer.Start();
 }
@@ -38,9 +38,9 @@ PIDState ProfileBase::GetGoal() const { return m_goal; }
 PIDState ProfileBase::GetSetpoint() const { return m_sp; }
 
 void ProfileBase::Stop() {
-    if (!m_interrupt && m_task.joinable()) {
+    if (!m_interrupt && m_thread.joinable()) {
         m_interrupt = true;
-        m_task.join();
+        m_thread.join();
         m_interrupt = false;
     }
 
@@ -62,7 +62,7 @@ void ProfileBase::Start() {
         m_pid->Enable();
     }
 
-    m_task = Task("ProfileBase", [this] {
+    m_thread = std::thread([this] {
         m_interrupt = false;
 
         while (!AtGoal()) {

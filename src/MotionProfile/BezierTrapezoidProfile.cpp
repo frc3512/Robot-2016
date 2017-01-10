@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #include "BezierTrapezoidProfile.hpp"
 
@@ -8,7 +8,7 @@
 #include "../WPILib/PIDController.hpp"
 
 BezierTrapezoidProfile::BezierTrapezoidProfile(
-    std::shared_ptr<PIDController> pid, double maxV, double timeToMaxV)
+    std::shared_ptr<frc::PIDController> pid, double maxV, double timeToMaxV)
     : TrapezoidProfile(std::move(pid), maxV, timeToMaxV) {
     SetMaxVelocity(maxV);
     SetTimeToMaxV(timeToMaxV);

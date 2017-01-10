@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #pragma once
 
@@ -45,7 +45,7 @@ public:
 private:
     struct DigitalInputEvent {
         std::string name;
-        DigitalInput* input;
+        frc::DigitalInput* input;
         bool onRisingEdge;
         bool onFallingEdge;
     };

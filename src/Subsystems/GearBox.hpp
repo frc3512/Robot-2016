@@ -1,4 +1,4 @@
-// Copyright (c) FRC Team 3512, Spartatroniks 2016. All Rights Reserved.
+// Copyright (c) FRC Team 3512, Spartatroniks 2016-2017. All Rights Reserved.
 
 #pragma once
 
@@ -12,7 +12,9 @@
 
 #include "../WPILib/CANTalon.hpp"
 
+namespace frc {
 class DigitalInput;
+}
 
 /**
  * Represents a gear box with up to 3 motors and an encoder
@@ -22,7 +24,7 @@ class DigitalInput;
  * - Up to three motors can be specified per gearbox, since drive train
  *   gearboxes will use up to three and other gearboxes will use less.
  */
-class GearBox : public PIDOutput, public PIDSource {
+class GearBox : public frc::PIDOutput, public frc::PIDSource {
 public:
     GearBox(int shifterChan, int forwardLimitPin, int reverseLimitPin,
             int motor1, int motor2 = -1, int motor3 = -1);
@@ -41,7 +43,7 @@ public:
 
     void SetDistancePerPulse(double distancePerPulse);
 
-    void SetFeedbackDevice(CANTalon::FeedbackDevice device);
+    void SetFeedbackDevice(frc::CANTalon::FeedbackDevice device);
 
     // Resets encoder distance to 0
     void ResetEncoder();
@@ -74,7 +76,7 @@ public:
     CANTalon* GetMaster() const;
 
     // PIDOutput interface
-    void PIDWrite(float output) override;
+    void PIDWrite(double output) override;
 
     // PIDSource interface
     double PIDGet() override;
@@ -90,15 +92,15 @@ private:
     double m_distancePerPulse = 1.0;
 
     // Feedback device
-    CANTalon::FeedbackDevice m_feedbackDevice = CANTalon::QuadEncoder;
+    frc::CANTalon::FeedbackDevice m_feedbackDevice = frc::CANTalon::QuadEncoder;
 
-    std::unique_ptr<Solenoid> m_shifter;
+    std::unique_ptr<frc::Solenoid> m_shifter;
 
     // Prevents motor from rotating forward when switch is pressed
-    DigitalInput* m_forwardLimit = nullptr;
+    frc::DigitalInput* m_forwardLimit = nullptr;
 
     // Prevents motor from rotating in reverse when switch is pressed
-    DigitalInput* m_reverseLimit = nullptr;
+    frc::DigitalInput* m_reverseLimit = nullptr;
 
-    std::vector<std::unique_ptr<CANTalon>> m_motors;
+    std::vector<std::unique_ptr<frc::CANTalon>> m_motors;
 };
