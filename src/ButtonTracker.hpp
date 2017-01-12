@@ -4,7 +4,8 @@
 
 #include <stdint.h>
 
-/* This class allows you to check if a button was pressed or released without
+/**
+ * This class allows you to check if a button was pressed or released without
  * having to wait in one spot of code until that happens.
  *
  * It is useful for situations in which you need to toggle a variable and just
@@ -20,7 +21,6 @@
  *
  * None of these functions block.
  */
-
 class ButtonTracker {
 public:
     explicit ButtonTracker(uint32_t port);

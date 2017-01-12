@@ -15,18 +15,18 @@ void ButtonTracker::Update() {
 }
 
 bool ButtonTracker::PressedButton(uint32_t button) const {
-    return GetButtonState(m_oldStates, button) == false &&
-           GetButtonState(m_newStates, button) == true;
-}
-
-bool ButtonTracker::ReleasedButton(uint32_t button) const {
     return GetButtonState(m_oldStates, button) == true &&
            GetButtonState(m_newStates, button) == false;
 }
 
-bool ButtonTracker::HeldButton(uint32_t button) const {
-    return GetButtonState(m_oldStates, button) == true &&
+bool ButtonTracker::ReleasedButton(uint32_t button) const {
+    return GetButtonState(m_oldStates, button) == false &&
            GetButtonState(m_newStates, button) == true;
+}
+
+bool ButtonTracker::HeldButton(uint32_t button) const {
+    return GetButtonState(m_oldStates, button) == false &&
+           GetButtonState(m_newStates, button) == false;
 }
 
 bool ButtonTracker::GetButtonState(uint16_t buttonStates, uint32_t button) {
