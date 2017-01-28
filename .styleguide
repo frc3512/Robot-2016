@@ -22,7 +22,6 @@ genFileExclude {
 }
 
 modifiableFolderExclude {
-  \.git
   WPILib
   SFML
   SFMLNetwork
