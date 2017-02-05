@@ -27,8 +27,8 @@ public:
     double PIDGet() override;
 
 private:
-    double m_forwardValue = 0.f;
-    double m_turnValue = 0.f;
+    double m_forwardValue = 0.0;
+    double m_turnValue = 0.0;
 
     GearBox* m_leftGrbx;
     GearBox* m_rightGrbx;

@@ -12,13 +12,13 @@ Arm::Arm() {
     m_leftArmGrbx.SetLimitOnHigh(false);
     // m_leftArmGrbx.SetSoftPositionLimits(k_armMin , k_armMax);
     m_leftArmPID = std::make_shared<frc::PIDController>(
-        0.f, 0.f, 0.f, 0.f, 0.f, &m_leftArmGrbx, &m_leftArmGrbx);
+        0.0, 0.0, 0.0, 0.0, 0.0, &m_leftArmGrbx, &m_leftArmGrbx);
 
     m_carriagePID = std::make_shared<frc::PIDController>(
-        0.f, 0.f, 0.f, 0.f, 0.f, &m_carriageGrbx, &m_carriageGrbx);
+        0.0, 0.0, 0.0, 0.0, 0.0, &m_carriageGrbx, &m_carriageGrbx);
 
     m_winchPID = std::make_shared<frc::PIDController>(
-        0.f, 0.f, 0.f, 0.f, 0.f, &m_winchGrbx, &m_winchGrbx);
+        0.0, 0.0, 0.0, 0.0, 0.0, &m_winchGrbx, &m_winchGrbx);
 
     m_carriageLeftLimit = DigitalInputHandler::Get(k_carriageLeftLimitChannel);
     m_carriageRightLimit =

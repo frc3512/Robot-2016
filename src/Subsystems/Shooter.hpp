@@ -37,8 +37,8 @@ public:
 
     void SetShooterHeight(double height, bool increment);
 
-    float GetLeftRPM() const;
-    float GetRightRPM() const;
+    double GetLeftRPM() const;
+    double GetRightRPM() const;
     PIDState GetLeftSetpoint() const;
     PIDState GetRightSetpoint() const;
     void ManualChangeSetpoint(double delta);

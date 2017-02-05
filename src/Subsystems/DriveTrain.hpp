@@ -29,10 +29,10 @@ public:
     /* Drives robot with given speed and turn values [-1..1].
      * This is a convenience function for use in Operator Control.
      */
-    void Drive(float throttle, float turn, bool isQuickTurn = false);
+    void Drive(double throttle, double turn, bool isQuickTurn = false);
 
     // Sets joystick deadband
-    void SetDeadband(float band);
+    void SetDeadband(double band);
 
     // Reload PID constants
     void ReloadPID();
@@ -40,11 +40,11 @@ public:
     // Set encoder distances to 0
     void ResetEncoders();
 
-    void DiffDrive(float output);
+    void DiffDrive(double output);
 
-    // Directly set wheel speeds [0..1] (see GearBox::SetManual(float))
-    void SetLeftManual(float value);
-    void SetRightManual(float value);
+    // Directly set wheel speeds [0..1] (see GearBox::SetManual(double))
+    void SetLeftManual(double value);
+    void SetRightManual(double value);
 
     // Returns encoder distances
     double GetLeftDisplacement() const;
@@ -70,13 +70,13 @@ public:
     void ResetProfile();
 
 private:
-    float m_deadband = k_joystickDeadband;
-    float m_sensitivity;
+    double m_deadband = k_joystickDeadband;
+    double m_sensitivity;
 
     // Cheesy Drive variables
-    float m_oldTurn = 0.f;
-    float m_quickStopAccumulator = 0.f;
-    float m_negInertiaAccumulator = 0.f;
+    double m_oldTurn = 0.0;
+    double m_quickStopAccumulator = 0.0;
+    double m_negInertiaAccumulator = 0.0;
 
     GearBox m_leftGrbx{-1, -1, -1, k_leftDriveMasterID, k_leftDriveSlaveID};
     GearBox m_rightGrbx{-1, -1, -1, k_rightDriveMasterID, k_rightDriveSlaveID};

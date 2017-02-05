@@ -37,14 +37,14 @@ int32_t DriveTrain::GetLeftRaw() const { return m_leftGrbx.Get(); }
 
 int32_t DriveTrain::GetRightRaw() const { return m_rightGrbx.Get(); }
 
-void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
+void DriveTrain::Drive(double throttle, double turn, bool isQuickTurn) {
     // Modified Cheesy Drive; base code courtesy of FRC Team 254
 
     throttle *= -1;
 
     // Limit values to [-1 .. 1]
-    throttle = Limit(throttle, 1.f);
-    turn = Limit(turn, 1.f);
+    throttle = Limit(throttle, 1.0);
+    turn = Limit(turn, 1.0);
 
     /* Apply joystick deadband
      * (Negate turn since joystick X-axis is reversed)
@@ -55,7 +55,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     double negInertia = turn - m_oldTurn;
     m_oldTurn = turn;
 
-    float turnNonLinearity = k_turnNonLinearity;
+    double turnNonLinearity = k_turnNonLinearity;
 
     /* Apply a sine function that's scaled to make turning sensitivity feel
      * better. turnNonLinearity should never be zero, but can be close.
@@ -63,7 +63,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     turn = std::sin(M_PI / 2.0 * turnNonLinearity * turn) /
            std::sin(M_PI / 2.0 * turnNonLinearity);
 
-    double angularPower = 0.f;
+    double angularPower = 0.0;
     double linearPower = throttle;
     double leftPwm = linearPower, rightPwm = linearPower;
 
@@ -97,7 +97,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
         if (std::fabs(linearPower) < 0.2) {
             double alpha = 0.1;
             m_quickStopAccumulator = (1 - alpha) * m_quickStopAccumulator +
-                                     alpha * Limit(turn, 1.f) * 5;
+                                     alpha * Limit(turn, 1.0) * 5;
         }
 
         angularPower = turn;
@@ -122,28 +122,28 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     if (leftPwm > 1.0) {
         // If overpowered turning enabled
         if (isQuickTurn) {
-            rightPwm -= (leftPwm - 1.f);
+            rightPwm -= (leftPwm - 1.0);
         }
 
         leftPwm = 1.0;
     } else if (rightPwm > 1.0) {
         // If overpowered turning enabled
         if (isQuickTurn) {
-            leftPwm -= (rightPwm - 1.f);
+            leftPwm -= (rightPwm - 1.0);
         }
 
         rightPwm = 1.0;
     } else if (leftPwm < -1.0) {
         // If overpowered turning enabled
         if (isQuickTurn) {
-            rightPwm += (-leftPwm - 1.f);
+            rightPwm += (-leftPwm - 1.0);
         }
 
         leftPwm = -1.0;
     } else if (rightPwm < -1.0) {
         // If overpowered turning enabled
         if (isQuickTurn) {
-            leftPwm += (-rightPwm - 1.f);
+            leftPwm += (-rightPwm - 1.0);
         }
 
         rightPwm = -1.0;
@@ -152,7 +152,7 @@ void DriveTrain::Drive(float throttle, float turn, bool isQuickTurn) {
     m_rightGrbx.Set(rightPwm);
 }
 
-void DriveTrain::SetDeadband(float band) { m_deadband = band; }
+void DriveTrain::SetDeadband(double band) { m_deadband = band; }
 
 void DriveTrain::ReloadPID() {}
 
@@ -161,11 +161,11 @@ void DriveTrain::ResetEncoders() {
     m_rightGrbx.ResetEncoder();
 }
 
-void DriveTrain::DiffDrive(float output) { m_diff.SetForward(output); }
+void DriveTrain::DiffDrive(double output) { m_diff.SetForward(output); }
 
-void DriveTrain::SetLeftManual(float value) { m_leftGrbx.Set(value); }
+void DriveTrain::SetLeftManual(double value) { m_leftGrbx.Set(value); }
 
-void DriveTrain::SetRightManual(float value) { m_rightGrbx.Set(value); }
+void DriveTrain::SetRightManual(double value) { m_rightGrbx.Set(value); }
 
 double DriveTrain::GetLeftDisplacement() const {
     return m_leftGrbx.GetPosition();

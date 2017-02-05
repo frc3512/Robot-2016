@@ -19,7 +19,7 @@
  *    class. The port number passed in should be the port on which
  *    communications will be received (probably 1130).
  * 2) Call clear() on the pointer to empty the packet before adding new data.
- * 3) Add new data with the << operator (e.g. dsDisplay << 4.f; dsDisplay <<
+ * 3) Add new data with the << operator (e.g. dsDisplay << 4.0; dsDisplay <<
  *    myVar;).
  * 4) After all data is packed, call sendToDS() to send the data to the Driver
  *    Station.

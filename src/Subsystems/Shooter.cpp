@@ -183,9 +183,9 @@ void Shooter::SetShooterHeight(double height, bool increment) {
 
 void Shooter::SetShooterSpeed(double speed) { m_manualShooterSpeed = speed; }
 
-float Shooter::GetLeftRPM() const { return m_leftShootGrbx->GetSpeed(); }
+double Shooter::GetLeftRPM() const { return m_leftShootGrbx->GetSpeed(); }
 
-float Shooter::GetRightRPM() const { return m_rightShootGrbx->GetSpeed(); }
+double Shooter::GetRightRPM() const { return m_rightShootGrbx->GetSpeed(); }
 
 void Shooter::ReloadPID() {}
 

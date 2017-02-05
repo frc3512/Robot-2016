@@ -35,7 +35,7 @@ void Robot::OperatorControl() {
                              driveStick2.GetRawButton(2));
         }
 
-        shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.f));
+        shooter.SetShooterSpeed(JoystickRescale(shootStick.GetThrottle(), 1.0));
         shooter.SetShooterHeight(
             ApplyDeadband(shootStick.GetY(), k_joystickDeadband), true);
 

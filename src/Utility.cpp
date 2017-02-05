@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-float ApplyDeadband(float value, float deadband) {
+double ApplyDeadband(double value, double deadband) {
     if (std::fabs(value) > deadband) {
         if (value > 0) {
             return (value - deadband) / (1 - deadband);
@@ -12,10 +12,10 @@ float ApplyDeadband(float value, float deadband) {
             return (value + deadband) / (1 - deadband);
         }
     } else {
-        return 0.f;
+        return 0.0;
     }
 }
 
-float JoystickRescale(float value, float rangeMax) {
-    return (1.f - value) * rangeMax / 2.f;
+double JoystickRescale(double value, double rangeMax) {
+    return (1.0 - value) * rangeMax / 2.0;
 }
