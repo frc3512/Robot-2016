@@ -12,35 +12,8 @@ cppSrcExtensions {
   cpp
 }
 
-otherExtensions {
-}
-
-genFolderExclude {
-}
-
-genFileExclude {
-}
-
-modifiableFolderExclude {
-  WPILib
-  SFML
-  SFMLNetwork
-}
-
 modifiableFileExclude {
-}
-
-includeRelated {
-}
-
-includeCSys {
-}
-
-includeCppSys {
-}
-
-includeOtherLibs {
-}
-
-includeProject {
+  WPILib/
+  SFML/
+  SFMLNetwork/
 }
