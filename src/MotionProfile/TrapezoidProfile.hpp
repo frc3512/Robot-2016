@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 FRC Team 3512. All Rights Reserved.
+// Copyright (c) 2016-2020 FRC Team 3512. All Rights Reserved.
 
 /* Implementation of trapezoid motion profile translated to C++; base Java code
  * courtesy of FRC Team 254
@@ -18,7 +18,7 @@
 
 namespace frc {
 class PIDController;
-}
+}  // namespace frc
 
 /**
  * Provides trapezoidal velocity control

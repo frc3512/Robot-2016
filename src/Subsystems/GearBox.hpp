@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 FRC Team 3512. All Rights Reserved.
+// Copyright (c) 2016-2020 FRC Team 3512. All Rights Reserved.
 
 #pragma once
 
@@ -14,7 +14,7 @@
 
 namespace frc {
 class DigitalInput;
-}
+}  // namespace frc
 
 /**
  * Represents a gear box with up to 3 motors and an encoder

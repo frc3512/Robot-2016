@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 FRC Team 3512. All Rights Reserved.
+// Copyright (c) 2016-2020 FRC Team 3512. All Rights Reserved.
 
 #pragma once
 
@@ -13,7 +13,7 @@
 
 namespace frc {
 class PIDController;
-}
+}  // namespace frc
 
 /**
  * Base class for all types of motion profile controllers

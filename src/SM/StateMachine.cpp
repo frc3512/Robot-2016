@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 FRC Team 3512. All Rights Reserved.
+// Copyright (c) 2016-2020 FRC Team 3512. All Rights Reserved.
 
 #include "StateMachine.hpp"
 
@@ -26,7 +26,10 @@ std::string StateMachine::StackTrace() const {
 
 std::string StateMachine::HandleEvent(std::string& event) {
     if (m_debugEnabled) {
-        using namespace std::chrono;
+        using std::chrono::duration_cast;
+        using std::chrono::microseconds;
+        using std::chrono::steady_clock;
+
         auto now = steady_clock::now();
         auto timeStamp = duration_cast<microseconds>(now - m_startTime).count();
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 FRC Team 3512. All Rights Reserved.
+// Copyright (c) 2016-2020 FRC Team 3512. All Rights Reserved.
 
 /* Constant acceleration until target (max) velocity is reached, sets
  * acceleration to zero for a calculated time, then decelerates at a constant
@@ -14,7 +14,7 @@
 
 namespace frc {
 class PIDController;
-}
+}  // namespace frc
 
 /**
  * Provides trapezoidal acceleration control
