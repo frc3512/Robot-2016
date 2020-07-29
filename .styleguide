@@ -1,8 +1,5 @@
-cHeaderFileInclude {
-  \.h$
-}
-
 cppHeaderFileInclude {
+  \.h$
   \.hpp$
   \.inl$
 }
@@ -11,8 +8,10 @@ cppSrcFileInclude {
   \.cpp$
 }
 
-modifiableFileExclude {
-  WPILib/
-  SFML/
-  SFMLNetwork/
+includeOtherLibs {
+  ^frc/
+  ^frc2/
+  ^networktables/
+  ^units/
+  ^wpi/
 }
